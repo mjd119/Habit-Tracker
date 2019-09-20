@@ -1,0 +1,15 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+<div class="pg">
+<h3><center>Admin Login:</center></h3>
+
+This page sets up a password so that only the researchers, not participants, can access the data. You can set the password however you want in the index.py file in the DataHandler. Right now it is set to 'MyPassword', which you can use to login. When you press submit, the page sends a post request to the DataHandler. Try 'MyPassword' to see some data.
+<br><br>
+<form method="post" action="/downloading_data">
+Password: <input type="text" class="form-control" name="password"/><br>
+<button type="submit" class="btn btn-default">Submit</button>
+</form>
+</p>
+</div>
+{% endblock %}

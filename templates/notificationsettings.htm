@@ -1,0 +1,22 @@
+
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+<h3><center>Notifications</center></h3><br><br><br>
+<!-- Drop down list of times  -->
+<!-- Get request to generate list with python? -->
+<form class="form-inine" id="Form1" method="post" action="/notificationsettings">
+<h3><center>
+Times<br><br>
+<select name=notiftime1 form=notiftime1 id=notiftime1>
+<option selected disabled hidden disabled>Choose 1st Notification Time</option>
+</select>&nbsp&nbsp
+<select name=notiftime2 form=notiftime2 id=notiftime2>
+<option selected disabled hidden disabled>Choose 2nd Notification Time</option>
+</select>&nbsp&nbsp
+<select name=noftime3 form=notiftime3 id=notiftime3>
+<option selected disabled hidden disabled>Choose 3rd Notification Time</option>
+</select>
+</center></h3>
+</form>
+{% endblock %}

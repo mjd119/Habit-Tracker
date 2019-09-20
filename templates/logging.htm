@@ -1,0 +1,12 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+<center><h3>Logging:</h3></center>
+When this page loads, it sends an error to both the python logs and to the javascript logs. Check them both to verify that you know how to find them.
+<br><br>
+
+<script>
+console.log("This is a log sent to the javascript console - you can write whatever you want here!")
+</script>
+
+{% endblock %}

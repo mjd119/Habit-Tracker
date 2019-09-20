@@ -1,0 +1,460 @@
+<!-- Credit to d3noob https://bl.ocks.org/d3noob/814a2bcb3e7d8d8db74f36f77c8e6b7f, and
+https://bl.ocks.org/d3noob/23e42c8f67210ac6c678db2cd07a747e
+(Slightly edited by me to accept local json data)-->
+
+<meta charset="utf-8">
+<style> /* set the CSS */
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+.axisSteelBlue text{
+  fill: steelblue;
+}
+
+.axisRed text{
+  fill: red;
+}
+.axisOrange text{
+  fill: orange;
+}
+
+.axisGreen text{
+  fill: green;
+}
+
+.axisPurple text{
+  fill:purple;
+}
+</style>
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+      <!-- load the d3.js library -->
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script>
+   // Variable names
+      var IV = "{{IV}}";
+      var DV = "{{DV}}";
+      var var3 = "{{var3}}";
+      var var4 = "{{var4}}";
+      var var5 = "{{var5}}";
+      var DVArray={{DVAllValues}};
+      var var3Array={{var3AllValues}};
+      var var4Array={{var4AllValues}};
+      var var5Array={{var5AllValues}};
+      var IVArray={{IVAllValues}};
+      var IVArray = []
+      var jsonData = []; // Holds the data points for all variables across all times of day for all days
+    // Creating json objects and pushing them to array with user-generated data *BEGIN*
+    //   // Create an array of json objects (start at one because "day" starts at 1 for user)
+      for (i = 1; i < DVArray.length+1; i++) {
+        var jsonObject = {
+        "Day" : i,
+        "IV" : IVArray[i-1],
+        "DV" : DVArray[i-1],
+        "var3" : var3Array[i-1],
+        "var4" : var4Array[i-1],
+        "var5" : var5Array[i-1],
+        }
+        // console.log(IVArray[i-1]);
+        console.log(IVArray[i-1])
+        console.log(DVArray[i-1]);
+        console.log(var3Array[i-1]);
+        console.log(var4Array[i-1]);
+        console.log(var5Array[i-1]);
+        jsonData.push(jsonObject); // Put JSON object into the array
+      }
+    //   console.log(jsonData);
+    // Creating json objects and pushing them to array with user-generated data *END*
+    // Creating json objects with example data *BEGIN*
+    // jsonData = [{
+    //     "Day" : 1,
+    //     "DV" : 4,
+    //     "IV" : 1,
+    //     "var3" : 1,
+    //     },
+    //     {
+    //     "Day" : 2,
+    //     "DV" : 5,
+    //     "IV" : 1,
+    //     "var3" : 0,
+    //     },
+    //     {
+    //     "Day" : 3,
+    //     "DV" : 3,
+    //     "IV" : 0,
+    //     "var3" : 2,
+    //     },
+    //     {
+    //     "Day" : 4,
+    //     "DV" : 4,
+    //     "IV" : 1,
+    //     "var3" : 1,
+    //     },
+    //     {
+    //     "Day" : 5,
+    //     "DV" : 4,
+    //     "IV" : 1,
+    //     "var3" : 1,
+    //     },
+    //     {
+    //     "Day" : 6,
+    //     "DV" : 4,
+    //     "IV" : 0,
+    //     "var3" : 1,
+    //     },
+    //     {
+    //     "Day" : 7,
+    //     "DV" : 5,
+    //     "IV" : 1,
+    //     "var3" : 0,
+    //     },
+    //     {
+    //     "Day" : 8,
+    //     "DV" : 3,
+    //     "IV" : 0,
+    //     "var3" : 2,
+    //     },
+    //     {
+    //     "Day" : 9,
+    //     "DV" : 3,
+    //     "IV" : 0,
+    //     "var3" : 2,
+    //     },
+    //     {
+    //     "Day" : 10,
+    //     "DV" : 3,
+    //     "IV" : 0,
+    //     "var3" : 2,
+    //     }
+    // ];
+      // Creating json objects with example data *END*
+      // set the dimensions and margins of the graph
+      var margin = {top: 20, right: 200, bottom: 40, left: 100},
+          width = 960 - margin.left - margin.right,
+          height = 500 - margin.top - margin.bottom;
+
+      // set the ranges
+      var x = d3.scaleLinear().range([0, width]); // Day
+      var y0 = d3.scaleLinear().range([height, 0]); // DV
+      var y1 = d3.scaleLinear().range([height, 0]); // IV
+      var y2 = d3.scaleLinear().range([height, 0]); // var3 (Added by me)
+      var y3; // var4 Added by me (optional for user)
+      var y4; // var5 Added by me (optional for user)
+      //  Add extra lines if the user chose to have 2 extra third variables
+      if (var4 != "") {
+        y3 = d3.scaleLinear().range([height, 0]);
+      }
+      if (var5 != "") {
+        y4 = d3.scaleLinear().range([height, 0]);
+      }
+      // TODO: Decide how to label based on variable type (units? variable name? what about binary?)
+      // define the 1st line
+      var valueline0 = d3.line()
+          .x(function(d) { return x(d.Day); })
+          .y(function(d) { return y0(d.DV); });
+      // define the 2nd line
+      var valueline1 = d3.line()
+          .x(function(d) { return x(d.Day); })
+          .y(function(d) { return y1(d.IV); });
+      // Added by me (define third line)
+      var valueline2 = d3.line()
+          .x(function(d) { return x(d.Day); })
+          .y(function(d) { return y2(d.var3); });
+      var valueline3; // Optional fourth variable (added by me) [define fourth variable]
+      var valueline4; // Optional fifth variable (added by me) [define fifth variable]
+      if (var4 != "") {
+        valueline3 = d3.line()
+            .x(function(d) { return x(d.Day); })
+            .y(function(d) { return y3(d.var4); });
+      }
+      if (var5 != "") {
+        valueline4 = d3.line()
+            .x(function(d) { return x(d.Day); })
+            .y(function(d) { return y4(d.var5); });
+      }
+      // append the svg obgect to the body of the page
+      // appends a 'group' element to 'svg'
+      // moves the 'group' element to the top left margin
+      // Credit to https://blueprints.launchpad.net/inkscape/+spec/allow-browser-resizing for viewbox usage
+      var svg = d3.select("div")
+          .append("svg")
+          // .attr("preserveAspectRatio", "none slice")
+          // .attr("viewBox", "0 0 960 500")
+          // .attr("width", "100%")
+          // .attr("height", "100%")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+        // format the data
+        jsonData.forEach(function(d) {
+            d.Day = +d.Day;
+            d.DV = +d.DV;
+            d.IV = +d.IV;
+            d.var3 = +d.var3;
+            d.var4 = +d.var4;
+            d.var5 = +d.var5;
+        });
+        // Scale the range of the data
+        x.domain(d3.extent(jsonData, function(d) { return d.Day; }));
+        y0.domain([0, d3.max(jsonData, function(d) {return Math.max(d.DV); })]);
+        y1.domain([0, d3.max(jsonData, function(d) {return Math.max(d.IV); })]);
+        y2.domain([0, d3.max(jsonData, function(d) {return Math.max(d.var3); })]);
+        if (var4 != "") {
+          y3.domain([0, d3.max(jsonData, function(d) {return Math.max(d.var4); })]);
+        }
+        if (var5 != "") {
+          y4.domain([0, d3.max(jsonData, function(d) {return Math.max(d.var5); })]);
+        }
+        // Add the valueline0 path.
+        svg.append("path")
+            .data([jsonData])
+            .attr("class", "line")
+            .attr("d", valueline0)
+        // Add the valueline1 path.
+        svg.append("path")
+            .data([jsonData])
+            .attr("class", "line")
+            .style("stroke", "red")
+            .attr("d", valueline1);
+
+        // Add the valueline2 path
+        svg.append("path")
+            .data([jsonData])
+            .attr("class", "line")
+            .style("stroke", "orange")
+            .attr("d", valueline2);
+        // Add the valueline3 path
+        if (var4 != "") {
+        svg.append("path")
+            .data([jsonData])
+            .attr("class", "line")
+            .style("stroke", "green")
+            .attr("d", valueline3);
+        }
+        // Add the valueline4 path
+        if (var5 != "") {
+        svg.append("path")
+            .data([jsonData])
+            .attr("class", "line")
+            .style("stroke", "purple")
+            .attr("d", valueline4);
+        }
+      // Add the X Axis
+      svg.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+      // text label for the x axis
+      svg.append("text")
+          .attr("transform",
+                "translate(" + (width/2) + " ," +
+                               (height + margin.top + 10) + ")")
+          .style("text-anchor", "middle")
+          .text("Day");
+      // Add the Y0 Axis
+      svg.append("g")
+          .attr("class", "axisSteelBlue")
+          .call(d3.axisLeft(y0));
+      // text label for the first y axis
+      svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 50 - margin.left)
+          .attr("x", 0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style('fill', 'steelblue')
+          .text(DV);
+
+      // Add the Y1 Axis
+      svg.append("g")
+          .attr("class", "axisRed")
+          .attr("transform", "translate( " + width + ", 0 )")
+          .call(d3.axisRight(y1));
+      // text label for the second y axis
+      svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 + width+20)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style('fill', 'red')
+          .text(IV);
+
+      // Add the Y2 Axis (Added by me)
+      svg.append("g")
+          .attr("class", "axisOrange")
+          .attr("transform", "translate( " + (width+45) + ", 0 )")
+          .call(d3.axisRight(y2));
+      // text label for the Y2 axis (added by me)
+      svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 + width+70)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style('fill', 'orange')
+          .text(var3);
+
+      // Add the Y4 (var4) Axis (Added by me)
+      if (var4 != "") {
+      svg.append("g")
+          .attr("class", "axisGreen")
+          .attr("transform", "translate( " + (width+90) + ", 0 )")
+          .call(d3.axisRight(y3));
+      // text label for the third y axis (added by me)
+      svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 + width+110)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .style('fill', 'green')
+          .text(var4);
+      }
+      // Add the Y5 (var5) Axis (Added by Me)
+      if (var5 != "") {
+        svg.append("g")
+            .attr("class", "axisPurple")
+            .attr("transform", "translate( " + (width+135) + ", 0 )")
+            .call(d3.axisRight(y4));
+        // text label for the third y axis (added by me)
+        svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 + width+150)
+            .attr("x",0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .style('fill', 'purple')
+            .text(var5);
+      }
+  // $("svg").prop("viewBox", "1000 1000 10000 10000");
+
+      // svg.selectAll("path")
+      //   .data(jsonData)
+      //   .enter()
+      //   node.append("path")
+      //   .attr("d", d3.symbol().type(d3.symbolCross))
+      //   .attr("fill", "steelblue")
+      //   .attr("stroke", "#000")
+      //   .attr("stroke-width", 1)
+      //   .attr("tranform", function(d) { return "translate(" + d.Day + "," + d.DV; });
+      // jsonData.forEach(function(d) {
+      //   svg.append("path")
+      //     .data([jsonData])
+      //     .style("stroke", function(d) { return x(d.Day)} )
+      //     .style("fill", function(d) { return y0(d.DV)} )
+      //     .attr("d", d3.symbol().type(d3.symbolCross));
+      // });
+
+
+      // svg.selectAll("path")
+      //   .data(jsonData)
+      //   .enter()
+      //     .attr("d", d3.symbol().type(d3.symbolCross));
+      //
+      // svg.selectAll("path")
+      //   .data(jsonData)
+      //   .enter()
+      //   .append("path")
+      //     .attr("r", 3.5)
+      //     .attr("d", d3.symbol().type(d3.symbolCross));
+      //
+      // svg.selectAll("path")
+      //   .data(jsonData)
+      //   .enter()
+      //   .append("path")
+      //     .attr("r", 3.5)
+      //     .attr("d", d3.symbol().type(d3.symbolCross));
+
+      </script>
+      <br><br>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 1</h3>
+  </div>
+  <div class="panel-body">
+    Do you think the independent variable(s) you selected made an impact on the dependent variable? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <textarea cols=50 rows=5 input type="text" class="form-control" id="Question1" name="Question1"></textarea>
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 2</h3>
+  </div>
+  <div class="panel-body">
+    Did anything significant happen over the course of the study that could have influenced the variables and/or result? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <textarea cols=50 rows=5 input type="text" class="form-control" id="Question2" name="Question2"></textarea>
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 3</h3>
+  </div>
+  <div class="panel-body">
+    Is there an additional variable you think would make a larger difference? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <textarea cols=50 rows=5 input type="text" class="form-control" id="Question3" name="Question3"></textarea>
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 4</h3>
+  </div>
+  <div class="panel-body">
+    After seeing the graph of your selected variables has your impression of the relationship between the variables changed? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <textarea cols=50 rows=5 input type="text" class="form-control" id="Question4" name="Question4"></textarea>
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 6</h3>
+  </div>
+  <div class="panel-body">
+    Is having a graph more useful than having only the memory? <br><br>
+  <div class="form-group">
+	<input type="radio" class="btn btn-default" name="Question6" value="yes"> Yes
+	<input type="radio" class="btn btn-default" name="Question6" value="no"> No
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 7</h3>
+  </div>
+  <div class="panel-body">
+    For future studies, what do you think could be improved? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <input type="number" min="1" max="5" class="form-control" id="Question7" name="Question7"><br><br><br><br>
+  </div>
+</div>
+</div>
+
+<!-- Submit user answers -->
+<div class="form-group">
+  <input type="submit" class="btn btn-default">
+</div>
+</form>
+{% endblock %}

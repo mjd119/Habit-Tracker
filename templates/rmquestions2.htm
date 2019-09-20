@@ -1,0 +1,52 @@
+
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+<h3><center>Page 2</center></h3>
+<p>
+Thanks for Participating!
+<br><br>
+<form class="form-inline" id="Form1"  method="post" action="/rmquestions2">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 8</h3>
+  </div>
+  <div class="panel-body">
+    Would you like to begin a new study? <br><br>
+<form class="form-inline" id="Form1"  method="post" action="/rmquestions2">
+  <div class="form-group">
+	<input type="radio" class="btn btn-default" name="Question8" value="yes"> Yes
+	<input type="radio" class="btn btn-default" name="Question8" value="no"> No
+  </div>
+</form>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 9</h3>
+  </div>
+  <div class="panel-body">
+    Do you intend to continue to use the IV? (1-9 from "Not at all" to "I'll use it every day") <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <input type="number" min="1" max="9" class="form-control" id="Question9" name="Question8"><br><br><br><br>
+  </div>
+</form>
+</div>
+</div>
+
+<!-- Submit user answers -->
+<div class="form-group">
+  <input type="submit" onclick= class="btn btn-default">
+</div>
+
+<!-- Script disables back button; Credit to Dhaval Thakkar https://codepen.io/dhavalt10/pen/rGLBzB -->
+<script>
+history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+</script>
+
+{% endblock %}

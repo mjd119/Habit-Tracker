@@ -1,0 +1,135 @@
+
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<!-- Credit to KIRAN VARTHI http://jsfiddle.net/kiranvarthi/t1Lq966k/ for showing how to create custom class-->
+<h3><center>Creating Your Design</center></h3>
+<p>Based on your research question, identify your independent and dependent variables.</p>
+{% if RQ %}
+<p>Your research question:<b>{{RQ}}</b></p>
+{% endif %}
+<p>After you identify your independent and dependent variables you will choose how you plan
+to measure them. Variables can often be measured in many different ways. For example, if your independent
+variable is exercise, you could measure it as a binary variable - whether you did vs. did not go to the gym today.
+Alternatively, you could measure it as a 5-level ordinal variable from "No exercise" to "Tons of Exercise." Or,
+if you decide to measure it as a metric variable you could measure the minutes of exercise at the gym. All of these
+have different pros and cons; you should think about what measurement system makes the most sense for you and your particular
+question.
+<a href="/variabletypeexplanations" target="_blank">
+  <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+</a></p>
+<p>Whatever question you choose it is important that you actually engage in these activities or plan to
+start to engage in these activities. For example, if your question is: "Does meditation reduce my stress?" it is important
+that you actually medtiate somewhat frequently.</p>
+<h4 id="RQHeader" name="RQHeader">Design</h4>
+<div id="variablesInputDiv">
+  <form class="form-inline" id="Form1" method="post" action="/questionivdv">
+    <div class="panel panel-default" id="QuestionIVDVDiv">
+      <div class="panel-heading">
+        <h3 class="panel-title">Question and Variables
+        </h3>
+      </div>
+      <div class="panel-body">
+        <p>Identify a question with personal relevance, this will be your research question.</p>
+        <p>Examples: Does meditation reduce my stress? Does exercise improve my sleep quality?</p><br>
+        <div class="well well-sm">
+          <div class="form-group">
+            <div class="row">
+              <label for="RQ" class="col-sm-3">Question: </label>
+              <div class="col-sm-6">
+                {% if RQ %}
+                  <textarea cols=50 rows=1 input type="text" class="form-control" id="RQ" name="RQ" required>{{RQ}}</textarea>
+                {% else %}
+                  <textarea cols=50 rows=1 input type="text" class="form-control" id="RQ" name="RQ" required></textarea>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>Identify your independent variable, the primary cause of your research question. Remember, an independent variable
+        is the variable that you manipulate or measure to determine the cause of the dependent variable (effect).</p>
+        <div class="well well-sm">
+          <div class="form-group">
+            <div class="row">
+            <!-- https://stackoverflow.com/questions/2906582/how-to-create-an-html-button-that-acts-like-a-link -->
+              <label for="IV" class="col-sm-3">Independent Variable:
+                <a href="https://www.thoughtco.com/definition-of-independent-variable-605238" target="_blank">
+                  <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+                </a>
+              </label>
+              <div class="col-sm-6">
+                {% if IV %}
+                  <textarea cols=25 rows=1 input type="text" class="form-control" id="IV" name="IV" required>{{IV}}</textarea>
+                {% else %}
+                  <textarea cols=25 rows=1 input type="text" class="form-control" id="IV" name="IV" required></textarea>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Well for Dependent Variable -->
+        <p>Identify your dependent variable, or the outcome or effect that you think will be influenced by changes in your
+        independent variable.</p>
+        <p><b>Example:</b> Sleep Quality (e.g. good or bad; type: binary)</p>
+        <div class="well well-sm">
+          <div class="form-group">
+            <div class="row">
+              <!-- https://stackoverflow.com/questions/2906582/how-to-create-an-html-button-that-acts-like-a-link -->
+                <label for="DV" class="col-sm-3">Dependent Variable:
+                  <a href="https://www.thoughtco.com/definition-of-dependent-variable-604998" target="_blank">
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+                  </a>
+                </label>
+              <div class="col-sm-6">
+                {% if DV %}
+                  <textarea rows="1" cols="25" input type="text" class="form-control" id="DV" name="DV" required>{{DV}}</textarea>
+                {% else %}
+                  <textarea rows="1" cols="25" input type="text" class="form-control" id="DV" name="DV" required></textarea>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Submit user answers -->
+  <div class="form-group">
+    <input type="submit" class="btn btn-default"></input>
+  </div>
+</form>
+</div><br>
+<!-- TODO: Show forms (DVDay or DVNight) and fill in forms on page load so user sees what they entered if they go back -->
+<script>
+// Hide both divs by default
+$("#DVDayDiv").hide();
+$("#DVNightDiv").hide();
+// TODO: Show and auto select options based on what user has entered before (if they've done it already)
+</script>
+
+<script>
+$(document).ready(function() {
+// Clear forms that aren't required on submit
+  $("#Form1").on("submit", function() {
+    // Clear textarea forms if they're not required
+    $("textarea").each(function(i) {
+      if (!($(this).prop("required"))) {
+        $(this).val("");
+      }
+    });
+    // Clear select forms if they're not required
+    $("select").each(function(i) {
+      if (!($(this).prop("required"))) {
+        $(this).val("");
+      }
+    });
+  });
+  // Disallow the user to submit form when they press the enter button
+  // Credit to Jake Wilson https://stackoverflow.com/a/1563238 for code to prevent submission when pressing enter key
+  $("#Form1").find(".input").keypress(function(e) {
+    if (e.which == 13) { // Checks if the enter key was pressed
+      return false;
+    }
+  });
+});
+</script>
+
+{% endblock %}

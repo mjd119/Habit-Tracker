@@ -1,0 +1,242 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<br><br><br><br>
+There is some problem - 'reset this example' from the first example seems to add to the number for the second example, at least this is true if the second example is already at 9... not sure why!
+<br><br><br><br>
+<p>
+One challenge with using the web for programming experiments is that in psychology experiments, we usually want to force participants to go through the study in a specific order. In contrast, most webpages are designed such that users can do different tasks in any order they want. For this reason, the back button and reload buttons become problematic, because they cannot be reliably disabled.
+<br><br>
+There are two ways to handle this problem. The first is that on a given page, with multiple tasks, for example, multiple questions to answer in order, or multiple stimuli to see, Ajax can be used to record the progress on the page, so that if the page is reloaded the user can will be taken back to the same step.
+<br><br>
+This goal can be accomplished a number of ways. One way is to use ajax to send an update to the datastore to keep track of the progress. A second way is to keep the progress in a cookie; Habit-Tracker is set up to use cookies through GAESessions. The third way is to use browser storage.
+
+https://www.w3schools.com/html/html5_webstorage.asp
+<br>
+{{RandomNumbersFromCSV}}
+
+<br><br><br>
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Using Ajax to Update Trial in the Datastore</h3>
+  </div>
+  <div class="panel-body">
+Here you will see a series of 10 numbers. At the end, you will guess the average.
+
+
+<div id="TheNumbers" class = "well" align="center">asdf</div>
+<button type="button" class="btn btn-default" onclick="NextNumber()" id="NextNumberButton">Next Number</button>
+
+<script>
+n = {{Trial}}
+RandomNumbersFromCSV={{RandomNumbersFromCSV}}
+function NextNumber(){
+  if (n == 9 ) {
+    document.getElementById("Form1").style.display = "inline";
+    document.getElementById("Form1").style.visibility = "visible";
+    document.getElementById("TheNumbers").style.display = "none";
+    document.getElementById("NextNumberButton").style.display = "none";
+  } else {
+    n = n + 1
+    document.getElementById('TheNumbers').innerHTML = RandomNumbersFromCSV[n]
+    document.getElementById('Trial').value = n
+    AjaxTrialUpdateFn()
+  }
+}
+
+function RunOnPageLoad(){
+  document.getElementById('TheNumbers').innerHTML = RandomNumbersFromCSV[n]
+  document.getElementById('Trial').value = n
+  if (n==9 ) {
+    document.getElementById("Form1").style.display = "inline";
+    document.getElementById("Form1").style.visibility = "visible";
+    document.getElementById("TheNumbers").style.display = "none";
+    document.getElementById("NextNumberButton").style.display = "none";
+  }
+}
+
+</script>
+
+
+
+
+
+<script>
+function SubmitForm1(){
+	document.getElementById('TenNumbers1').value = RandomNumbersFromCSV
+    document.getElementById("Form1").submit()
+}
+</script>
+
+
+<form class="form-inline" id="Form1"  method="post" action="/means_task" style="display:none;">
+  <div class="form-group">
+    <label for="Mean">Mean: </label>
+    <input type="number" class="form-control" id="Mean" name="Mean">
+<!-- Name is the name of the variable that gets sent back to the server. ID is different from name here because there are four forms, and so that the SubmitForm function can find the right hidden input to change -->
+    <input type="hidden" id="TenNumbers1" name="tennumbers" value="">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="SubmitForm1()">Submit</button>
+  </div>
+</form>
+
+<form class="form" id="TrialUpdateForm" style="display:none;">
+<input type="hidden" id="Trial" name="Trial" value="">
+</form>
+
+<script>
+function AjaxTrialUpdateFn()
+{
+	$.ajax({
+		url:"/ajax_track_progress_update_trial",
+		data: $("#TrialUpdateForm").serialize(),
+		dataType: 'json',
+		type: "POST",
+		cache: false,
+		error: function() {return("Error")},
+		success: function() {return("Success")}
+    // error: function() {alert("Error")},
+    // success: function() {alert("Success")}
+	})
+
+}
+</script>
+
+<br><br>
+<a href="/reset_ajax_track_progress" class="btn btn-default" type='button'>Reset This Example</a>
+
+
+
+<!-- <form class="form-inline" id="FormReset"  method="get" action="/reset_ajax_track_progress">
+  <div class="form-group">
+<button type="button" class="btn btn-default" id="ResetThisExample" value="Submit">Reset This Example</button>  </div>
+</form> -->
+
+
+</div>
+
+</div>
+
+
+
+
+
+<!-- Here is the Cookie Version -->
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Using Ajax to update a cookie but not saving in datastore</h3>
+  </div>
+  <div class="panel-body">
+Here you will see a series of 10 numbers. At the end, you will guess the average.
+
+
+<div id="TheNumbersCookie" class = "well" align="center">asdf</div>
+<button type="button" class="btn btn-default" onclick="NextNumberCookie()" id="NextNumberButtonCookie">Next Number</button>
+
+<script>
+nCookie = {{TrialInCookie}}
+RandomNumbersFromCSV={{RandomNumbersFromCSV}}
+function NextNumberCookie(){
+  if (nCookie == 9 ) {
+    document.getElementById("FormCookie").style.display = "inline";
+    document.getElementById("FormCookie").style.visibility = "visible";
+    document.getElementById("TheNumbersCookie").style.display = "none";
+    document.getElementById("NextNumberButtonCookie").style.display = "none";
+  } else {
+    nCookie = nCookie + 1
+    document.getElementById('TheNumbersCookie').innerHTML = RandomNumbersFromCSV[nCookie]
+    document.getElementById('TrialCookie').value = nCookie
+    AjaxTrialUpdateFnCookie()
+  }
+}
+
+function RunOnPageLoadCookie(){
+  document.getElementById('TheNumbersCookie').innerHTML = RandomNumbersFromCSV[nCookie]
+  document.getElementById('TrialCookie').value = nCookie
+  if (nCookie>=9 ) {
+    document.getElementById("FormCookie").style.display = "inline";
+    document.getElementById("FormCookie").style.visibility = "visible";
+    document.getElementById("TheNumbersCookie").style.display = "none";
+    document.getElementById("NextNumberButtonCookie").style.display = "none";
+  }
+}
+
+function start() {
+  RunOnPageLoad();
+  RunOnPageLoadCookie();
+}
+window.onload = start;
+
+
+function SubmitFormCookie(){
+	document.getElementById('TenNumbersCookie').value = RandomNumbersFromCSV
+    document.getElementById("FormCookie").submit()
+}
+</script>
+
+
+<form class="form-inline" id="FormCookie"  method="post" action="/means_task" style="display:none;">
+  <div class="form-group">
+    <label for="Mean">Mean: </label>
+    <input type="number" class="form-control" id="Mean" name="Mean">
+<!-- Name is the name of the variable that gets sent back to the server. ID is different from name here because there are four forms, and so that the SubmitForm function can find the right hidden input to change -->
+    <input type="hidden" id="TenNumbers" name="tennumbers" value="">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="SubmitFormCookie()">Submit</button>
+  </div>
+</form>
+
+<form class="form" id="TrialUpdateFormCookie" style="display:none;">
+<input type="hidden" id="TrialCookie" name="TrialCookie" value="">
+</form>
+
+<script>
+function AjaxTrialUpdateFnCookie()
+{
+	$.ajax({
+		url:"/ajax_cookie_track_progress_update_trial",
+		data: $("#TrialUpdateFormCookie").serialize(),
+		dataType: 'json',
+		type: "POST",
+		cache: false,
+		error: function() {return("Error")},
+		success: function() {return("Success")}
+    // error: function() {alert("Error")},
+    // success: function() {alert("Success")}
+	})
+
+}
+</script>
+
+<br><br>
+<a href="/reset_cookie_ajax_track_progress" class="btn btn-default" type='button'>Reset This Example</a>
+
+
+
+<!-- <form class="form-inline" id="FormReset"  method="get" action="/reset_ajax_track_progress">
+  <div class="form-group">
+<button type="button" class="btn btn-default" id="ResetThisExample" value="Submit">Reset This Example</button>  </div>
+</form> -->
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+<!-- console.log($("#myform").serializeArray()) -->
+
+{% endblock %}

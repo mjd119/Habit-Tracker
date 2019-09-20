@@ -1,0 +1,117 @@
+
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+<h3><center>Page 1</center></h3>
+<p>
+Answer the following questions based on the study you have just concluded
+<br><br>
+
+<form class="form-inline" id="Form1" method="post" action="/rmquestions1">
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 1</h3>
+  </div>
+  <div class="panel-body">
+    Do you think the independent variable(s) you selected made an impact on the dependent variable? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <textarea cols=50 rows=5 input type="text" class="form-control" id="Question1" name="Question1"></textarea>
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 2</h3>
+  </div>
+  <div class="panel-body">
+    Did anything significant happen over the course of the study that could have influenced the variables and/or result? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <textarea cols=50 rows=5 input type="text" class="form-control" id="Question2" name="Question2"></textarea>
+  </div>
+</div>
+</div>
+
+<!-- Show personalized graph here based on user study data TODO -->
+<!-- Following questions answered based on personal user study data -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 3</h3>
+  </div>
+  <div class="panel-body">
+    Is there an additional variable you think would make a larger difference? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <textarea cols=50 rows=5 input type="text" class="form-control" id="Question3" name="Question3"></textarea>
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 4</h3>
+  </div>
+  <div class="panel-body">
+    After seeing the graph of your selected variables has your impression of the relationship between the variables changed? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <textarea cols=50 rows=5 input type="text" class="form-control" id="Question4" name="Question4"></textarea>
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 5</h3>
+  </div>
+  <div class="panel-body">
+    Rate how useful seeing a graph of your variable is on a scale of 1 to 5 (not useful at all, less than average use, useful, more than average, very useful) <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <input type="number" min="1" max="5" class="form-control" id="Question5" name="Question5"></textarea>
+  </div>
+
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 6</h3>
+  </div>
+  <div class="panel-body">
+    Is having a graph more useful than having only the memory? <br><br>
+  <div class="form-group">
+	<input type="radio" class="btn btn-default" name="Question6" value="yes"> Yes
+	<input type="radio" class="btn btn-default" name="Question6" value="no"> No
+  </div>
+</div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Question 7</h3>
+  </div>
+  <div class="panel-body">
+    For future studies, what do you think could be improved? <br><br>
+  <div class="form-group">
+    <label for="Answer">Answer: </label>
+    <input type="number" min="1" max="5" class="form-control" id="Question7" name="Question7"><br><br><br><br>
+  </div>
+</div>
+</div>
+<!-- Submit user answers -->
+<div class="form-group">
+  <input type="submit" class="btn btn-default">
+</div>
+</form>
+<!-- Script disables back button; Credit to Dhaval Thakkar https://codepen.io/dhavalt10/pen/rGLBzB -->
+<script>
+history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+</script>
+{% endblock %}

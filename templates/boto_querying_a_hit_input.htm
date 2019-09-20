@@ -1,0 +1,53 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<h3><center>Boto Querying a HIT:</center></h3>
+<b>
+This page provides a demonstration of how to get information about a HIT. Please note, your AWS Access Key ID and your AWS Secret Access key are like your username and password to your account. This website does not store them, but if you feel uncomfortable inputting them here, then don't use this page.
+<br><br>
+For some reason, this function only works with relatively recent hits. After a few months hits become unavailable on boto.
+
+<p>
+
+<p>
+<form class="form-horizontal" method="post" action="/boto_querying_a_hit">
+  <div class="form-group">
+    <label for="AWSAccessKeyID" class="col-sm-2 control-label">AWS Access Key ID</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="AWSAccessKeyID" name="AWSAccessKeyID" placeholder="AWSAccessKeyID">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="AWSSecretAccessKey" class="col-sm-2 control-label">AWS Secret Access Key</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="AWSSecretAccessKey" name="AWSSecretAccessKey" placeholder="AWSSecretAccessKey">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="HIT_ID" class="col-sm-2 control-label">HIT ID</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="HIT_ID" name="HIT_ID" placeholder="HIT ID">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Sign in</button>
+    </div>
+  </div>
+</form>
+
+
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

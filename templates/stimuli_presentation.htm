@@ -1,0 +1,252 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<script>
+// A function to take a list and turn it into rows in a table
+function easytable(list){
+	for (i = 0 ; i < list.length ; i++){
+		document.write("<td>"+String(list[i])+"</td>");
+	}
+}
+</script>
+
+<h3><center>Means Task Example:</center></h3>
+<p>
+This page is a sample study in which participants are presented with 10 numbers and they are supposed to judge the mean. There are two conditions, between subjects. In one condition, the mean is around 30, and in the other the mean is around 50. Based on your user number, you were assigned to the condition with a mean of {{condition}}. This assignment to conditions occurred at the time that you created your user (/user_create, UserCreateHandler). The condition is stored in the User data model under 'condition', and is also stored in the session under 'condition'.
+<br><br>
+This page shows 4 different ways of generating the data and presenting it to participants. The reason for showing all of these ways is that they highlight different features of different data generation processes. The first method involves determining the numbers offline, storing them in a csv file, and then pulling them from the csv file. The second method involves creating the data in python at the time of creating the user. Both of these two methods mean that the data will be the same even if the page is reloaded. The third method involves generating the data in the python backend right when this page is loaded. The fourth method involves generating the data in the browser in javascript. Because the last two methods involve generating the data at the time that the page is rendered, the numbers will change each time the page is loaded.
+<br><br>
+These stimuli could be conceived as anything from raw numbers presented to a participant in a decision-making experiment, variables that determine visual characteristics in an element on screen, or any variable that determines the stimuli that a subject sees. For example, Method 1 is analogous to generating two images offline, and uploading them as separate files. Methods 2 and 3 are analogous to generating two images in the python backend (python can be used to generate images). Method 4 is analogous to generating two images in the javascript frontend; there are many packages for generating or modifying images in javascript.
+<br><br>
+When sent to the datastore, the judgment and the 10 numbers are stored in the MeanTaskData data model. You can see your prior responses at <a href="/data_for_download">/data_for_download.htm</a>.
+
+<br><br><br>
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Method 1</h3>
+  </div>
+  <div class="panel-body">
+One way to generate stimuli is to store data in a csv file and then pull the data as needed. These data are stored in the file RandomNumbersFromCSV.csv. These data are the same on each page load.<br><br>
+On submission, the judgment and the 10 numbers are stored in the datastore. Technically since the 10 numbers were pulled from a csv file, it is not inherently necessary to store them again in the datastore, through it is convenient to store the user's judgment with the stimuli properties.<br><br>
+<script>
+RandomNumbersFromCSV={{RandomNumbersFromCSV}}
+</script>
+
+<table class="table table-bordered">
+<tr align="center">
+<!-- Convert the list into rows in a table using the function above -->
+<script>easytable(RandomNumbersFromCSV)</script>
+</tr>
+</table>
+
+
+<!-- <script>
+function SubmitForm1(){
+	document.getElementById('TenNumbers1').value = RandomNumbersFromCSV
+    document.getElementById("Form1").submit()
+}
+</script> -->
+
+
+<!-- <form class="form-inline" id="Form1"  method="post" action="/means_task">
+  <div class="form-group">
+    <label for="Mean">Mean: </label>
+    <input type="number" class="form-control" id="Mean" name="Mean">
+Name is the name of the variable that gets sent back to the server. ID is different from name here because there are four forms, and so that the SubmitForm function can find the right hidden input to change
+    <input type="hidden" id="TenNumbers1" name="TenNumbers" value="">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="SubmitForm1()">Submit</button>
+  </div>
+</form> -->
+</div>
+
+<!-- <input type="button" id="Submit" onclick="mySubmit()" value="Submit" disabled="True"> -->
+
+
+</div>
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Method 2</h3>
+  </div>
+  <div class="panel-body">
+These data were generated at the time of creating the user in python. The list was saved either in the cookie (session) or in the datastore. At the time of requesting this page, the list was pulled from the cookie or the datastore. This way it is always the same for each page load.<br><br>
+On submission, the judgment is stored in the datastore. The 10 numbers were already stored in the datastore in the User model under the RandomNumbersChosenAtUserCreate property. Technically since the 10 numbers were pulled from a csv file, it is not inherently necessary to store them again, through it is convenient to store the user's judgment with the stimuli properties.<br><br>
+<script>
+RandomNumbersChosenAtUserCreate={{RandomNumbersChosenAtUserCreate}}
+</script>
+<table class="table table-bordered">
+<tr align="center">
+<!-- Convert the list into rows in a table using the function above -->
+<script>easytable(RandomNumbersChosenAtUserCreate)</script>
+</tr>
+</table>
+
+
+
+<!--
+<script>
+function SubmitForm2(){
+	document.getElementById('TenNumbers2').value = RandomNumbersChosenAtUserCreate
+    document.getElementById("Form2").submit()
+}
+</script>
+
+<form class="form-inline" id="Form2"  method="post" action="/means_task">
+  <div class="form-group">
+    <label for="Mean">Mean: </label>
+    <input type="number" class="form-control" id="Mean" name="Mean">
+    <input type="hidden" id="TenNumbers2" name="TenNumbers" value="">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="SubmitForm2()">Submit</button>
+  </div>
+</form> -->
+</div>
+  </div>
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Method 3</h3>
+  </div>
+  <div class="panel-body">
+These data were generated by Python by the server when the page was loaded.<br><br>
+On submission, the judgment and the 10 numbers are stored in the datastore. Technically, because these numbers were generated when the user was created and stored in the datastore, they don't technically have to be saved again. However, for convenience we are saving them again.<br><br>
+<script>
+RandomNumbersCreatedByPythonOnPageLoad={{RandomNumbersCreatedByPythonOnPageLoad}}
+</script>
+<table class="table table-bordered">
+<tr align="center">
+<!-- Convert the list into rows in a table using the function above -->
+<script>easytable(RandomNumbersCreatedByPythonOnPageLoad)</script>
+</tr>
+</table>
+
+<!--
+<script>
+function SubmitForm3(){
+	document.getElementById('TenNumbers3').value = random3
+    document.getElementById("Form3").submit()
+}
+</script>
+
+<form class="form-inline" id="Form3"  method="post" action="/means_task">
+  <div class="form-group">
+    <label for="Mean">Mean: </label>
+    <input type="number" class="form-control" id="Mean" name="Mean">
+    <input type="hidden" id="TenNumbers3" name="TenNumbers" value="">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="SubmitForm3()">Submit</button>
+  </div>
+</form> -->
+</div>
+  </div>
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Method 4</h3>
+  </div>
+  <div class="panel-body">
+These data were generated by Javascript in the browser, also with a mean of 37 and a standard deviation of 10. These data are also generated fresh on each page load.<br><br>
+On submission, the judgment and the 10 numbers are stored in the datastore.<br><br>
+
+<!-- Unfortunately Javascript does not have a built-in random Gaussian number generator, only a random uniform number generator. Luckily, there is a way to convert two uniforms into a Gaussian. I used code from the following website: http://blog.yjl.im/2010/09/simulating-normal-random-variable-using.html
+
+This code uses the polar method from "A First Course of Probability" by Sheldon Ross (pp. 464, 6ed)
+-->
+
+
+<script>
+function normal_random(mean, variance) {
+  if (mean == undefined)
+    mean = 0.0;
+  if (variance == undefined)
+    variance = 1.0;
+  var V1, V2, S;
+  do {
+    var U1 = Math.random();
+    var U2 = Math.random();
+    V1 = 2 * U1 - 1;
+    V2 = 2 * U2 - 1;
+    S = V1 * V1 + V2 * V2;
+  } while (S > 1);
+
+  X = Math.sqrt(-2 * Math.log(S) / S) * V1;
+//Y = Math.sqrt(-2 * Math.log(S) / S) * V2;
+  X = mean + Math.sqrt(variance) * X;
+//Y = mean + Math.sqrt(variance) * Y ;
+  return X;
+}
+
+random4=[]
+stringarray=["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"]
+for (i = 0 ; i < 10 ; i++){
+	random4[i]=Math.round(normal_random({{condition}},10))
+}
+</script>
+
+<table class="table table-bordered">
+<tr align="center">
+<!-- Convert the list into rows in a table using the function above -->
+<script>easytable(random4)</script>
+
+</tr>
+</table>
+I created this table to see if I could create a table<br><br>
+<table class="table table-bordered">
+<tr align="center">
+<!-- Convert the list into rows in a table using the function above -->
+<script>easytable(stringarray)</script>
+</tr>
+</table>
+
+
+<!--
+<script>
+function SubmitForm4(){
+	document.getElementById('TenNumbers4').value = random4
+    document.getElementById("Form4").submit()
+}
+</script>
+
+
+<form class="form-inline" id="Form4"  method="post" action="/means_task">
+  <div class="form-group">
+    <label for="Mean">Mean: </label>
+    <input type="number" class="form-control" id="Mean" name="Mean">
+    <input type="hidden" id="TenNumbers4" name="TenNumbers" value="">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="SubmitForm4()">Submit</button>
+  </div>
+</form> -->
+</div>
+  </div>
+
+
+
+
+
+
+
+<br><br>
+
+
+
+
+{% endblock %}

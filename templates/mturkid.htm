@@ -1,0 +1,22 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+<div class="pg">
+<h3><center>Verify Whether You Qualify:</center></h3>
+<p>
+This page shows how to verify whether an MTurk worker has already participated in this study or a similar study. The way that this has currently been implemented is by setting up a separate website that keeps track of which MTurk workers have participated in which studies. We find that it is better to host this on a separate site rather than to host this as part of the experiment site, as you might want to take the experiment site offline at the end of the study, or one lab might have multiple experiment sites all of which link back to the one site to verify 
+
+Copy and paste your MTurk ID below.<br>
+<br>
+It is critical that you use your correct MTurk ID. If your ID below is wrong <u>your work may be rejected and you will not be paid</u>.
+
+<form class="form-inline" method="post" action="/mturkid">
+  <div class="form-group">
+    <label for="exampleInputName2">Mturk ID</label>
+    <input type="text" class="form-control" id="ID" name="ID">
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+</div>
+{% endblock %}

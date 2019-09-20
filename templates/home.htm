@@ -1,0 +1,111 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<div id="introductionDiv">
+  <h2><center>Welcome {{UserFirstName}}!</center></h2>
+  <p>
+    The goal of this website is to teach you how to identify possible causal relationships in your everyday life.
+  </p>
+  <p>
+    In this tutorial, you will create a research question, identify your independent variables and dependent variables, measure those variables over three weeks, and draw conclusions from your data.
+  </p>
+  <p>
+    Each day, you will receive a text message and login to the website to record your data.
+  </p>
+  <p>
+    At the end of the study, you will revisit your research question and draw conclusions from your experiences.
+  </p>
+  <p>
+    Click the button below to start creating your research question.
+  </p>
+</div>
+<div id="researchQuestionDiv">
+  <h2><center>Create a Research Question</center></h2>
+  <p>Over the next 21 days, you'll try to identify possible causal relationships in your everyday life.
+  Think about a question you want to answer. Do you want to know if meditation affects your stress, or if caffeine affects your sleep quality?</p>
+  <p>You should phrase this like a scientist would phrase a research question.</p>
+  <p>If you want to change your research question later on, you will have the opportunity to do so at the end or you
+  can go back at any time</p>
+  <p>There is a wide range of questions you could answer by reporting on everyday events in your life</p>
+  <h4 style="font-weight:bold">Report Examples:</h4>
+  <ul style="list-style-type:disc">
+    <li>Calories you ate</li>
+    <li>Quality of sleep the night before</li>
+    <li>Length of most recent exercise session</li>
+    <li>General mood throughout the day</li>
+    <li>Stress Levels</li>
+    <li>Whether or not you spent time with friends</li>
+    <li>Length of time spent outside</li>
+    <li>Screen time (e.g. phone, computer, etc.)</li>
+    <li>Caffeine intake (e.g. cups of coffee, cans of soda, etc.)</li>
+    <li>Music listening (listened to music or not)</li>
+  </ul><br>
+    <button id="showQuestionExamplesButton" class="btn btn-default">Click Here for More Question Examples</button><br><br>
+  <div id="questionExamplesList" class="form-group">
+    <h4 style="font-weight:bold">Question Examples:</h4>
+      <ul style="list-style-type:disc">
+        <li>Does exercise improve my sleep?</li>
+        <li>Does meditation improve my mood?</li>
+        <li>Does exercise improve my mood?</li>
+        <li>Does extra sleep improve my mood?</li>
+        <li>Does listening to music reduce my anxiety levels?</li>
+        <li>Does socializing with my friends improve my mood?</li>
+        <li>Does meditation improve my conentration in class?</li>
+      </ul>
+  </div>
+<form class="form-inline" id="Form1" method="post" action="/home">
+</div>
+<!-- Submit user answers -->
+<div class="form-group">
+  <input type="submit"  class="btn btn-default" value="Next">
+</div>
+<br><br>
+</form>
+
+<!-- Show question examples -->
+
+<div id="outertest" class="tests">
+  <div id="innertest1" class="singletest">
+  </div>
+  <div id="innertest2" class="singletest">
+  </div>
+</div>
+
+<div id="outertest2" class="tests">
+  <div id="innertest3" class="singletest2">
+  </div>
+  <div id="innertest4" class="singletest2">
+  </div>
+</div>
+
+<script>
+// Test of iterating through elements within a context
+$(".tests").each(function() {
+  console.log("Outer div: ");
+  var v = $(this);
+  console.log(v.attr("id"));
+  // Print div id within each outer div
+  $("div", $(this)).each(function() {
+    console.log($(this).attr("id"));
+  });
+});
+$(document).ready(function() {
+  $("#questionExamplesList").hide();
+  $("#showQuestionExamplesButton").click(function() {
+      if ($("#questionExamplesList").is(":visible")) {
+        $("#showQuestionExamplesButton").prop("innerText", "Click Here for More Question Examples");
+      }
+      else {
+        $("#showQuestionExamplesButton").prop("innerText", "Click to Hide Question Examples");
+      }
+      $("#questionExamplesList").toggle();
+  });
+});
+</script>
+<script>
+$("select").each(function() {
+  if (!($(this).prop("required"))) {
+    console.log("There's a select");
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,1403 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<!-- Credit to KIRAN VARTHI http://jsfiddle.net/kiranvarthi/t1Lq966k/ for showing how to create custom class-->
+<style>
+.panel-default > .panel-heading-success {
+  background: #4CAF50;
+  color: #fff;
+}
+.panel-default > .panel-heading-failure {
+  /* background: #ff0000;
+  color: #fff; */
+}
+</style>
+<p>Research Question: <b>{{RQ}}</b></p>
+<form class="form-inline" id="Form1" method="post" action="/ivdailyreport">
+<!-- User sees what the report section for the variable will look like -->
+<!-- See webpage https://www.w3schools.com/bootstrap/bootstrap_collapse.asp for accordion code compatible with this bootstrap version -->
+<div name="IVOuterReportDiv" id="IVOuterReportDiv" class="outer-report-div">
+  <h4><b>Independent Variable Report</b></h4>
+  <!-- Not shown to the user until they expand a panel (placeholder that's cloned and placed in panel-body's) -->
+  {% if IVUnits %}
+    <div name="IVMetricReportDiv" class="report-div" id="IVReportDiv">
+        <input type="number" min=0 rows=1 cols="25" placeholder="{{IVUnits}}" class="form-control" name="IVDailyReport" id="IVDailyReport0Panel">
+    </div>
+  {% endif %}
+  {% if IVScaleMin and IVScaleMax %}
+    <div name="IVOrdinalReportDiv" class="report-div" id="IVReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="IVDailyReport" id="IVDailyReport0Panel"> (1) {{IVScaleMin}}
+        </label>
+      </div>
+        <!-- Only first and last buttons have labels (min and max) -->
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=2 class="form-check-input" name="IVDailyReport" id="IVDailyReport1Panel"> (2)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=3 class="form-check-input" name="IVDailyReport" id="IVDailyReport2Panel"> (3)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=4 class="form-check-input" name="IVDailyReport" id="IVDailyReport3Panel"> (4)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=5 class="form-check-input" name="IVDailyReport" id="IVDailyReport4Panel"> (5) {{IVScaleMax}}
+          </label>
+        </div>
+    </div>
+  {% endif %}
+  {% if IVBinary1 and IVBinary2 %}
+    <div name="IVBinaryReportDiv" class="report-div" id="IVReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="IVDailyReport" id="IVDailyReport0Panel"> (1) {{IVBinary1}}
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=2 class="form-check-input" name="IVDailyReport" id="IVDailyReport1Panel"> (2) {{IVBinary2}}
+        </label>
+      </div>
+    </div>
+  {% endif %}
+    <div class="panel-group" id="IVReportAccordion">
+      <div class="panel panel-default" id="IVPanel0">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#IVReportAccordion" href="#IVCollapse0" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="IVCollapse0" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="IVPanelBody0">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="IVPanel1">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#IVReportAccordion" href="#IVCollapse1" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="IVCollapse1" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="IVPanelBody1">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="IVPanel2">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#IVReportAccordion" href="#IVCollapse2" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="IVCollapse2" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="IVPanelBody2">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="IVPanel3">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#IVReportAccordion" href="#IVCollapse3" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="IVCollapse3" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="IVPanelBody3">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="IVPanel4">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#IVReportAccordion" href="#IVCollapse4" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="IVCollapse4" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="IVPanelBody4">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="IVPanel5">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#IVReportAccordion" href="#IVCollapse5" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="IVCollapse5" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="IVPanelBody5">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="IVPanel6">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#IVReportAccordion" href="#IVCollapse6" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="IVCollapse6" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="IVPanelBody6">
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- User sees what the report section for the variable will look like -->
+<!-- See webpage https://www.w3schools.com/bootstrap/bootstrap_collapse.asp for accordion code compatible with this bootstrap version -->
+<div name="var3OuterReportDiv" id="var3OuterReportDiv" class="outer-report-div">
+  <h4><b>Third Variable / Alternative Cause 1 Report</b></h4>
+  {% if var3Units %}
+  <!-- Not shown to the user until they expand a panel (placeholder that's cloned and placed in panel-body's) -->
+    <div name="var3MetricReportDiv" class="report-div" id="var3ReportDiv">
+        <input type="number" min=0 rows=1 cols="25" placeholder="{{var3Units}}" class="form-control" name="var3DailyReport" id="var3DailyReport0Panel">
+    </div>
+  {% endif %}
+  {% if var3ScaleMin and var3ScaleMax %}
+    <div name="var3OrdinalReportDiv" class="report-div" id="var3ReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="var3DailyReport" id="var3DailyReport0Panel"> (1) {{var3ScaleMin}}
+        </label>
+      </div>
+        <!-- Only first and last buttons have labels (min and max) -->
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=2 class="form-check-input" name="var3DailyReport" id="var3DailyReport1Panel"> (2)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=3 class="form-check-input" name="var3DailyReport" id="var3DailyReport2Panel"> (3)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=4 class="form-check-input" name="var3DailyReport" id="var3DailyReport3Panel"> (4)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=5 class="form-check-input" name="var3DailyReport" id="var3DailyReport4Panel"> (5) {{var3ScaleMax}}
+          </label>
+        </div>
+    </div>
+  {% endif %}
+  {% if var3Binary1 and var3Binary2 %}
+    <div name="var3BinaryReportDiv" class="report-div" id="var3ReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="var3DailyReport" id="var3DailyReport0Panel"> (1) {{var3Binary1}}
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=2 class="form-check-input" name="var3DailyReport" id="var3DailyReport1Panel"> (2) {{var3Binary2}}
+        </label>
+      </div>
+    </div>
+  {% endif %}
+
+    <div class="panel-group" id="var3ReportAccordion">
+      <div class="panel panel-default" id="var3Panel0">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var3ReportAccordion" href="#var3Collapse0" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var3Collapse0" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var3PanelBody0">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var3Panel1">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var3ReportAccordion" href="#var3Collapse1" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var3Collapse1" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var3PanelBody1">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var3Panel2">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var3ReportAccordion" href="#var3Collapse2" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var3Collapse2" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var3PanelBody2">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var3Panel3">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var3ReportAccordion" href="#var3Collapse3" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var3Collapse3" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var3PanelBody3">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var3Panel4">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var3ReportAccordion" href="#var3Collapse4" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var3Collapse4" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var3PanelBody4">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var3Panel5">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var3ReportAccordion" href="#var3Collapse5" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var3Collapse5" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var3PanelBody5">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var3Panel6">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var3ReportAccordion" href="#var3Collapse6" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var3Collapse6" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var3PanelBody6">
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- User sees what the report section for the variable will look like -->
+<!-- See webpage https://www.w3schools.com/bootstrap/bootstrap_collapse.asp for accordion code compatible with this bootstrap version -->
+{% if var4 %}
+<div name="var4OuterReportDiv" id="var4OuterReportDiv" class="outer-report-div">
+  <h4><b>Third Variable / Alternative Cause 2 Report</b></h4>
+  <!-- Not shown to the user until they expand a panel (placeholder that's cloned and placed in panel-body's) -->
+  {% if var4Units %}
+    <div name="var4MetricReportDiv" class="report-div" id="var4ReportDiv">
+        <input type="number" min=0 rows=1 cols="25" placeholder="{{var4Units}}" class="form-control" name="var4DailyReport" id="var4DailyReport0Panel">
+    </div>
+  {% endif %}
+  {% if var4ScaleMin and var4ScaleMax %}
+    <div name="var4OrdinalReportDiv" class="report-div" id="var4ReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="var4DailyReport" id="var4DailyReport0Panel"> (1) {{var4ScaleMin}}
+        </label>
+      </div>
+        <!-- Only first and last buttons have labels (min and max) -->
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=2 class="form-check-input" name="var4DailyReport" id="var4DailyReport1Panel"> (2)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=3 class="form-check-input" name="var4DailyReport" id="var4DailyReport2Panel"> (3)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=4 class="form-check-input" name="var4DailyReport" id="var4DailyReport3Panel"> (4)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=5 class="form-check-input" name="var4DailyReport" id="var4DailyReport4Panel"> (5) {{var4ScaleMax}}
+          </label>
+        </div>
+    </div>
+  {% endif %}
+  {% if var4Binary1 and var4Binary2 %}
+    <div name="var4BinaryReportDiv" class="report-div" id="var4ReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="var4DailyReport" id="var4DailyReport0Panel"> (1) {{var4Binary1}}
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=2 class="form-check-input" name="var4DailyReport" id="var4DailyReport1Panel"> (2) {{var4Binary2}}
+        </label>
+      </div>
+    </div>
+  {% endif %}
+
+    <div class="panel-group" id="var4ReportAccordion">
+      <div class="panel panel-default" id="var4Panel0">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse0" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var4Collapse0" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var4PanelBody0">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var4Panel1">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse1" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var4Collapse1" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var4PanelBody1">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var4Panel2">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse2" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var4Collapse2" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var4PanelBody2">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var4Panel3">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse3" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var4Collapse3" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var4PanelBody3">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var4Panel4">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse4" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var4Collapse4" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var4PanelBody4">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var4Panel5">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse5" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var4Collapse5" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var4PanelBody5">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var4Panel6">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse6" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var4Collapse6" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var4PanelBody6">
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endif %}
+<!-- User sees what the report section for the variable will look like -->
+<!-- See webpage https://www.w3schools.com/bootstrap/bootstrap_collapse.asp for accordion code compatible with this bootstrap version -->
+{% if var5 %}
+<div name="var5OuterReportDiv" id="var5OuterReportDiv" class="outer-report-div">
+  <h4><b>Third Variable / Alternative Cause 3 Report</b></h4>
+  <!-- Not shown to the user until they expand a panel (placeholder that's cloned and placed in panel-body's) -->
+  {% if var5Units %}
+    <div name="var5MetricReportDiv" class="report-div" id="var5ReportDiv">
+        <input type="number" min=0 rows=1 cols="25" placeholder="{{var5Units}}" class="form-control" name="var5DailyReport" id="var5DailyReport0Panel">
+    </div>
+  {% endif %}
+  {% if var5ScaleMin and var5ScaleMax %}
+    <div name="var5OrdinalReportDiv" class="report-div" id="var5ReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="var5DailyReport" id="var5DailyReport0Panel"> (1) {{var5ScaleMin}}
+        </label>
+      </div>
+        <!-- Only first and last buttons have labels (min and max) -->
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=2 class="form-check-input" name="var5DailyReport" id="var5DailyReport1Panel"> (2)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=3 class="form-check-input" name="var5DailyReport" id="var5DailyReport2Panel"> (3)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=4 class="form-check-input" name="var5DailyReport" id="var5DailyReport3Panel"> (4)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=5 class="form-check-input" name="var5DailyReport" id="var5DailyReport4Panel"> (5) {{var5ScaleMax}}
+          </label>
+        </div>
+    </div>
+  {% endif %}
+  {% if var5Binary1 and var5Binary2 %}
+    <div name="var5BinaryReportDiv" class="report-div" id="var5ReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="var5DailyReport" id="var5DailyReport0Panel"> (1) {{var5Binary1}}
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=2 class="form-check-input" name="var5DailyReport" id="var5DailyReport1Panel"> (2) {{var5Binary2}}
+        </label>
+      </div>
+    </div>
+  {% endif %}
+
+    <div class="panel-group" id="var5ReportAccordion">
+      <div class="panel panel-default" id="var5Panel0">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var5ReportAccordion" href="#var5Collapse0" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var5Collapse0" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var5PanelBody0">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var5Panel1">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var5ReportAccordion" href="#var5Collapse1" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var5Collapse1" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var5PanelBody1">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var5Panel2">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var5ReportAccordion" href="#var5Collapse2" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var5Collapse2" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var5PanelBody2">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var5Panel3">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var5ReportAccordion" href="#var5Collapse3" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var5Collapse3" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var5PanelBody3">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var5Panel4">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var5ReportAccordion" href="#var5Collapse4" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var5Collapse4" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var5PanelBody4">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var5Panel5">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var5ReportAccordion" href="#var5Collapse5" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var5Collapse5" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var5PanelBody5">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="var5Panel6">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#var5ReportAccordion" href="#var5Collapse6" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="var5Collapse6" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="var5PanelBody6">
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endif %}
+<!-- User sees what the report section for the variable will look like -->
+<!-- See webpage https://www.w3schools.com/bootstrap/bootstrap_collapse.asp for accordion code compatible with this bootstrap version -->
+<div name="DVOuterReportDiv" id="DVOuterReportDiv" class="outer-report-div">
+  <h4><b>Dependent Variable Report</b></h4>
+  <!-- Not shown to the user until they expand a panel (placeholder that's cloned and placed in panel-body's) -->
+  {% if DVUnits %}
+    <div name="DVMetricReportDiv" class="report-div" id="DVReportDiv">
+        <input type="number" min=0 rows=1 cols="25" placeholder="{{DVUnits}}" class="form-control" name="DVDailyReport" id="DVDailyReport0Panel">
+    </div>
+  {% endif %}
+  {% if DVScaleMin and DVScaleMax %}
+    <div name="DVOrdinalReportDiv" class="report-div" id="DVReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="DVDailyReport" id="DVDailyReport0Panel"> (1) {{DVScaleMin}}
+        </label>
+      </div>
+        <!-- Only first and last buttons have labels (min and max) -->
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=2 class="form-check-input" name="DVDailyReport" id="DVDailyReport1Panel"> (2)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=3 class="form-check-input" name="DVDailyReport" id="DVDailyReport2Panel"> (3)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=4 class="form-check-input" name="DVDailyReport" id="DVDailyReport3Panel"> (4)
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="radio" value=5 class="form-check-input" name="DVDailyReport" id="DVDailyReport4Panel"> (5) {{DVScaleMax}}
+          </label>
+        </div>
+    </div>
+  {% endif %}
+  {% if DVBinary1 and DVBinary2 %}
+    <div name="DVBinaryReportDiv" class="report-div" id="DVReportDiv">
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=1 class="form-check-input" name="DVDailyReport" id="DVDailyReport0Panel"> (1) {{DVBinary1}}
+        </label>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" value=2 class="form-check-input" name="DVDailyReport" id="DVDailyReport1Panel"> (2) {{DVBinary2}}
+        </label>
+      </div>
+    </div>
+  {% endif %}
+    <div class="panel-group" id="DVReportAccordion">
+      <div class="panel panel-default" id="DVPanel0">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#DVReportAccordion" href="#DVCollapse0" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="DVCollapse0" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="DVPanelBody0">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="DVPanel1">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#DVReportAccordion" href="#DVCollapse1" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="DVCollapse1" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="DVPanelBody1">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="DVPanel2">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#DVReportAccordion" href="#DVCollapse2" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="DVCollapse2" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="DVPanelBody2">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="DVPanel3">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#DVReportAccordion" href="#DVCollapse3" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="DVCollapse3" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="DVPanelBody3">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="DVPanel4">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#DVReportAccordion" href="#DVCollapse4" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="DVCollapse4" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="DVPanelBody4">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="DVPanel5">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#DVReportAccordion" href="#DVCollapse5" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="DVCollapse5" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="DVPanelBody5">
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default" id="DVPanel6">
+        <div class="panel-heading panel-heading-failure">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#DVReportAccordion" href="#DVCollapse6" class="collapseButton"></a>
+          </h4>
+        </div>
+        <div id="DVCollapse6" class="panel-collapse collapse" aria-expanded="false">
+          <div class="panel-body" id="DVPanelBody6">
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<input hidden id="TimeOfDay" name="TimeOfDay">
+<input hidden id="MinimumUTCTime" name="MinimumUTCTime"> <!-- Stores minimum date and time required to fall into a specific time of day -->
+<input hidden id="TimezoneOffset" name="TimezoneOffset">
+<div class="form-group">
+  <input type="submit" class="btn btn-default">
+</div><br>
+</form>
+
+<script>
+// https://www.digitalocean.com/community/tutorials/understanding-date-and-time-in-javascript
+// Get hour so we know what "time of day"  we're in
+var now = new Date();
+console.log("Time now:")
+console.log(now);
+var minimumUTC;
+var minimumUTCTime;
+var timezoneOffset;
+var hours = now.getHours();
+console.log("It's hour " + hours);
+var headersArray; // Will hold the labels for the panels inside the accordions
+var indexArray; // Will holds the indexes to determine which index from the report array should be drawn from to get the value
+// Get date, month, year according to UTC and generate minimum date/time required in UTC to be in a certain time of day
+if (hours >= 0 && hours <= 5) { // Night
+  headersArray = ["Tonight", "This Evening", "This Afternoon", "This Morning", "Last Night (Yesterday)"];
+
+  $("#TimeOfDay").val(0); // Set time of day to 0 since it's Night
+  minimumUTC = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0); // Round down to the nearest time allowed for different times of day (Night = 12 am, Morning=6 am, Afternoon =12 pm, Evening=6)
+  console.log("It's Night"); // Log "time of day"
+}
+else if (hours >= 6 && hours <= 11) { // Morning
+  headersArray = ["This Morning", "Last Night", "Yesterday Evening", "Yesterday Afternoon", "Yesterday Morning"];
+  $("#TimeOfDay").val(1); // Set time of day to 1 since it's Morning
+  minimumUTC = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 6, 0, 0); // Round down to the nearest time allowed for different times of day (Night = 12 am, Morning=6 am, Afternoon =12 pm, Evening=6)
+  console.log("It's Morning"); // Log "time of day"
+}
+else if (hours >= 12 && hours <= 17) { // Afternoon
+  headersArray = ["This Afternoon", "This Morning", "Last Night", "Yesterday Evening", "Yesterday Afternoon", "Yesterday Morning"];
+  $("#TimeOfDay").val(2); // Set time of day to 2 since it's Afternoon
+  minimumUTC = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0); // Round down to the nearest time allowed for different times of day (Night = 12 am, Morning=6 am, Afternoon =12 pm, Evening=6)
+  console.log("It's Afternoon"); // Log "time of day"
+}
+else if (hours >= 18 && hours <= 23) { // Evening
+  headersArray = ["This Evening", "This Afternoon", "This Morning", "Last Night", "Yesterday Evening", "Yesterday Afternoon", "Yesterday Morning"];
+  $("#TimeOfDay").val(3); // Set time of day to 3 since it's Evening
+  minimumUTC = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 0, 0); // Round down to the nearest time allowed for different times of day (Night = 12 am, Morning=6 am, Afternoon =12 pm, Evening=6)
+  console.log("It's Evening"); // Log "time of day"
+}
+else {
+  console.log("Time check failed");
+}
+// Log information about the time and the timezone
+console.log("Minimum time is: ");
+console.log(minimumUTC);
+var minimumUTCTime = minimumUTC.toUTCString(); // Credit to TheOne for parsing JS time for Python https://stackoverflow.com/q/8153631
+console.log("Converted to UTC:");
+console.log(minimumUTCTime);
+timezoneOffset = now.getTimezoneOffset(); // Get timezone offest (difference in minutes between UTC and local)
+console.log("Timezone Offset is: ");
+console.log(timezoneOffset);
+$("#MinimumUTCTime").val(minimumUTCTime); // Set value of the input so it can be used for DataReport storage
+$("#TimezoneOffset").val(timezoneOffset); // Set the timezone offset for the user's report
+
+// Loop through every accordion and change text of the panel headers using strings in the headerArray (see above)
+var i = 0; // Keep track of what panel number we are on within an accordion
+$(".panel-group").each(function() { // Loop through every accordion
+  $((".collapseButton"), $(this)).each(function() { // Loop through every collapseButton within a variable accordion (panel header to click on)
+    if (i < headersArray.length) {
+      $(this).text(headersArray[i]); // Change the panel header text to the time of day
+      i++;
+    }
+    else { // We have all the panels we need (may need to remove last panel or panels if there are panels left but all time of day labels are used)
+      $(this).closest(".panel-default").remove(); // Remove closest panel (find closest panel ancestor)
+    }
+  });
+  i = 0; // Reset button counter (for labeling panel headers)
+});
+var var4 = "{{var4}}";
+var var5 = "{{var5}}";
+var var4DRValues = "{{var4DRValues}}";
+var var5DRValues = "{{var5DRValues}}"; // TODO: put "{{var5DRValues}}" here once I fix the handler to only send an array of values for a variable to this page if the user created that variable
+var valueArray;
+// Check if there are any reports for Third Variables (alternative cause 1 and 2); will be an empty string if they have not reported or they did not add more than the 1 mandatory third variable
+if (var4 == "") { // Check if a Second Alternative Cause was created by the user
+  valueArray = [{{IVDRValues}}, {{var3DRValues}}, {{DVDRValues}}]; // Array of arrays of Google Database data
+}
+else if (var5 == "") { // Check if a Third Alternative Cause was created by the user
+  valueArray = [{{IVDRValues}}, {{var3DRValues}}, {{var4DRValues}}, {{DVDRValues}}]; // Array of arrays of Google Database data
+}
+else {
+  valueArray =  [{{IVDRValues}}, {{var3DRValues}}, {{var4DRValues}}, {{var5DRValues}} {{DVDRValues}}]; // Array of arrays of Google Database data
+  console.log("User has the max number of variables");
+}
+console.log("Array is:" + valueArray);
+// Loop through every reporting section
+var x = 0; // Counter for each variable section (IV, var3, var4, var5, DV)
+var v = 0; // Counter for inside the variable report section
+var y = 0; // Counter for each individual input id tag
+$(".outer-report-div").each(function() { // Loop through every reporting section (includes report title and accordion)
+  console.log("Variable Section:");
+  console.log($(this).attr("id"));
+  var accordion = $($(this).find(".panel-group")); // Find nearest accordion
+  console.log("Accordion ID:");
+  console.log(accordion.attr("id"));
+  var inputDiv = $($(this).find(".report-div")); // Find closest input div
+  console.log("Input Div ID:");
+  console.log(inputDiv.attr("id"));
+  $(".panel-body", accordion).each(function() { // Loop through every panel body within this accordion within this outer report div section
+    var inputFilled = false;
+    var clonedInputDiv = $(inputDiv.clone()); // Clone template report div for the variable (will clone and paste into each panel body within this accordion)
+    // clonedInputDiv.attr("name", (clonedInputDiv.attr("name") + v)); // Append number to input name
+    // clonedInputDiv.attr("id", (clonedInputDiv.attr("id") + v)); // Append number to input id
+    // TODO: alter this code so that we don't look at every input in the div (we know to not check it)
+    $("input", clonedInputDiv).each(function() {
+      var input = $(this); // Select the input element
+      if (input.attr("type") == "radio") { // Radio button input (binary or ordinal variable type)
+        var radioButtonValue = parseInt(input.val());
+        var reportValue = valueArray[x][v]; // Individual report value at a specific time of day for a specific variable
+        if (reportValue == radioButtonValue) { // Check radio button if the value in the array matches the value of the radio button
+          input.attr("checked", "checked");
+          inputFilled = true;
+          return false;
+        }
+      }
+      else if (input.attr("type") == "number") { // Number box input (metric variable type)
+        var reportValue = valueArray[x][v]; // Individual report value at a specific time of day for a specific variable
+        if (reportValue != -1) { // Check if there is a valid value in the array
+          input.val(reportValue);
+          inputFilled = true;
+        }
+      }
+      else {
+        console.log("Input type check failed");
+      }
+      input.attr("name", (input.attr("name") + v)); // Append number to input name
+      input.attr("id", (input.attr("id") + v)); // Append number to input id
+      console.log("Input name is now:");
+      console.log(input.attr("name"));
+      console.log("Input id is now:");
+      console.log(input.attr("id"));
+      y++;
+    });
+    y=0;
+    clonedInputDiv.appendTo($(this)); // Append input section to this panel body (2 or 5 radio buttons, or a number input)
+    if (inputFilled == true) {
+      var panelHeading = $($(this).closest(".panel-heading"));
+      panelHeading.removeClass("panel-heading-failure").addClass("panel-heading-success");
+      console.log("Panel heading of this panel was changed since the user has previous input from this time of day:");
+    }
+    else {
+      console.log("Input remains unfilled");
+    }
+    v++;
+  });
+  v=0;
+  $(this).find(".report-div").eq(0).remove(); // Remove the template report div (first report div initially in the outer report div) when you have cloned as many report divs as needed
+  x++; // Increment counter so we know what variable and variable report section we're on (see 2d "valuArray")
+});
+// TODO: Correct errors in editing individual elements
+
+// Credit to Daniel Vassallo for showing how to loop through inputs of a type https://stackoverflow.com/questions/3473117/how-to-loop-through-a-radio-buttons-group-without-a-form
+// Clone inputs and put them in panels so the user can report values for multiple times of day
+// Clone input divs for every panel and append them to each panel body (rename report-div's and and panel-body's according to index)
+// var panelNumber = 0;
+// $(".panel-default").each(function() {
+//   var clonedInputDiv = $(".report-div:eq(0)").clone(); // Clone report div to be placed in each panel body (use placeholder outisde of panels as a template)
+//   clonedInputDiv.attr("name", clonedInputDiv.attr("name") + panelNumber); // Rename report-div name according to nth panel number
+//   clonedInputDiv.appendTo(".panel-body:eq(" + panelNumber + ")"); // Append to nth panel body
+//   panelNumber++; // Increment the panel number that we're on;
+// });
+// // Remove the original report div provided by django because it's been cloned as many times as needed
+// console.log($(".report-div").first().attr("name") + " removed from document");
+// $(".report-div").first().remove();
+// // Loop over cloned inputs and adding new names so inputs are grouped properly
+// var IVType = "{{IVType}}";
+// var i = 0; // Keeo track of what input or panel that we're on (depending on variable type);
+// var j = 0; // Keep track of what panel we're on (only used for Binary and Metric)
+// var index = 0; // Index in the array to look for
+// if (IVType == "Metric") {
+//   $("input[type=number]").each(function() {
+//     $(this).prop("name", "IVDailyReport" + (i)); // Name metric inputs according to document index
+//     i++; // Increment counter that keeps track of number of radio buttons in a group
+//   });
+// }
+// else if (IVType == "Ordinal") {
+//   $("input:radio").each(function() {
+//     if (i == 5) {
+//       i = 0; // Reset counter
+//       j++; // Increment group counter
+//     }
+//     $(this).prop("name", "IVDailyReport" + (j)); // Name radio button the same thing for 5 radio buttons at a time so they group together
+//     i++; // Increment counter that keeps track of number of radio buttons in a group
+//   });
+// }
+// else if (IVType == "Binary") {
+//   $("input:radio").each(function() {
+//     if (i == 2) {
+//       i = 0; // Reset counter
+//       j++; // Increment group counter
+//     }
+//     $(this).prop("name", "IVDailyReport" + (j)); // Name radio button the same thing for 2 radio buttons at a time so they group together
+//     i++; // Increment counter that keeps track of number of radio buttons in a group
+//   });
+// }
+// else {
+//   console.log("Variable type check failed");
+// }
+</script>
+
+
+<script>
+$(document).ready(function() {
+  // TODO: Fix formula for checking indexes in the report array since we now get the last 7 reports instead of every report
+// Fill in the inputs based on previously entered data and mark the panel header as completed using a strikethrough
+  var day = 0;
+  var daysApart;
+  console.log("Day at 0: " + day);
+  var IVType = "{{IVType}}";
+  var IVDRValues = {{IVDRValues}};
+  var var3DRValues = {{var3DRValues}};
+  var var4DRValues = {{var4DRValues}};
+  var var5DRValues = {{var5DRValues}};
+  var DVDRValues = {{DVDRValues}};
+// Formula for figuring out index where value will be checked against the value stored in the array; i = starting index for time of day (constant), and day=day starting at 0
+// Starting indices (i) are: Night=4, Morning=5, Afternoon=6, Evening=7 (offset of 4 so user can report previous day's data on first day they create design)
+// Formula: index = i + ((day-DaysApart) * 4)
+// Check the inputs against values stored in the array so values so values can be filled in/checked
+// First, check the variable type so we can accomodate the different input types
+// TODO: account for missing values in the piped in data array
+  var i=0; // Keep track of index in array
+  var j=0; // Keep track of what radio button group we're on
+
+  if (IVType == "Ordinal" || IVType == "Binary") {
+    $("input:radio").each(function() { // Loop through all checked radio buttons and get values
+      console.log("Array:");
+      console.log(IVDRValues);
+      var radioButtonName = $(this).prop("name");
+      console.log("Radio button name: " + radioButtonName);
+      var radioButtonValue = parseInt($(this).val()); // Radio button value
+      console.log("Value of radio button: " + radioButtonValue);
+      var panelIndex = $($(this).closest(".panel-default")).index(); // Get the index of the panel above the radio button
+      console.log("Index of the Panel: " + panelIndex);
+      var panelHeader =  $(".IVCollapseButton").eq(panelIndex); // Get panel header
+      var panelHeaderText = panelHeader.text(); // Get the text of the panel header
+      console.log(panelHeaderText + " panel is Selected for Input"); // Add 2 to account for the "a" elements in _base.htm
+    // Check what the time of day the panel is to calculate the offset for the array index
+      if (panelHeaderText == "Tonight" || panelHeaderText == "Last Night") { // Equivalent formulas
+        const timeIndex = 4;
+        daysApart = 0; // 0 because it's for the current day
+        var indexOfPreviousValue = i; // Calculate where the value was/should be stored in the array according to the above formula
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray == radioButtonValue) { // Checks if the value in the array matches the value of the radio button
+          console.log("Value checked against radio button value: " + valueInArray);
+          $(this).prop("checked", true); // Check radio button since it's been filled in previously
+          console.log("Radio Button Checked");
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        else {
+          console.log("Radio Button Left Unchecked");
+        }
+      }
+      else if (panelHeaderText == "This Morning") {
+        console.log(panelHeaderText);
+        const timeIndex = 5;
+        daysApart = 0; // 0 because it's for the current day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray == radioButtonValue) { // Checks if the value in the array matches the value of the radio button
+          console.log("Value checked against radio button value: " + valueInArray);
+          $(this).prop("checked", true); // Check radio button since it's been filled in previously
+          console.log("Radio Button Checked");
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        else {
+          console.log("Radio Button Left Unchecked");
+        }
+      }
+      else if (panelHeaderText == "This Afternoon") {
+        console.log(panelHeaderText);
+        const timeIndex = 6;
+        daysApart = 0; // 0 because it's for the current day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray == radioButtonValue) { // Checks if the value in the array matches the value of the radio button
+          console.log("Value checked against radio button value: " + valueInArray);
+          $(this).prop("checked", true); // Check radio button since it's been filled in previously
+          console.log("Radio Button Checked");
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        else {
+          console.log("Radio Button Left Unchecked");
+        }
+      }
+      else if (panelHeaderText == "This Evening") {
+        console.log(panelHeaderText);
+        const timeIndex = 7;
+        daysApart = 0; // 0 because it's for the current day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray == radioButtonValue) { // Checks if the value in the array matches the value of the radio button
+          console.log("Value checked against radio button value: " + valueInArray);
+          $(this).prop("checked", true); // Check radio button since it's been filled in previously
+          console.log("Radio Button Checked");
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        else {
+          console.log("Radio Button Left Unchecked");
+        }
+      }
+      else if (panelHeaderText == "Last Night (Yesterday)") {
+        console.log(panelHeaderText);
+        const timeIndex = 4;
+        daysApart = 1; // 1 because it's for the previous day
+        var indexOfPreviousValue = timeIndex + (((day-daysApart)) * 4);
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray == radioButtonValue) { // Checks if the value in the array matches the value of the radio button
+          console.log("Value checked against radio button value: " + valueInArray);
+          $(this).prop("checked", true); // Check radio button since it's been filled in previously
+          console.log("Radio Button Checked");
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        else {
+          console.log("Radio Button Left Unchecked");
+        }
+      }
+      else if (panelHeaderText == "Yesterday Morning") {
+        console.log(panelHeaderText);
+        const timeIndex = 5;
+        daysApart = 1; // 1 because it's for the previous day // 1 because it's for the previous day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray == radioButtonValue) { // Checks if the value in the array matches the value of the radio button
+          console.log("Value checked against radio button value: " + valueInArray);
+          $(this).prop("checked", true); // Check radio button since it's been filled in previously
+          console.log("Radio Button Checked");
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        else {
+          console.log("Radio Button Left Unchecked");
+        }
+      }
+      else if (panelHeaderText == "Yesterday Afternoon") {
+        console.log(panelHeaderText);
+        const timeIndex = 6;
+        daysApart = 1; // 1 because it's for the previous day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray == radioButtonValue) { // Checks if the value in the array matches the value of the radio button
+          console.log("Value checked against radio button value: " + valueInArray);
+          $(this).prop("checked", true); // Check radio button since it's been filled in previously
+          console.log("Radio Button Checked");
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        else {
+          console.log("Radio Button Left Unchecked");
+        }
+      }
+      else if (panelHeaderText == "Yesterday Evening") {
+        console.log(panelHeaderText);
+        const timeIndex = 7;
+        daysApart = 1; // 1 because it's for the previous day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray == radioButtonValue) { // Checks if the value in the array matches the value of the radio button
+          console.log("Value checked against radio button value: " + valueInArray);
+          $(this).prop("checked", true); // Check radio button since it's been filled in previously
+          console.log("Radio Button Checked");
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        else {
+          console.log("Radio Button Left Unchecked");
+        }
+      }
+      else {
+        console.log("Time of Day check failed");
+        console.log("Value in array was not checked");
+      }
+      // Reset radio button index as we move from group to group (group of 5 for Ordinal type and group of 2 for Binary)
+      j++; // Increment radio button index (reset depending on type)
+      if (IVType == "Ordinal" && j==5) {
+        j = 0; // Increment index for the array of values
+        i++;
+      }
+      if (IVType == "Binary" && j==2) {
+        j = 0;
+        i++;
+      }
+    });
+  }
+  else if (IVType == "Metric") {
+    $("input[type=number]").each(function() { // Loop through all checked radio buttons and get values
+      var metricInputID = $(this).prop("name");
+      console.log("name: " + metricInputID);
+      var metricInputValue = $(this).val(); // Number input value
+      console.log("Value selected: " + metricInputValue);
+      var panelIndex = $($(this).closest(".panel-default")).index(); // Get the index of the panel above the radio button
+      console.log("Index of the Panel: " + panelIndex);
+      var panelHeader =  $(".IVCollapseButton").eq(panelIndex); // Get panel header
+      var panelHeaderText = panelHeader.text(); // Get the text of the panel header
+      console.log(panelHeaderText + " panel is Selected for Input"); // Add 2 to account for the "a" elements in _base.htm
+    // Check what the time of day the panel is to calculate the offset for the array index
+      if (panelHeaderText == "Tonight" || panelHeaderText == "Last Night") { // Equivalent formulas
+        const timeIndex = 4;
+        daysApart = 0; // 0 because it's for the current day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+          if (valueInArray >=0) { // Check if value is positive or 0
+            $(this).val(valueInArray); // Set value within the input box to the value previously entered by the user
+            $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+          }
+          console.log("Value checked against input box value: " + valueInArray);
+      }
+      else if (panelHeaderText == "This Morning") {
+        const timeIndex = 5;
+        daysApart = 0; // 0 because it's for the current day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+        if (valueInArray >=0) { // Check if value is positive or 0
+          $(this).val(valueInArray); // Set value within the input box to the value previously entered by the user
+          $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+        }
+        console.log("Value checked against input box value: " + valueInArray);
+      }
+      else if (panelHeaderText == "This Afternoon") {
+        const timeIndex = 6;
+        daysApart = 0; // 0 because it's for the current day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+          if (valueInArray >=0) { // Check if value is positive or 0
+            $(this).val(valueInArray); // Set value within the input box to the value previously entered by the user
+            $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+          }
+          console.log("Value checked against input box value: " + valueInArray);
+      }
+      else if (panelHeaderText == "This Evening") {
+        const timeIndex = 7;
+        daysApart = 0; // 0 because it's for the current day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+          if (valueInArray >=0) { // Check if value is positive or 0
+            $(this).val(valueInArray); // Set value within the input box to the value previously entered by the user
+          }
+          console.log("Value checked against input box value: " + valueInArray);
+      }
+      else if (panelHeaderText == "Last Night (Yesterday)") {
+        const timeIndex = 4;
+        daysApart = 1; // 1 because it's for the previous day
+        var indexOfPreviousValue = timeIndex + (((day-daysApart)) * 4);
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+          if (valueInArray >=0) { // Check if value is positive or 0
+            $(this).val(valueInArray); // Set value within the input box to the value previously entered by the user
+            $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+          }
+          console.log("Value checked against input box value: " + valueInArray);
+      }
+      else if (panelHeaderText == "Yesterday Morning") {
+        const timeIndex = 5;
+        daysApart = 1; // 1 because it's for the previous day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+          if (valueInArray >=0) { // Check if value is positive or 0
+            $(this).val(valueInArray); // Set value within the input box to the value previously entered by the user
+            $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+          }
+          console.log("Value checked against input box value: " + valueInArray);
+      }
+      else if (panelHeaderText == "Yesterday Afternoon") {
+        const timeIndex = 6;
+        daysApart = 1; // 1 because it's for the previous day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+          if (valueInArray >=0) { // Check if value is positive or 0
+            $(this).val(valueInArray); // Set value within the input box to the value previously entered by the user
+            $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+          }
+          console.log("Value checked against input box value: " + valueInArray);
+      }
+      else if (panelHeaderText == "Yesterday Evening") {
+        const timeIndex = 7;
+        daysApart = 1; // 1 because it's for the previous day
+        var indexOfPreviousValue = i;
+        console.log("Index in the Array: " + indexOfPreviousValue);
+        var valueInArray = IVDRValues[indexOfPreviousValue]; // Holds value stored in array (may contain value previously reported)
+          if (valueInArray >=0) { // Check if value is positive or 0
+            $(this).val(valueInArray); // Set value within the input box to the value previously entered by the user
+            $(".panel-heading").eq(panelIndex).removeClass("panel-heading-failure").addClass("panel-heading-success"); // Color the heading green since the user has already reported
+          }
+          console.log("Value checked against input box value: " + valueInArray);
+      }
+      else {
+        console.log("Time of Day check failed");
+      }
+      console.log("Array:");
+      console.log(IVDRValues);
+      console.log("Value checked against input box value: " + valueInArray);
+      i++; // Increment the index so we know which metric input that we're on
+    });
+  }
+  else {
+    console.log("Variable type check failed");
+  }
+// When input values are changed/checked show changes in the console and store the values in the array
+  $("input[type=number]").on("change", function() {
+    console.log("Day at 0: " + day);
+  // First, check the variable type so we can accomodate the different input types
+    if (IVType == "Ordinal" || IVType == "Binary") {
+      $("input:radio:checked").each(function() { // Loop through all checked radio buttons and get values
+        var radioButtonName = $(this).prop("name"); // Get radio button's name
+        console.log("name: " + radioButtonName);
+        var radioButtonValue = parseInt($(this).val()); // Radio button value
+        console.log("Value of radio button: " + radioButtonValue);
+        var panelIndex = $($(this).closest(".panel-default")).index(); // Get the index of the panel above the radio button
+        console.log("Index of the Panel: " + panelIndex);
+        var panelHeaderText = $(".IVCollapseButton").eq(panelIndex).text(); // Hold text of the panel so we know where to store values in the array
+        console.log(panelHeaderText + " panel is Selected for Input"); // Get the text of the panel header
+      // Check what the time of day the panel is to calculate the offset for the array index
+        if (panelHeaderText == "Tonight" || panelHeaderText == "Last Night") { // Equivalent formulas
+          const timeIndex = 4;
+          daysApart = 0;
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          IVDRValues[indexForStorage] = radioButtonValue; // Put value of clicked radio button into the data array
+          console.log(radioButtonValue + " stored at index " + indexForStorage + " in the array");
+        }
+        else if (panelHeaderText == "This Morning") {
+          const timeIndex = 5;
+          daysApart = 0;
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          IVDRValues[indexForStorage] = radioButtonValue; // Put value of clicked radio button into the data array
+          console.log(radioButtonValue + " stored at index " + indexForStorage + " in the array");
+        }
+        else if (panelHeaderText == "This Afternoon") {
+          const timeIndex = 6;
+          daysApart = 0;
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          IVDRValues[indexForStorage] = radioButtonValue; // Put value of clicked radio button into the data array
+          console.log(radioButtonValue + " stored at index " + indexForStorage + " in the array");
+        }
+        else if (panelHeaderText == "This Evening") {
+          const timeIndex = 7;
+          daysApart = 0;
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          IVDRValues[indexForStorage] = radioButtonValue; // Put value of clicked radio button into the data array
+          console.log(radioButtonValue + " stored at index " + indexForStorage + " in the array");
+        }
+        else if (panelHeaderText == "Last Night (Yesterday)") {
+          const timeIndex = 4;
+          daysApart = 1; // 1 because it's for the previous day
+          var indexForStorage = timeIndex + (((day-daysApart)) * 4);
+          IVDRValues[indexForStorage] = radioButtonValue; // Put value of clicked radio button into the data array
+          console.log(radioButtonValue + " stored at index " + indexForStorage + " in the array");
+        }
+        else if (panelHeaderText == "Yesterday Morning") {
+          const timeIndex = 5;
+          daysApart = 1; // 1 because it's for the previous day
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          IVDRValues[indexForStorage] = radioButtonValue; // Put value of clicked radio button into the data array
+          console.log(radioButtonValue + " stored at index " + indexForStorage + " in the array");
+        }
+        else if (panelHeaderText == "Yesterday Afternoon") {
+          const timeIndex = 6;
+          daysApart = 1; // 1 because it's for the previous day
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          IVDRValues[indexForStorage] = radioButtonValue; // Put value of clicked radio button into the data array
+          console.log(radioButtonValue + " stored at index " + indexForStorage + " in the array");
+        }
+        else if (panelHeaderText == "Yesterday Evening") {
+          const timeIndex = 7;
+          daysApart = 1; // 1 because it's for the previous day
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          IVDRValues[indexForStorage] = radioButtonValue; // Put value of clicked radio button into the data array
+          console.log(radioButtonValue + " stored at index " + indexForStorage + " in the array");
+        }
+        else {
+          console.log("Time of Day check failed");
+          console.log("Value in the ");
+        }
+        console.log("Array after change:");
+        console.log(IVDRValues);
+      });
+    }
+    else if (IVType == "Metric") {
+      $("input[type=number]").each(function() { // Loop through all checked radio buttons and get metricInputValues
+        var metricInputID = $(this).prop("name");
+        console.log("name: " + metricInputID);
+        var metricInputValue = parseInt($(this).val()); // Number input value
+        console.log("Value selected: " + metricInputValue);
+        var panelIndex = $($(this).closest(".panel-default")).index(); // Get the index of the panel above the radio button
+        console.log("Index of the Panel: " + panelIndex);
+        var panelHeaderText = $(".IVCollapseButton").eq(panelIndex).text(); // Add two to index to account for "a" elements in _base.htm
+        console.log(panelHeaderText + " panel is Selected for Input"); // Add 2 to account for the "a" elements in _base.htm
+      // Check what the time of day the panel is to calculate the offset for the array index
+        if (panelHeaderText == "Tonight" || panelHeaderText == "Last Night") { // Equivalent formulas
+          const timeIndex = 4;
+          daysApart = 0;
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          if (metricInputValue) { // Check if the input field is not left blank
+            IVDRValues[indexForStorage] = metricInputValue; // Put value of number input box into the data array
+            console.log(metricInputValue + " stored at index " + indexForStorage + " in the array");
+          }
+        }
+        else if (panelHeaderText == "This Morning") {
+          const timeIndex = 5;
+          daysApart = 0;
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          if (metricInputValue) { // Check if the input field is not left blank
+            IVDRValues[indexForStorage] = metricInputValue; // Put value of number input box into the data array
+            console.log(metricInputValue + " stored at index " + indexForStorage + " in the array");
+          }
+        }
+        else if (panelHeaderText == "This Afternoon") {
+          const timeIndex = 6;
+          daysApart = 0;
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          if (metricInputValue) { // Check if the input field is not left blank
+            IVDRValues[indexForStorage] = metricInputValue; // Put value of number input box into the data array
+            console.log(metricInputValue + " stored at index " + indexForStorage + " in the array");
+          }
+        }
+        else if (panelHeaderText == "This Evening") {
+          const timeIndex = 7;
+          daysApart = 0;
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          if (metricInputValue) { // Check if the input field is not left blank
+            IVDRValues[indexForStorage] = metricInputValue; // Put value of number input box into the data array
+            console.log(metricInputValue + " stored at index " + indexForStorage + " in the array");
+          }
+        }
+        else if (panelHeaderText == "Last Night (Yesterday)") {
+          const timeIndex = 4;
+          daysApart = 1; // 1 because it's for the previous day
+          var indexForStorage = timeIndex + (((day-daysApart)) * 4);
+          if (metricInputValue) { // Check if the input field is not left blank
+            IVDRValues[indexForStorage] = metricInputValue; // Put value of number input box into the data array
+            console.log(metricInputValue + " stored at index " + indexForStorage + " in the array");
+          }
+        }
+        else if (panelHeaderText == "Yesterday Morning") {
+          const timeIndex = 5;
+          daysApart = 1; // 1 because it's for the previous day
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          if (metricInputValue) { // Check if the input field is not left blank
+            IVDRValues[indexForStorage] = metricInputValue; // Put value of number input box into the data array
+            console.log(metricInputValue + " stored at index " + indexForStorage + " in the array");
+          }
+        }
+        else if (panelHeaderText == "Yesterday Afternoon") {
+          const timeIndex = 6;
+          daysApart = 1; // 1 because it's for the previous day
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          if (metricInputValue) { // Check if the input field is not left blank
+            IVDRValues[indexForStorage] = metricInputValue; // Put value of number input box into the data array
+            console.log(metricInputValue + " stored at index " + indexForStorage + " in the array");
+          }
+        }
+        else if (panelHeaderText == "Yesterday Evening") {
+          const timeIndex = 7;
+          daysApart = 1; // 1 because it's for the previous day
+          var indexForStorage = timeIndex + ((day-daysApart) * 4);
+          if (metricInputValue) { // Check if the input field is not left blank
+            IVDRValues[indexForStorage] = metricInputValue; // Put value of number input box into the data array
+            console.log(metricInputValue + " stored at index " + indexForStorage + " in the array");
+          }
+        }
+        else {
+          console.log("Time of Day check failed");
+        }
+        console.log("Array after change:");
+        console.log(IVDRValues);
+      });
+    }
+    else {
+
+    }
+  // Disallow the user to submit form when they press the enter button
+  // Credit to Jake Wilson https://stackoverflow.com/a/1563238 for code to prevent submission when pressing enter key
+  $("#Form1").find(".input").keypress(function(e) {
+    if (e.which == 13) { // Checks if the enter key was pressed
+      return false;
+    }
+  });
+  });
+  $("#Form1").on("submit", function() {
+  // Send form to datastore
+  // Send form to datastore
+  // TODO: Figure out how to the send the form to the datastore in the correct format
+    $.ajax({
+      url: "/ivdailyreport",
+      type: "POST",
+      success: function() { alert("Data has been sent"); },
+      error: function() { alert("Error Sending Data") ; }
+    });
+  });
+});
+</script>
+{% endblock %}

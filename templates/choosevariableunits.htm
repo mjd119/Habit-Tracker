@@ -1,0 +1,120 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<h3><center>Choose Units for Your Variables</center></h3>
+<p>Give units for your variables so they can be properly measured. Keep the answers short.</p>
+<p>Examples for Exercise: miles run, exercise quality, etc.</p>
+<p>If your variable is binary, enter whether you did something or something happened</p>
+<form class="form-inline" id="Form1" method="post" action="/choosevariableunits">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Research Design So Far</h3>
+  </div>
+  <div class="panel-body">
+    <!--TODO: Pipe in units if they exist (django logic nested if statements)  -->
+    <p>Research Question is:</p>
+      {% if RQ %}
+        <p style="font-weight: bold">{{RQ}}</p>
+      {% else %}
+        <p style="font-weight: bold">You don't have a Research Question!</p>
+      {% endif %}
+
+    <p>Independent Variable is:</p>
+      {% if IV %}
+        <p style="font-weight: bold">{{IV}}</p>
+      {% else %}
+        <p style="font-weight: bold">You don't have an Independent Variable!</p>
+      {% endif %}
+    <p>Independent Variable Type:</p>
+      {% if IVType %}
+        <p style="font-weight: bold">{{IVType}}</p>
+        <p>Independent Variable Units:</p>
+        {% if IVUnits %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="IVUnits" name="IVUnits" required>{{IVUnits}}</textarea>
+        {% else %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="IVUnits" name="IVUnits" required></textarea>
+        {% endif %}
+      {% else %}
+        <p style="font-weight: bold">You don't have an Independent Variable type!</p>
+      {% endif %}
+    <br><br>
+    <p>Dependent Variable is:</p>
+      {% if DV %}
+        <p style="font-weight: bold">{{DV}}</p>
+      {% else %}
+        <p style="font-weight: bold">You don't have a Dependent Variable!</p>
+      {% endif %}
+
+    <p>Dependent Variable Type:</p>
+      {% if DVType %}
+        <p style="font-weight: bold">{{DVType}}</p>
+        <p>Dependent Variable Units:</p>
+        {% if DVUnits %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="DVUnits" name="DVUnits" required>{{DVUnits}}</textarea>
+        {% else %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="DVUnits" name="DVUnits" required></textarea>
+        {% endif %}
+      {% else %}
+        <p style="font-weight: bold">You don't have a Dependent Variable type!</p>
+      {% endif %}
+    <br><br>
+    <p>Third Variable is:</p>
+      {% if var3 %}
+        <p style="font-weight: bold">{{var3}}</p>
+      {% else %}
+        <p style="font-weight: bold">You don't have a Third Variable!</p>
+      {% endif %}
+
+    <p>Third Variable Type:</p>
+      {% if var3Type %}
+        <p style="font-weight: bold">{{var3Type}}</p>
+        <p>Third Variable Units:</p>
+        {% if var3Units %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="var3Units" name="var3Units" required>{{var3Units}}</textarea>
+        {% else %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="var3Units" name="var3Units" required></textarea>
+        {% endif %}
+      {% else %}
+        <p style="font-weight: bold">You don't have a Third Variable Type!</p>
+      {% endif %}
+
+      {% if var4 %}
+      <br><br>
+        <p>Fourth Variable is:</p>
+        <p style="font-weight: bold">{{var4}}</p>
+      {% endif %}
+
+      {% if var4Type %}
+        <p>Fourth Variable type:</p>
+        <p style="font-weight: bold">{{var4Type}}</p>
+        <p>Fourth Variable Units:<p>
+        {% if var4Units %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="var4Units" name="var4Units" required>{{var4Units}}</textarea>
+        {% else %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="var4Units" name="var4Units" required></textarea>
+        {% endif %}
+      {% endif %}
+
+      {% if var5 %}
+        <br><br>
+        <p>Fifth Variable is:</p>
+        <p style="font-weight: bold">{{var5}}</p>
+      {% endif %}
+
+      {% if var5Type %}
+        <p>Fifth Variable Type:<p>
+        <p style="font-weight: bold">{{var5Type}}</p>
+        <p>Fifth Variable Units:</p>
+        {% if var5Units %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="var5Units" name="var5Units" required>{{var5Units}}</textarea>
+        {% else %}
+          <textarea cols=15 rows=1 input type="text" class="form-control" id="var5Units" name="var5Units" required></textarea>
+        {% endif %}
+      {% endif %}
+  </div>
+</div>
+<div class="form-group">
+  <input type="submit" class="btn btn-default"></input>
+</div>
+</form>
+
+{% endblock %}

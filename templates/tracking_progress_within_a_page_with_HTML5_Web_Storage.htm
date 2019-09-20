@@ -1,0 +1,97 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<h3><center>Tracking Progress Within a Page with HTML5 Web Storage</center></h3>
+<p>
+Explain sessionStorage. Also explain local vs. sessionstorage
+<br><br>
+
+<script>
+RandomNumbersFromCSV={{RandomNumbersFromCSV}}
+
+if(sessionStorage.getItem("trial_number") === null){
+	sessionStorage.trial_number = 1
+}
+
+</script>
+
+
+<div class="well"><center>
+
+	<div id = "10NumberDisplay" style="display:none">
+		<form id="Form1" >
+			<div class="form-group">
+				Trial Number: <span id = "trial"><script>document.write(sessionStorage.trial_number)</script></span> of 10
+			</div>
+			<div class="form-group">
+				<h3><span id = "number"></span></h3>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-default" onclick="NextTrial()">Next Number</button>
+			</div>
+		</form>
+	</div>
+
+
+	<!-- <div id = "EstimateMeanOf10Numbers" style="visibility:hidden"> -->
+	<div id = "EstimateMeanOf10Numbers" style="display:none">
+		You just saw 10 numbers. At this point subjects could be prompted to make a judgment on this page or on another page.<br><br>
+	</div>
+
+	<div>
+		<form id="Reset">
+			<div class="form-group">
+				<button type="button" class="btn btn-default" onclick="ResetTrials()">Reset</button>
+			</div>
+		</form>
+	</div>
+
+</center></div>
+
+<script>
+
+
+
+
+
+function NextTrial(){
+	if (Number(sessionStorage.trial_number) == 10){
+		sessionStorage.trial_number = 1 + Number(sessionStorage.trial_number)
+		document.getElementById('10NumberDisplay').style.display = "none"
+		document.getElementById('EstimateMeanOf10Numbers').style.display = "inline"
+	}
+	else {
+		sessionStorage.trial_number = 1 + Number(sessionStorage.trial_number)
+		document.getElementById('number').innerHTML = RandomNumbersFromCSV[sessionStorage.trial_number-1]
+		document.getElementById('trial').innerHTML = sessionStorage.trial_number
+	}
+}
+
+function ResetTrials(){
+		sessionStorage.trial_number = 1
+		document.getElementById('number').innerHTML = RandomNumbersFromCSV[sessionStorage.trial_number-1]
+		document.getElementById('trial').innerHTML = sessionStorage.trial_number
+		document.getElementById('10NumberDisplay').style.display = "inline"
+		document.getElementById('EstimateMeanOf10Numbers').style.display = "none"
+}
+
+function LoadTrial(){
+	if (Number(sessionStorage.trial_number) == 10){
+		document.getElementById('10NumberDisplay').style.display = "none"
+		document.getElementById('EstimateMeanOf10Numbers').style.display = "inline"
+	}
+	else if (Number(sessionStorage.trial_number) < 11){
+		document.getElementById('number').innerHTML = RandomNumbersFromCSV[Number(sessionStorage.trial_number)-1]
+		document.getElementById('10NumberDisplay').style.display = "inline"
+		document.getElementById('EstimateMeanOf10Numbers').style.display = "none"
+	}
+}
+
+</script>
+
+
+</script>
+<body onload="LoadTrial()">
+<br><br>
+{% endblock %}

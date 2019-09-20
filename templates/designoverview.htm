@@ -1,0 +1,331 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+<h3><center>Design Overview</h3></center>
+<p>Here is an overview of your design. If you'd like to go back and edit anything, now is the best time
+to do so before you begin your study</p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Research Question</h3>
+  </div>
+  <div class="panel-body">
+    Research Question is:
+      {% if RQ %}
+        <p style="font-weight: bold">{{RQ}}</p>
+      {% else %}
+        <p style="font-weight: bold">You don't have a research question!</p>
+      {% endif %}
+  </div>
+</div>
+<!-- User sees what the report section for the variable will look like -->
+{% if IVUnits %}
+  <div class="well well-sm" id="IVMetricReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Independent Variable Report</b></h4>
+    <div id="IVQuestion" style="padding-bottom:5px"></div>
+      <input type="number" min="0" rows="1" cols="25" placeholder="{{IVUnits}}" class="form-control" name="IVMetricReport" id="IVMetricReport">
+  </div>
+{% endif %}
+{% if IVScaleMin and IVScaleMax %}
+  <div class="well well-sm" id="IVOrdinalReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Independent Variable Report</b></h4>
+    <div id="IVQuestion" style="padding-bottom:5px"></div>
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="IVOrdinal1Report" name="IVOrdinalReport">
+        <label id="IVOrdinal1Label" class="form-check-label" for="IVOrdinal1Report">
+          (1) {{IVScaleMin}}
+        </label>
+    </div>
+      <!-- Only first and last buttons have labels (min and max) -->
+      <div class="form-check"><input type="radio" class="form-check-input" id="IVOrdinalMid1Report" name="IVOrdinalReport">
+        <label for="IVOrdinalMid1Report" class="form-check-label">(2)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="IVOrdinalMid2Report" name="IVOrdinalReport">
+        <label for="IVOrdinalMid2Report" class="form-check-label">(3)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="IVOrdinalMid3Report" name="IVOrdinalReport">
+        <label for="IVOrdinalMid3Report" class="form-check-label">(4)</div>
+      <div class="form-check">
+      <input type="radio" class="form-check-input" name="IVOrdinalReport" id="IVOrdinal2Report">
+        <label id="IVOrdinal2Label" class="form-check-label" for="IVOrdinal2Report">
+          (5) {{IVScaleMax}}
+        </label>
+      </div>
+  </div>
+{% endif %}
+{% if IVBinary1 and IVBinary2 %}
+  <div class="well well-sm" id="IVBinaryReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Independent Variable Report</b></h4>
+    <div id="IVQuestion" style="padding-bottom:5px"></div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="IVBinaryReport" id="IVBinary1Report">
+      <label class="form-check-label" id="IVBinary1Label" for="IVBinary1Report">(1) {{IVBinary1}}</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="IVBinaryReport" id="IVBinary2Report">
+      <label class="form-check-label" id="IVBinary2Label" for="IVBinary2Report">(2) {{IVBinary2}}</label>
+    </div>
+  </div>
+{% endif %}
+<!-- User sees what the report section for the variable will look like -->
+{% if var3Units %}
+  <div class="well well-sm" id="var3MetricReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 1 Report</b></h4>
+    <div id="var3Question" style="padding-bottom:5px"></div>
+      <input type="number" min="0" rows="1" cols="25" placeholder="{{var3Units}}" class="form-control" name="var3MetricReport" id="var3MetricReport">
+  </div>
+{% endif %}
+{% if var3ScaleMin and var3ScaleMax %}
+  <div class="well well-sm" id="var3OrdinalReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 1 Report</b></h4>
+    <div id="var3Question" style="padding-bottom:5px"></div>
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="var3Ordinal1Report" name="var3OrdinalReport">
+        <label id="var3Ordinal1Label" class="form-check-label" for="var3Ordinal1Report">
+          (1) {{var3ScaleMin}}
+        </label>
+    </div>
+      <!-- Only first and last buttons have labels (min and max) -->
+      <div class="form-check"><input type="radio" class="form-check-input" id="var3OrdinalMid1Report" name="var3OrdinalReport">
+        <label for="var3OrdinalMid1Report" class="form-check-label">(2)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var3OrdinalMid2Report" name="var3OrdinalReport">
+        <label for="var3OrdinalMid2Report" class="form-check-label">(3)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var3OrdinalMid3Report" name="var3OrdinalReport">
+        <label for="var3OrdinalMid3Report" class="form-check-label">(4)</div>
+      <div class="form-check">
+      <input type="radio" class="form-check-input" name="var3OrdinalReport" id="var3Ordinal2Report">
+        <label id="var3Ordinal2Label" class="form-check-label" for="var3Ordinal2Report">
+          (5) {{var3ScaleMax}}
+        </label>
+      </div>
+  </div>
+{% endif %}
+{% if var3Binary1 and var3Binary2 %}
+  <div class="well well-sm" id="var3BinaryReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 1 Report</b></h4>
+    <div id="var3Question" style="padding-bottom:5px"></div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="var3BinaryReport" id="var3Binary1Report">
+      <label class="form-check-label" id="var3Binary1Label" for="var3Binary1Report">(1) {{var3Binary1}}</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="var3BinaryReport" id="var3Binary2Report">
+      <label class="form-check-label" id="var3Binary2Label" for="var3Binary2Report">(2) {{var3Binary2}}</label>
+    </div>
+  </div>
+{% endif %}
+
+{% if var4 %}
+<!-- User sees what the report section for the variable will look like -->
+{% if var4Units %}
+  <div class="well well-sm" id="var4MetricReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 2 Report</b></h4>
+    <div id="var4Question" style="padding-bottom:5px"></div>
+      <input type="number" min="0" rows="1" cols="25" placeholder="{{var4Units}}" class="form-control" name="var4MetricReport" id="var4MetricReport">
+  </div>
+{% endif %}
+{% if var4ScaleMin and var4ScaleMax %}
+  <div class="well well-sm" id="var4OrdinalReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 2 Report</b></h4>
+    <div id="var4Question" style="padding-bottom:5px"></div>
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="var4Ordinal1Report" name="var4OrdinalReport">
+        <label id="var4Ordinal1Label" class="form-check-label" for="var4Ordinal1Report">
+          (1) {{var4ScaleMin}}
+        </label>
+    </div>
+      <!-- Only first and last buttons have labels (min and max) -->
+      <div class="form-check"><input type="radio" class="form-check-input" id="var4OrdinalMid1Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid1Report" class="form-check-label">(2)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var4OrdinalMid2Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid2Report" class="form-check-label">(3)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var4OrdinalMid3Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid3Report" class="form-check-label">(4)</div>
+      <div class="form-check">
+      <input type="radio" class="form-check-input" name="var4OrdinalReport" id="var4Ordinal2Report">
+        <label id="var4Ordinal2Label" class="form-check-label" for="var4Ordinal2Report">
+          (5) {{var4ScaleMax}}
+        </label>
+      </div>
+  </div>
+{% endif %}
+{% if var4Binary1 and var4Binary2 %}
+  <div class="well well-sm" id="var4BinaryReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 2 Report</b></h4>
+    <div id="var4Question" style="padding-bottom:5px"></div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="var4BinaryReport" id="var4Binary1Report">
+      <label class="form-check-label" id="var4Binary1Label" for="var4Binary1Report">(1) {{var4Binary1}}</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="var4BinaryReport" id="var4Binary2Report">
+      <label class="form-check-label" id="var4Binary2Label" for="var4Binary2Report">(2) {{var4Binary2}}</label>
+    </div>
+  </div>
+{% endif %}
+
+{% endif %}
+{% if var5 %}
+<!-- User sees what the report section for the variable will look like -->
+{% if var5Units %}
+  <div class="well well-sm" id="var5MetricReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 3 Report</b></h4>
+    <div id="var5Question" style="padding-bottom:5px"></div>
+      <input type="number" min="0" rows="1" cols="25" placeholder="{{var5Units}}" class="form-control" name="var5MetricReport" id="var5MetricReport">
+  </div>
+{% endif %}
+{% if var5ScaleMin and var5ScaleMax %}
+  <div class="well well-sm" id="var5OrdinalReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 3 Report</b></h4>
+    <div id="var5Question" style="padding-bottom:5px"></div>
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="var5Ordinal1Report" name="var5OrdinalReport">
+        <label for="var5Ordinal1Report" id="var5Ordinal1Label" class="form-check-label">
+          (1) {{var5ScaleMin}}
+        </label>
+    </div>
+      <!-- Only first and last buttons have labels (min and max) -->
+      <div class="form-check"><input type="radio" class="form-check-input" id="var5OrdinalMid1Report" name="var5OrdinalReport">
+        <label for="var5OrdinalMid1Report" class="form-check-label">(2)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var5OrdinalMid2Report" name="var5OrdinalReport">
+        <label for="var5OrdinalMid2Report" class="form-check-label">(3)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var5OrdinalMid3Report" name="var5OrdinalReport">
+        <label for="var5OrdinalMid3Report" class="form-check-label">(4)</div>
+      <div class="form-check">
+      <input type="radio" class="form-check-input" name="var5OrdinalReport" id="var5Ordinal2Report">
+        <label id="var5Ordinal2Label" class="form-check-label" for="var5Ordinal2Report">
+          (5) {{var5ScaleMax}}
+        </label>
+      </div>
+  </div>
+{% endif %}
+{% if var5Binary1 and var5Binary2 %}
+  <div class="well well-sm" id="var5BinaryReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 3 Report</b></h4>
+    <div id="var5Question" style="padding-bottom:5px"></div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="var5BinaryReport" id="var5Binary1Report">
+      <label class="form-check-label" id="var5Binary1Label" for="var5Binary1Report">(1) {{var5Binary1}}</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="var5BinaryReport" id="var5Binary2Report">
+      <label class="form-check-label" id="var5Binary2Label" for="var5Binary2Report">(2) {{var5Binary2}}</label>
+    </div>
+  </div>
+{% endif %}
+{% endif %}
+
+<!-- User sees what the report section for the variable will look like -->
+{% if DVUnits %}
+  <div class="well well-sm" id="DVMetricReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Dependent Variable Report</b></h4>
+    <div id="DVQuestion" style="padding-bottom:5px"></div>
+      <input type="number" min="0" rows="1" cols="25" placeholder="{{DVUnits}}" class="form-control" name="DVMetricReport" id="DVMetricReport">
+  </div>
+{% endif %}
+{% if DVScaleMin and DVScaleMax %}
+  <div class="well well-sm" id="DVOrdinalReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Dependent Variable Report</b></h4>
+    <div id="DVQuestion" style="padding-bottom:5px"></div>
+    <div class="form-check">
+        <input type="radio" class="form-check-input" id="DVOrdinal1Report" name="DVOrdinalReport">
+        <label id="DVOrdinal1Label" class="form-check-label" for="DVOrdinal1Report">
+          (1) {{DVScaleMin}}
+        </label>
+    </div>
+      <!-- Only first and last buttons have labels (min and max) -->
+      <div class="form-check"><input type="radio" class="form-check-input" id="DVOrdinalMid1Report" name="DVOrdinalReport">
+        <label for="DVOrdinalMid1Report" class="form-check-label">(2)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="DVOrdinalMid2Report" name="DVOrdinalReport">
+        <label for="DVOrdinalMid2Report" class="form-check-label">(3)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="DVOrdinalMid3Report" name="DVOrdinalReport">
+        <label for="DVOrdinalMid3Report" class="form-check-label">(4)</div>
+      <div class="form-check">
+      <input type="radio" class="form-check-input" name="DVOrdinalReport" id="DVOrdinal2Report">
+        <label id="DVOrdinal2Label" class="form-check-label" for="DVOrdinal2Report">
+          (5) {{DVScaleMax}}
+        </label>
+      </div>
+  </div>
+{% endif %}
+{% if DVBinary1 and DVBinary2 %}
+  <div class="well well-sm" id="DVBinaryReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Dependent Variable Report</b></h4>
+    <div id="DVQuestion" style="padding-bottom:5px"></div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="DVBinaryReport" id="DVBinary1Report">
+      <label class="form-check-label" id="DVBinary1Label" for="DVBinary1Report">(1) {{DVBinary1}}</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="DVBinaryReport" id="DVBinary2Report">
+      <label class="form-check-label" id="DVBinary2Label" for="DVBinary2Report">(2) {{DVBinary2}}</label>
+    </div>
+  </div>
+{% endif %}
+<form class="form-inline" id="Form1" method="post" action="/designoverview">
+    <button type="submit" value="EditDesign" class="btn btn-default" id="EditDesign" name="EditDesign">Edit</button>
+<br><br>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Notification Settings</h3>
+  </div>
+  <div class="panel-body">
+      <p>Push Notification Settings:</p>
+      <button type="submit" value="EditNotifications" class="btn btn-default" id="EditNotifications" name="EditNotifications">Edit</button>
+  </div>
+</div>
+<!-- Submit user answers -->
+<div class="form-group">
+  <input type="submit" class="btn btn-default">
+</div>
+</form>
+<br>
+<script>
+var variablesArray = ["{{IV}}", "{{DV}}", "{{var3}}", "{{var4}}", "{{var5}}"];
+var timeOfDayArray = ["{{IVTimeOfDay}}", "{{DVTimeOfDay}}", "{{var3TimeOfDay}}", "{{var4TimeOfDay}}", "{{var5TimeOfDay}}"];
+var questionArray = ["#IVQuestion", "#DVQuestion", "#var3Question", "#var4Question", "#var5Question"];
+var time;
+var variable;
+// Create sentence based on the time they said a variable occurred (loops through all variables and creates dynamic questions)
+for (i = 0; i < 5; i++) {
+  var time = timeOfDayArray[i];
+  var variable = variablesArray[i];
+  if (time == "Daytime" || time == "Later that Day" ||
+      time == "Earlier that Day (Earlier Monday)" || time == "Earlier that day (Tuesday)" ||
+      time == "Previous Day (Monday)") {
+    $(questionArray[i]).html(variable + " yesterday?");
+  }
+  else if (time == "Nighttime" || time == "Later that Night/Overnight"
+        || time == "Earlier that Night/Overnight (Monday Night)" ||
+           time == "Last Night (Monday Night)" || time == "Previous Night (Sunday Night)") {
+    $(questionArray[i]).html(variable + " last night?");
+  }
+  else if (time == "Following Day") {
+    $(questionArray[i]).html(variable + " today?");
+  }
+  else {
+  }
+}
+$(document).ready(function() {
+  // Disallow the user to submit form when they press the enter button
+    // Credit to Jake Wilson https://stackoverflow.com/a/1563238 for code to prevent submission when pressing enter key
+  $("#Form1").find(".input").keypress(function(e) {
+    if (e.which == 13) { // Checks if the enter key was pressed
+      return false;
+    }
+  });
+});
+</script>
+{% endblock %}

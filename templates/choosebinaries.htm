@@ -1,0 +1,97 @@
+<!-- User chooses a minimum and maximum for their scale if they chose a discrete variable -->
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<h3><center>Choose a Binary</center></h3>
+<p>If one or more of your variables is binary, that means that you must choose exactly 2 options</p>
+<p>Example: I will answer whether or not I exercised (yes or no)</p>
+<p>Another Example: I will rate my sleep quality on a binary scale: good sleep or bad sleep</p>
+<form class="form-inline" id="Form1" method="post" action="/choosescale">
+  <div class="form-group">
+
+    <div id="IVBinariesDiv" style="display:none">
+      Indpendent Variable: <b>{{IV}}</b><br><br>
+      <p>Minimum:
+      <textarea rows="1" cols="25" input type = "text" class="form-control" name="IVBinary1" id="IVBinary1"></textarea></p>
+      <p>Maximum:
+      <textarea rows="1" cols="25" input type = "text" class="form-control" name="IVBinary2" id="IVBinary2"></textarea></p>
+    </div>
+
+    <div id="DVBinariesDiv" style="display:none">
+    Dependent Variable: <b>{{DV}}</b><br><br>
+      <p>Minimum:
+      <textarea rows="1" cols="25" input type = "text" class="form-control" name="DVBinary1" id="DVBinary1"></textarea></p>
+      <p>Maximum:
+      <textarea rows="1" cols="25" input type = "text" class="form-control" name="DVBinary2" id="DVBinary2"></textarea></p>
+    </div>
+
+    <div id="var3BinariesDiv" style="display:none">
+    Third Variable: <b>{{var3}}</b><br><br>
+      <p>Minimum:
+      <textarea rows="1" cols="25" input type = "text" class="form-control" name="var3Binary1" id="var3Binary1"></textarea></p>
+      <p>Maximum:
+      <textarea rows="1" cols="25" input type = "text" class="form-control" name="var3Binary2" id="var3Binary2"></textarea></p>
+    </div>
+
+    <div id="var4BinariesDiv" style="display:none">
+      {% if var4 %}
+        Fourth Variable: <b>{{var4}}</b><br><br>
+        <p>Minimum:
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var4Binary1" id="var4Binary1"></textarea></p>
+        <p>Maximum:
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var4Binary2" id="var4Binary2"></textarea></p>
+      {% endif %}
+    </div>
+
+    <div id="var5BinariesDiv" style="display:none">
+      {% if var5 %}
+        Fifth Variable: <b>{{var5}}</b><br><br>
+        <p>Minimum:
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var5Binary1" id="var5Binary1"></textarea></p>
+        <p>Maximum:
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var5Binary2" id="var5Binary2"></textarea></p>
+      {% endif %}
+    </div>
+ </div><br><br>
+ <div class="form-group">
+   <input type="submit" class="btn btn-default">
+ </div><br><br>
+</form>
+
+<script>
+var IVType = "{{IVType}}";
+var DVType = "{{DVType}}";
+var var3Type = "{{var3Type}}";
+var var4Type = "{{var4Type}}";
+var var5Type = "{{var5Type}}";
+if (IVType == "Binary") {
+ document.getElementById("IVBinariesDiv").style.display = "block";
+ document.getElementById("IVBinary1").required = true;
+ document.getElementById("IVBinary2").required = true;
+}
+
+if (DVType == "Binary") {
+ document.getElementById("DVBinariesDiv").style.display = "block";
+ document.getElementById("DVBinary1").required = true;
+ document.getElementById("DVBinary2").required = true;
+}
+
+if (var3Type == "Binary") {
+  document.getElementById("var3BinariesDiv").style.display = "block";
+  document.getElementById("var3Binary1").required = true;
+  document.getElementById("var3Binary2").required = true;
+}
+
+if (var4Type == "Binary") {
+  document.getElementById("var4BinariesDiv").style.display = "block";
+  document.getElementById("var4Binary1").required = true;
+  document.getElementById("var4Binary2").required = true;
+}
+
+if (var5Type == "Binary") {
+  document.getElementById("var5BinariesDiv").style.display = "block";
+  document.getElementById("var5Binary1").required = true;
+  document.getElementById("var5Binary2").required = true;
+}
+</script>
+
+{% endblock %}

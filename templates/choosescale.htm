@@ -1,0 +1,118 @@
+<!-- User chooses a minimum and maximum for their scale if they chose a discrete variable -->
+<!-- Value is "-1" by default for all but is changed to "" if the type is Ordinal (-1 is hidden from user unless the variable type is actually Ordinal) -->
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<h3><center>Choose a Scale</center></h3>
+<p>If one or more of your variables is ordinal, that means that you must choose a scale with a minimum rating and a maximum rating.</p>
+<p>The scale is from 1 to 5, but you must choose words/phrases that define each end of the scale.</p>
+<p>Example: I will rate my sleep quality on scale from bad (minimum rating) to very good (maximum rating). </p>
+<form class="form-inline" id="Form1" method="post" action="/choosescale">
+  <div class="form-group">
+
+    <div id="IVScaleDiv" style="display:none">
+      Indpendent Variable: <b>{{IV}}</b><br><br>
+      <p>Minimum:
+      <input type="text" class="form-control" name="IVScaleMin" id="IVScaleMin"></input></p>
+      <p>Maximum:
+      <input type="text" class="form-control" name="IVScaleMax" id="IVScaleMax"></input></p>
+    </div>
+
+    <div id="DVScaleDiv" style="display:none">
+    Dependent Variable: <b>{{DV}}</b><br><br>
+      <p>Minimum:
+      <input type="text" class="form-control" name="DVScaleMin" id="DVScaleMin"></input></p>
+      <p>Maximum:
+      <input type="text" class="form-control" name="DVScaleMax" id="DVScaleMax"></input></p>
+    </div>
+
+    <div id="var3ScaleDiv" style="display:none">
+    Third Variable: <b>{{var3}}</b><br><br>
+      <p>Minimum:
+      <input type="text" class="form-control" name="var3ScaleMin" id="var3ScaleMin"></input></p>
+      <p>Maximum:
+      <input type="text" class="form-control" name="var3ScaleMax" id="var3ScaleMax"></input></p>
+    </div>
+
+    <div id="var4ScaleDiv" style="display:none">
+      {% if var4 %}
+        Fourth Variable: <b>{{var4}}</b><br><br>
+        <p>Minimum:
+        <input type="text" class="form-control" name="var4ScaleMin" id="var4ScaleMin"></input></p>
+        <p>Maximum:
+        <input type="text" class="form-control" name="var4ScaleMax" id="var4ScaleMax"></input></p>
+      {% endif %}
+    </div>
+
+    <div id="var5ScaleDiv" style="display:none">
+      {% if var5 %}
+        Fifth Variable: <b>{{var5}}</b><br><br>
+        <p>Minimum:
+        <input type="text" class="form-control" name="var5ScaleMin" id="var5ScaleMin"></input></p>
+        <p>Maximum:
+        <input type="text" class="form-control" name="var5ScaleMax" id="var5ScaleMax"></input></p>
+      {% endif %}
+    </div>
+ </div><br><br>
+ <div class="form-group">
+   <input type="submit" class="btn btn-default">
+ </div><br><br>
+</form>
+
+   <script>
+   var IVType = "{{IVType}}";
+   var DVType = "{{DVType}}";
+   var var3Type = "{{var3Type}}";
+   var var4Type = "{{var4Type}}";
+   var var5Type = "{{var5Type}}";
+   // Shows input areas if type is ordinal and makes a response required
+   if (IVType == "Ordinal") {
+     document.getElementById("IVScaleDiv").style.display = "block";
+     var IVScaleMin = document.getElementById("IVScaleMin");
+     IVScaleMin.required = true;
+     IVScaleMin.value = "";
+     var IVScaleMax = document.getElementById("IVScaleMax");
+     IVScaleMax.required = true;
+     IVScaleMax.value = "";
+   }
+
+   if (DVType == "Ordinal") {
+     var var3ScaleMin = document.getElementById("DVScaleMin");
+     DVScaleMin.required = true;
+     DVScaleMin.value = "";
+     var DVScaleMax = document.getElementById("DVScaleMax");
+     DVScaleMax.required = true;
+     DVScaleMax.value = "";
+   }
+
+   if (var3Type == "Ordinal") {
+      document.getElementById("var3ScaleDiv").style.display = "block";
+      var var3ScaleMin = document.getElementById("var3ScaleMin");
+      var3ScaleMin.required = true;
+      var3ScaleMin.value = "";
+      var var3ScaleMax = document.getElementById("var3ScaleMax");
+      var3ScaleMax.required = true;
+      var3ScaleMax.value = "";
+   }
+
+   if (var4Type == "Ordinal") {
+      document.getElementById("var4ScaleDiv").style.display = "block";
+      var var4ScaleMin = document.getElementById("var4ScaleMin");
+      var4ScaleMin.required = true;
+      var4ScaleMin.value = "";
+      var var4ScaleMax = document.getElementById("var4ScaleMax");
+      var4ScaleMax.required = true;
+      var4ScaleMax.value = "";
+   }
+
+   if (var5Type == "Ordinal") {
+      document.getElementById("var5ScaleDiv").style.display = "block";
+      var var5ScaleMin = document.getElementById("var5ScaleMin");
+      var5ScaleMin.required = true;
+      var5ScaleMin.value = "";
+      var var5ScaleMax = document.getElementById("var5ScaleMax");
+      var5ScaleMax.required = true;
+      var5ScaleMax.value = "";
+   }
+   </script>
+
+{% endblock %}

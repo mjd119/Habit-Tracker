@@ -1,0 +1,116 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<script>
+// A function to take a list and turn it into rows in a table
+function easytable(list){
+	for (i = 0 ; i < list.length ; i++){
+		document.write("<td>"+String(list[i])+"</td>");
+	}
+}
+</script>
+
+<h3><center>Saving Data with Ajax:</center></h3>
+<p>
+Ajax is a way to send data to the datastore, like a Post request, except that it does not require the page to be sent and a new page to be reloaded. For example, when writing an email in an online email program (e.g., gmail), your email can be saved as you are writing.
+<br><br>
+On this page, when you press 'Submit', you will get a pop-up alert telling you whether the request was succesfully sent or whether there was an error. Normally there would not be a pop-up, but we implemented it here so you can see when the Ajax request is complete.
+<br><br>
+You can see the data you saved here: <a href="/data_for_download">/data_for_download.htm</a>.
+<br><br><br>
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Method 1</h3>
+  </div>
+  <div class="panel-body">
+One way to generate stimuli is to store data in a csv file and then pull the data as needed. These data are stored in the file RandomNumbersFromCSV.csv. These data are the same on each page load.<br><br>
+On submission, the judgment and the 10 numbers are stored in the datastore. Technically since the 10 numbers were pulled from a csv file, it is not inherently necessary to store them again in the datastore, through it is convenient to store the user's judgment with the stimuli properties.<br><br>
+<script>
+RandomNumbersFromCSV={{RandomNumbersFromCSV}}
+</script>
+
+<table class="table table-bordered">
+<tr align="center">
+<!-- Convert the list into rows in a table using the function above -->
+<script>easytable(RandomNumbersFromCSV)</script>
+</tr>
+</table>
+
+<script>
+function SubmitForm1(){
+	document.getElementById('TenNumbers1').value = RandomNumbersFromCSV
+    document.getElementById("Form1").submit()
+}
+</script>
+
+
+<form class="form-inline" id="Form1">
+  <div class="form-group">
+    <label for="Mean">Mean: </label>
+    <input type="number" class="form-control" id="Mean" name="Mean">
+<!-- Name is the name of the variable that gets sent back to the server. ID is different from name here because there are four forms, and so that the SubmitForm function can find the right hidden input to change -->
+    <input type="hidden" id="TenNumbers" name="tennumbers" value="">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="AjaxFn()">Submit</button>
+  </div>
+</form>
+</div>
+
+<!-- <input type="button" id="Submit" onclick="mySubmit()" value="Submit" disabled="True"> -->
+
+
+</div>
+
+
+
+<!-- <div class="container">
+<form class="form" id="myform">
+  <div class="form-group">
+    <label for="message">Message</label>
+    <input type="text" class="form-control" id="message" name="message">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="AjaxFn()">Submit</button>
+  </div>
+</form>
+</div> -->
+
+
+<script>
+function AjaxSuccess()
+{
+	document.getElementById('Mean').value = ""
+	alert("Success")
+}
+
+
+function AjaxFn()
+{
+	document.getElementById('TenNumbers').value = RandomNumbersFromCSV
+	$.ajax({
+		url:"/saving_data_ajax",
+		data: $("#Form1").serialize(),
+		dataType: 'json',
+		type: "POST",
+		cache: false,
+		error: function() {alert("Error")},
+		success: AjaxSuccess()
+	})
+}
+</script>
+
+
+
+
+<br><br>
+
+
+
+
+{% endblock %}

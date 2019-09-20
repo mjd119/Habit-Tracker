@@ -1,0 +1,1058 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<h3><center>Choose Extra Variables</center></h3>
+<p>Create extra variables based on your research question. Choose factors you think impact your Dependent Variable. Adding a fourth and fifth variable are optional.<br>
+<p>Whenever you study the relationship between an independent variable and a dependent variable,, there are always other variables
+that could influence the dependent variable. For example, if you are studying the relation between exercise and sleep,
+coffee, stress, and pain could also influence sleep. These variables are sometimes called "variableDivArrays" or "Alternative Causes."</p>
+<p>On this screen you must select at at least one alternative cause. If you think there are are other alternative causes that are likely to influence
+your dependent variable, then please add up to two more. Remember, your goal is to figure out whether your independent variable actually has an effect on your dependent variable,
+so it is important to record and control for other variables that might influence your dependent variable.</p>
+<p>Example: Can I improve my sleep? (Research Question) I think exercise will worsen my sleep (Independent Variable). I will measure hours of sleep (Dependent Variable).
+   I think stress also worsens my sleep (Third Variable) along with caffeine intake (Another Third Variable).</p>
+<p>You can choose up to 3 additional variables, but you need to create at least 1.
+
+<a href="/variabletypeexplanations" target="_blank">
+  <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+</a></p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Research Design So Far</h3>
+  </div>
+  <div class="panel-body">
+    Research Question is:
+      {% if RQ %}
+        <p style="font-weight: bold">{{RQ}}</p>
+      {% endif %}
+    Independent Variable is:
+      {% if IV %}
+        <p style="font-weight: bold">{{IV}}</p>
+      {% endif %}
+    Dependent Variable is:
+      {% if DV %}
+        <p style="font-weight: bold">{{DV}}</p>
+      {% endif %}
+  </div>
+</div>
+<select class="form-control" name="addMoreVariables" id="addMoreVariables">
+  <option value="1">1 Third Variable (Mandatory)</option>
+  <option value="2">2 Third Variables</option>
+  <option value="3">3 Third Variables</option>
+</select><br><br>
+<form class="form-inline" id="Form1" method="post" action="/chooseextravariables">
+<div class="panel panel-default" id="thirdVariableDiv">
+  <div class="panel-heading">
+    <h3 class="panel-title">Third Variable / Alternative Cause 1
+      <a href="http://www.statisticshowto.com/experimental-design/confounding-variable/" target="_blank">  <!-- https://stackoverflow.com/questions/2906582/how-to-create-an-html-button-that-acts-like-a-link -->
+          <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+      </a>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <p>Choose another factor you think affects your dependent variable</p>
+  <div class="well well-sm">
+  <div class="form-group">
+    <div class="row" style="padding-bottom:15px">
+      <div class="col-sm-3">
+        <b>Variable:</b>
+      </div>
+      <div class="col-sm-6">
+        {% if var3 %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var3" name="var3" required>{{var3}}</textarea>
+        {% else %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var3" name="var3" required></textarea>
+        {% endif %}
+      </div>
+      <div class="col-sm-3">
+        (Ex: Caffeine Intake)
+      </div>
+    </div>
+    <div class="row" style="padding-bottom:15px">
+      <div class="col-sm-3">
+        <b>Variable Type:</b>
+      </div>
+      <div class="col-sm-6">
+        <select class="form-control" name="var3Type" id="var3Type" required></select>
+      </div>
+    </div>
+    <div class="row" id="var3UnitsDiv">
+      <div class="col-sm-3">
+        <div id="var3UnitText" style="font-weight:bold">Unit of Measurement:</div>
+      </div>
+      <div class="col-sm-6">
+        {% if var3Units %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var3Units" name="var3Units">{{var3Units}}</textarea>
+        {% else %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var3Units" name="var3Units"></textarea>
+        {% endif %}
+      </div>
+      <div class="col-sm-3" id="var3UnitExampleText">
+          (Ex: Cups of Coffee)
+      </div>
+    </div>
+    <!-- Show when user selects ordinal -->
+    <div id="var3ScaleDiv">
+      <p>The scale is from 1 to 5, but you must choose words/phrases that define each end of the scale.</p>
+      <p>Example: I will rate my sleep quality on scale from "bad" (minimum rating) to "very good" (maximum rating). </p>
+      <p><b>Minimum Rating:</b>
+      {% if var3ScaleMin %}
+        <textarea rows="1" cols="25" input type="text" class="form-control" name="var3ScaleMin" id="var3ScaleMin">{{var3ScaleMin}}</textarea></p>
+      {% else %}
+        <textarea rows="1" cols="25" input type="text" class="form-control" name="var3ScaleMin" id="var3ScaleMin"></textarea></p>
+      {% endif %}
+      <p><b>Maximum Rating:</b>
+      {% if var3ScaleMax %}
+        <textarea rows="1" cols="25" input type="text" class="form-control" name="var3ScaleMax" id="var3ScaleMax">{{var3ScaleMax}}</textarea></p>
+      {% else %}
+        <textarea rows="1" cols="25" input type="text" class="form-control" name="var3ScaleMax" id="var3ScaleMax"></textarea></p>
+      {% endif %}
+    </div>
+    <!-- Show when user selects binary -->
+    <div id="var3BinariesDiv">
+      <p>You must choose exactly 2 options</p>
+      <p>Example: I will answer whether or not I exercised (Exercise or No Exercise)</p>
+      <p><b>Binary Option 1:</b>
+      {% if var3Binary1 %}
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var3Binary1" id="var3Binary1">{{var3Binary1}}</textarea></p>
+      {% else %}
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var3Binary1" id="var3Binary1"></textarea></p>
+      {% endif %}
+      <p><b>Binary Option 2:</b>
+      {% if var3Binary2 %}
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var3Binary2" id="var3Binary2">{{var3Binary2}}</textarea></p>
+      {% else %}
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var3Binary2" id="var3Binary2"></textarea></p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+  <!-- User sees what the report section for the variable will look like -->
+    <div class="well well-sm" id="var3MetricReportDiv">
+      <p>This is what the form will look like each day when you submit your data for this variable</p>
+      <h4><b>Third Variable / Alternative Cause 1 Report</b></h4>
+      {% if var3Units %}
+        <input type="number" rows="1" cols="25" placeholder="{{var3Units}}" class="form-control" name="var3MetricReport" id="var3MetricReport">
+      {% else %}
+        <input type="number" rows="1" cols="25" placeholder="" class="form-control" name="var3MetricReport" id="var3MetricReport">
+      {% endif %}
+    </div>
+    <div class="well well-sm" id="var3OrdinalReportDiv">
+      <p>This is what the form will look like each day when you submit your data for this variable</p>
+      <h4><b>Third Variable / Alternative Cause 1 Report</b></h4>
+      <div class="form-check">
+        {% if var3ScaleMin %}
+          <input type="radio" class="form-check-input" id="var3Ordinal1Report" name="var3OrdinalReport">
+          <label id="var3Ordinal1Label" class="form-check-label" for="var3Ordinal1Report">
+            (1) {{var3ScaleMin}}
+          </label>
+        {% else %}
+        <input type="radio" class="form-check-input" id="var3Ordinal1Report" name="var3OrdinalReport">
+          <label id="var3Ordinal1Label" class="form-check-label" for="var3Ordinal1Report">
+            (1)
+          </label>
+        {% endif %}
+      </div>
+        <!-- Only first and last buttons have labels (min and max) -->
+        <div class="form-check"><input type="radio" class="form-check-input" id="var3OrdinalMid1Report" name="var3OrdinalReport">
+          <label for="var3OrdinalMid1Report" class="form-check-label">(2)</div>
+        <div class="form-check"><input type="radio" class="form-check-input" id="var3OrdinalMid2Report" name="var3OrdinalReport">
+          <label for="var3OrdinalMid2Report" class="form-check-label">(3)</div>
+        <div class="form-check"><input type="radio" class="form-check-input" id="var3OrdinalMid3Report" name="var3OrdinalReport">
+          <label for="var3OrdinalMid3Report" class="form-check-label">(4)</div>
+        <div class="form-check">
+        {% if var3ScaleMax %}
+        <input type="radio" class="form-check-input" name="var3OrdinalReport" id="var3Ordinal2Report">
+          <label for="var3Ordinal2Report" id="var3Ordinal2Label" class="form-check-label">
+            (5) {{var3ScaleMax}}
+          </label>
+        {% else %}
+        <input type="radio" class="form-check-input" name="var3OrdinalReport" id="var3Ordinal2Report">
+          <label for="var3Ordinal2Report" id="var3Ordinal2Label" class="form-check-label">
+            (5)
+          </label>
+        {% endif %}
+        </div>
+    </div>
+    <div class="well well-sm" id="var3BinaryReportDiv">
+      <p>This is what the form will look like each day when you submit your data for this variable</p>
+      <h4><b>Third Variable / Alternative Cause 1 Report</b></h4>
+      <div class="form-check">
+      {% if var3Binary1 %}
+        <input type="radio" class="form-check-input" name="var3BinaryReport" id="var3Binary1Report">
+        <label class="form-check-label" id="var3Binary1Label" for="var3Binary1Report">
+          (1) {{var3Binary1}}
+        </label>
+      {% else %}
+        <input type="radio" class="form-check-input" name="var3BinaryReport" id="var3Binary1Report">
+        <label class="form-check-label" id="var3Binary1Label" for="var3Binary1Report">
+          (1)
+        </label>
+      {% endif %}
+      </div>
+      <div class="form-check">
+      {% if var3Binary2 %}
+        <input type="radio" class="form-check-input" name="var3BinaryReport" id="var3Binary2Report">
+        <label class="form-check-label" id="var3Binary2Label" for="var3Binary2Report">
+          (2) {{var3Binary2}}
+        </label>
+      {% else %}
+        <input type="radio" class="form-check-input" name="var3BinaryReport" id="var3Binary2Report">
+        <label class="form-check-label" id="var3Binary2Label" for="var3Binary2Report">
+          (2)
+        </label>
+      {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel panel-default" id="fourthVariableDiv">
+  <div class="panel-heading">
+    <h3 class="panel-title">Another Third Variable / Alternative Cause 2
+      <a href="http://www.statisticshowto.com/experimental-design/confounding-variable/" target="_blank">  <!-- https://stackoverflow.com/questions/2906582/how-to-create-an-html-button-that-acts-like-a-link -->
+          <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+      </a>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <p>Choose another factor you think affects your dependent variable</p>
+  <div class="well well-sm">
+  <div class="form-group">
+    <div class="row" style="padding-bottom:15px">
+      <div class="col-sm-3">
+        <b>Variable:</b>
+      </div>
+      <div class="col-sm-6">
+        {% if var4 %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var4" name="var4">{{var4}}</textarea>
+        {% else %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var4" name="var4"></textarea>
+        {% endif %}
+      </div>
+      <div class="col-sm-3">
+        (Ex: Stress)
+      </div>
+    </div>
+    <div class="row" style="padding-bottom:15px">
+      <div class="col-sm-3">
+        <b>Variable Type:</b>
+      </div>
+      <div class="col-sm-6">
+        <select class="form-control" name="var4Type" id="var4Type"></select>
+      </div>
+    </div>
+    <div class="row" id="var4UnitsDiv">
+      <div class="col-sm-3">
+        <div id="var4UnitText" style="font-weight:bold">Unit of Measurement:</div>
+      </div>
+      <div class="col-sm-6">
+        {% if var4Units %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var4Units" name="var4Units">{{var4Units}}</textarea>
+        {% else %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var4Units" name="var4Units"></textarea>
+        {% endif %}
+      </div>
+      <div class="col-sm-3" id="var4UnitExampleText">
+          (Ex: Report number of stressors)
+      </div>
+    </div>
+    <!-- Show when user selects ordinal -->
+    <div id="var4ScaleDiv">
+      <p>The scale is from 1 to 5, but you must choose words/phrases that define each end of the scale.</p>
+      <p>Example: I will rate my sleep quality on scale from "bad" (minimum rating) to "very good" (maximum rating). </p>
+      <p><b>Minimum Rating:</b>
+      {% if var4ScaleMin %}
+        <textarea rows="1" cols="25" input type="text" class="form-control" name="var4ScaleMin" id="var4ScaleMin">{{var4ScaleMin}}</textarea></p>
+      {% else %}
+        <textarea rows="1" cols="25" input type="text" class="form-control" name="var4ScaleMin" id="var4ScaleMin"></textarea></p>
+      {% endif %}
+      <p><b>Maximum Rating:</b>
+      {% if var4ScaleMax %}
+        <textarea rows="1" cols="25" type="text" class="form-control" name="var4ScaleMax" id="var4ScaleMax">{{var4ScaleMax}}</textarea></p>
+      {% else %}
+        <textarea rows="1" cols="25" type="text" class="form-control" name="var4ScaleMax" id="var4ScaleMax"></textarea></p>
+      {% endif %}
+    </div>
+    <!-- Show when user selects binary -->
+    <div id="var4BinariesDiv">
+      <p>You must choose exactly 2 options</p>
+      <p>Example: I will answer whether or not I exercised (Exercise or No Exercise)</p>
+      <p><b>Binary Option 1:</b>
+      {% if var4Binary1 %}
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var4Binary1" id="var4Binary1">{{var4Binary1}}</textarea></p>
+      {% else %}
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var4Binary1" id="var4Binary1"></textarea></p>
+      {% endif %}
+      <p><b>Binary Option 2:</b>
+      {% if var4Binary2 %}
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var4Binary2" id="var4Binary2">{{var4Binary2}}</textarea></p>
+      {% else %}
+        <textarea rows="1" cols="25" input type = "text" class="form-control" name="var4Binary2" id="var4Binary2"></textarea></p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!-- User sees what the report section for the variable will look like -->
+  <div class="well well-sm" id="var4MetricReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 2 Report</b></h4>
+    {% if var4Units %}
+      <input type="number" rows="1" cols="25" placeholder="{{var4Units}}" class="form-control" name="var4MetricReport" id="var4MetricReport">
+    {% else %}
+      <input type="number" rows="1" cols="25" placeholder="" class="form-control" name="var4MetricReport" id="var4MetricReport">
+    {% endif %}
+  </div>
+  <div class="well well-sm" id="var4OrdinalReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 2 Report</b></h4>
+    <div class="form-check">
+      {% if var4ScaleMin %}
+        <input type="radio" class="form-check-input" id="var4Ordinal1Report" name="var4OrdinalReport">
+        <label for="var4Ordinal1Report" id="var4Ordinal1Label" class="form-check-label" for="var4Ordinal1Report">
+          (1) {{var4ScaleMin}}
+        </label>
+      {% else %}
+      <input type="radio" class="form-check-input" id="var4Ordinal1Report" name="var4OrdinalReport">
+        <label for="var4ORdinal1Report" id="var4Ordinal1Label" class="form-check-label" for="var4Ordinal1Report">
+          (1)
+        </label>
+      {% endif %}
+    </div>
+      <!-- Only first and last buttons have labels (min and max) -->
+      <div class="form-check"><input type="radio" class="form-check-input" id="var4OrdinalMid1Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid1Report" class="form-check-label">(2)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var4OrdinalMid2Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid2Report" class="form-check-label">(3)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var4OrdinalMid3Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid3Report" class="form-check-label">(4)</div>
+      <div class="form-check">
+      {% if var4ScaleMax %}
+      <input type="radio" class="form-check-input" name="var4OrdinalReport" id="var4Ordinal2Report">
+        <label id="var4Ordinal2Label" class="form-check-label" for="var4Ordinal2Report">
+          (5) {{var4ScaleMax}}
+        </label>
+      {% else %}
+      <input type="radio" class="form-check-input" name="var4OrdinalReport" id="var4Ordinal2Report">
+        <label for="var4Ordinal2Report" id="var4Ordinal2Label" class="form-check-label" for="var4Ordinal2Report">
+          (5)
+        </label>
+      {% endif %}
+      </div>
+  </div>
+  <div class="well well-sm" id="var4BinaryReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 2 Report</b></h4>
+    <div class="form-check">
+    {% if var4Binary1 %}
+      <input type="radio" class="form-check-input" name="var4BinaryReport"  id="var4Binary1Report">
+      <label class="form-check-label" id="var4Binary1Label" for="var4Binary1Report">
+        (1) {{var4Binary1}}
+      </label>
+    {% else %}
+      <input type="radio" class="form-check-input" name="var4BinaryReport" id="var4Binary1Report">
+      <label class="form-check-label" id="var4Binary1Label" for="var4Binary1Report">
+        (1)
+      </label>
+    {% endif %}
+    </div>
+    <div class="form-check">
+    {% if var4Binary2 %}
+      <input type="radio" class="form-check-input" name="var4BinaryReport" id="var4Binary2Report">
+      <label class="form-check-label" id="var4Binary2Label" for="var4Binary2Report">
+        (2) {{var4Binary2}}
+      </label>
+    {% else %}
+      <input type="radio" class="form-check-input" name="var4BinaryReport" id="var4Binary2Report">
+      <label class="form-check-label" id="var4Binary2Label" for="var4Binary2Report">
+        (2)
+      </label>
+    {% endif %}
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="panel panel-default" id="fifthVariableDiv">
+  <div class="panel-heading">
+    <h3 class="panel-title">Another Third Variable / Alternative Cause 3
+      <a href="http://www.statisticshowto.com/experimental-design/confounding-variable/" target="_blank">  <!-- https://stackoverflow.com/questions/2906582/how-to-create-an-html-button-that-acts-like-a-link -->
+          <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+      </a>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <p>Choose another factor you think affects your dependent variable</p>
+  <div class="well well-sm">
+  <div class="form-group">
+    <div class="row" style="padding-bottom:15px">
+      <div class="col-sm-3">
+        <b>Variable:</b>
+      </div>
+      <div class="col-sm-6">
+        {% if var5 %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var5" name="var5">{{var5}}</textarea>
+        {% else %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var5" name="var5"></textarea>
+        {% endif %}
+      </div>
+      <div class="col-sm-3">
+        (Ex: Pain)
+      </div>
+    </div>
+    <div class="row" style="padding-bottom:15px">
+      <div class="col-sm-3">
+        <b>Variable Type:</b>
+      </div>
+      <div class="col-sm-6">
+        <select class="form-control" name="var5Type" id="var5Type"></select>
+      </div>
+    </div>
+    <div class="row" id="var5UnitsDiv">
+      <div class="col-sm-3">
+        <div id="var5UnitText" style="font-weight:bold">Unit of Measurement:</div>
+      </div>
+      <div class="col-sm-6">
+        {% if var5Units %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var5Units" name="var5Units">{{var5Units}}</textarea>
+        {% else %}
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var5Units" name="var5Units"></textarea>
+        {% endif %}
+      </div>
+      <div class="col-sm-3" id="var5UnitExampleText">
+          (Ex: Report number of times you felt pain)
+      </div>
+    </div>
+      <!-- Show when user selects ordinal -->
+      <div id="var5ScaleDiv">
+        <p>The scale is from 1 to 5, but you must choose words/phrases that define each end of the scale.</p>
+        <p>Example: I will rate my sleep quality on scale from "bad" (minimum rating) to "very good" (maximum rating). </p>
+        <p><b>Minimum Rating:</b>
+          {% if var5ScaleMin %}
+            <textarea rows="1" cols="25" input type="text" class="form-control" name="var5ScaleMin" id="var5ScaleMin">{{var5ScaleMin}}</textarea></p>
+          {% else %}
+            <textarea rows="1" cols="25" input type="text" class="form-control" name="var5ScaleMin" id="var5ScaleMin"></textarea></p>
+          {% endif %}
+        <p><b>Maximum Rating:</b>
+        {% if var5ScaleMax %}
+          <textarea rows="1" cols="25" input type="text" class="form-control" name="var5ScaleMax" id="var5ScaleMax">{{var5ScaleMax}}</textarea></p>
+        {% else %}
+          <textarea rows="1" cols="25" input type="text" class="form-control" name="var5ScaleMax" id="var5ScaleMax"></textarea></p>
+        {% endif %}
+      </div>
+      <!-- Show when user selects binary -->
+      <div id="var5BinariesDiv">
+        <p>You must choose exactly 2 options</p>
+        <p>Example: I will answer whether or not I exercised (Exercise or No Exercise)</p>
+        <p><b>Binary Option 1:</b>
+        {% if var5Binary1 %}
+          <textarea rows="1" cols="25" input type = "text" class="form-control" name="var5Binary1" id="var5Binary1">{{var5Binary1}}</textarea></p>
+        {% else %}
+          <textarea rows="1" cols="25" input type = "text" class="form-control" name="var5Binary1" id="var5Binary1"></textarea></p>
+        {% endif %}
+        <p><b>Binary Option 2:</b>
+        {% if varBinary2 %}
+          <textarea rows="1" cols="25" input type = "text" class="form-control" name="varBinary2" id="varBinary2">{{var5Binary2}}</textarea></p>
+        {% else %}
+          <textarea rows="1" cols="25" input type = "text" class="form-control" name="varBinary2" id="varBinary2"></textarea></p>
+        {% endif %}
+      </div>
+  </div>
+</div>
+<!-- User sees what the report section for the variable will look like -->
+  <div class="well well-sm" id="var5MetricReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 3 Report</b></h4>
+    {% if var5Units %}
+      <input type="number" rows="1" cols="25" placeholder="{{var5Units}}" class="form-control" name="var5MetricReport" id="var5MetricReport">
+    {% else %}
+      <input type="number" rows="1" cols="25" placeholder="" class="form-control" name="var5MetricReport" id="var5MetricReport">
+    {% endif %}
+  </div>
+  <div class="well well-sm" id="var5OrdinalReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 3 Report</b></h4>
+    <div class="form-check">
+      {% if var5ScaleMin %}
+        <input type="radio" class="form-check-input" id="var5Ordinal1Report" name="var5OrdinalReport">
+        <label for="var5Ordinal1Report" id="var5Ordinal1Label" class="form-check-label" for="var5Ordinal1Report">
+          (1) {{var5ScaleMin}}
+        </label>
+      {% else %}
+      <input type="radio" class="form-check-input" id="var5Ordinal1Report" name="var5OrdinalReport">
+        <label for="var5ORdinal1Report" id="var5Ordinal1Label" class="form-check-label" for="var5Ordinal1Report">
+          (1)
+        </label>
+      {% endif %}
+    </div>
+      <!-- Only first and last buttons have labels (min and max) -->
+      <div class="form-check"><input type="radio" class="form-check-input" id="var5OrdinalMid1Report" name="var5OrdinalReport">
+        <label for="var5OrdinalMid1Report" class="form-check-label">(2)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var5OrdinalMid2Report" name="var5OrdinalReport">
+        <label for="var5OrdinalMid2Report" class="form-check-label">(3)</div>
+      <div class="form-check"><input type="radio" class="form-check-input" id="var5OrdinalMid3Report" name="var5OrdinalReport">
+        <label for="var5OrdinalMid3Report" class="form-check-label">(4)</div>
+      <div class="form-check">
+      {% if var5ScaleMax %}
+      <input type="radio" class="form-check-input" name="var5OrdinalReport" id="var5Ordinal2Report">
+        <label id="var5Ordinal2Label" class="form-check-label" for="var5Ordinal2Report">
+          (5) {{var5ScaleMax}}
+        </label>
+      {% else %}
+      <input type="radio" class="form-check-input" name="var5OrdinalReport" id="var5Ordinal2Report">
+        <label for="var5Ordinal2Report" id="var5Ordinal2Label" class="form-check-label" for="var5Ordinal2Report">
+          (5)
+        </label>
+      {% endif %}
+      </div>
+  </div>
+  <div class="well well-sm" id="var5BinaryReportDiv">
+    <p>This is what the form will look like each day when you submit your data for this variable</p>
+    <h4><b>Third Variable / Alternative Cause 3 Report</b></h4>
+    <div class="form-check">
+    {% if var5Binary1 %}
+      <input type="radio" class="form-check-input" name="var5BinaryReport" id="var5Binary1Report">
+      <label class="form-check-label" id="var5Binary1Label" for="var5Binary1Report">
+        (1) {{var5Binary1}}
+      </label>
+    {% else %}
+      <input type="radio" class="form-check-input" name="var5BinaryReport" id="var5Binary1Report">
+      <label class="form-check-label" id="var5Binary1Label" for="var5Binary1Report">
+        (1)
+      </label>
+    {% endif %}
+    </div>
+    <div class="form-check">
+    {% if var5Binary2 %}
+      <input type="radio" class="form-check-input" name="var5BinaryReport" id="var5Binary2Report">
+      <label class="form-check-label" id="var5Binary2Label" for="var5Binary2Report">
+        (2) {{var5Binary2}}
+      </label>
+    {% else %}
+      <input type="radio" class="form-check-input" name="var5BinaryReport" id="var5Binary2Report">
+      <label class="form-check-label" id="var5Binary2Label" for="var5Binary2Report">
+        (2)
+      </label>
+    {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+  <!-- Submit user answers -->
+  <div class="form-group">
+    <input type="submit" class="btn btn-default">
+  </div><br><br>
+</form>
+<!-- Shows and hides the variable inputs based on type (units for metric, )-->
+<script>
+// TODO: account for the questions being asked about variable occurrences and adjust "required" tags
+$(document).ready(function() {
+// Hide all irrelevant input elements and don't make them required any more
+  $("#var3Type").on("change", function() {
+    var value = $(this).val();
+    if (value == "Metric") {
+      $("#var3UnitsDiv").show();
+      $("#var3MetricReportDiv").show();
+      $("#var3BinariesDiv").hide();
+      $("#var3BinaryReportDiv").hide();
+      $("#var3ScaleDiv").hide();
+      $("#var3OrdinalReportDiv").hide();
+      $("#var3Units").prop("required", true);
+      $("#var3ScaleMin").prop("required", false);
+      $("#var3ScaleMax").prop("required", false);
+      $("#var3Binary1").prop("required", false);
+      $("#var3Binary2").prop("required", false);
+    }
+    else if (value == "Ordinal") {
+      $("#var3ScaleDiv").show();
+      $("#var3OrdinalReportDiv").show();
+      $("#var3BinariesDiv").hide();
+      $("#var3BinaryReportDiv").hide();
+      $("#var3UnitsDiv").hide();
+      $("#var3MetricReportDiv").hide();
+      $("#var3ScaleMin").prop("required", true);
+      $("#var3ScaleMax").prop("required", true);
+      $("#var3Binary1").prop("required", false);
+      $("#var3Binary2").prop("required", false);
+      $("#var3Units").prop("required", false);
+    }
+    else if (value == "Binary") {
+      $("#var3BinariesDiv").show();
+      $("#var3BinaryReportDiv").show();
+      $("#var3ScaleDiv").hide();
+      $("#var3OrdinalReportDiv").hide();
+      $("#var3UnitsDiv").hide();
+      $("#var3MetricReportDiv").hide();
+      $("#var3Binary1").prop("required", true);
+      $("#var3Binary2").prop("required", true);
+      $("#var3ScaleMin").prop("required", false);
+      $("#var3ScaleMax").prop("required", false);
+      $("#var3Units").prop("required", false);
+    }
+    else {
+      $("#var3UnitsDiv").hide();
+      $("#var3MetricReportDiv").hide();
+      $("#var3BinariesDiv").hide();
+      $("#var3BinaryReportDiv").hide();
+      $("#var3ScaleDiv").hide();
+      $("#var3OrdinalReportDiv").hide();
+    }
+  });
+  $("#var4Type").on("change", function() {
+    var value = $(this).val();
+    if (value == "Metric") {
+      $("#var4UnitsDiv").show();
+      $("#var4MetricReportDiv").show();
+      $("#var4BinariesDiv").hide();
+      $("#var4BinaryReportDiv").hide();
+      $("#var4ScaleDiv").hide();
+      $("#var4OrdinalReportDiv").hide();
+      $("#var4Units").prop("required", true);
+      $("#var4ScaleMin").prop("required", false);
+      $("#var4ScaleMax").prop("required", false);
+      $("#var4Binary1").prop("required", false);
+      $("#var4Binary2").prop("required", false);
+    }
+    else if (value == "Ordinal") {
+      $("#var4ScaleDiv").show();
+      $("#var4OrdinalReportDiv").show();
+      $("#var4BinariesDiv").hide();
+      $("#var4BinaryReportDiv").hide();
+      $("#var4UnitsDiv").hide();
+      $("#var4MetricReportDiv").hide();
+      $("#var4ScaleMin").prop("required", true);
+      $("#var4ScaleMax").prop("required", true);
+      $("#var4Binary1").prop("required", false);
+      $("#var4Binary2").prop("required", false);
+      $("#var4Units").prop("required", false);
+    }
+    else if (value == "Binary") {
+      $("#var4BinariesDiv").show();
+      $("#var4BinaryReportDiv").show();
+      $("#var4ScaleDiv").hide();
+      $("#var4OrdinalReportDiv").hide();
+      $("#var4UnitsDiv").hide();
+      $("#var4MetricReportDiv").hide();
+      $("#var4Binary1").prop("required", true);
+      $("#var4Binary2").prop("required", true);
+      $("#var4ScaleMin").prop("required", false);
+      $("#var4ScaleMax").prop("required", false);
+      $("#var4Units").prop("required", false);
+    }
+    else {
+      $("#var4UnitsDiv").hide();
+      $("#var4MetricReportDiv").hide();
+      $("#var4BinariesDiv").hide();
+      $("#var4BinaryReportDiv").hide();
+      $("#var4ScaleDiv").hide();
+      $("#var4OrdinalReportDiv").hide();
+    }
+  });
+  $("#var5Type").on("change", function() {
+    var value = $(this).val();
+    if (value == "Metric") {
+      $("#var5UnitsDiv").show();
+      $("#var5MetricReportDiv").show();
+      $("#var5BinariesDiv").hide();
+      $("#var5BinaryReportDiv").hide();
+      $("#var5ScaleDiv").hide();
+      $("#var5OrdinalReportDiv").hide();
+      $("#var5Units").prop("required", true);
+      $("#var5ScaleMin").prop("required", false);
+      $("#var5ScaleMax").prop("required", false);
+      $("#var5Binary1").prop("required", false);
+      $("#var5Binary2").prop("required", false);
+    }
+    else if (value == "Ordinal") {
+      $("#var5ScaleDiv").show();
+      $("#var5OrdinalReportDiv").show();
+      $("#var5BinariesDiv").hide();
+      $("#var5BinaryReportDiv").hide();
+      $("#var5UnitsDiv").hide();
+      $("#var5MetricReportDiv").hide();
+      $("#var5ScaleMin").prop("required", true);
+      $("#var5ScaleMax").prop("required", true);
+      $("#var5Binary1").prop("required", false);
+      $("#var5Binary2").prop("required", false);
+      $("#var5Units").prop("required", false);
+    }
+    else if (value == "Binary") {
+      $("#var5BinariesDiv").show();
+      $("#var5BinaryReportDiv").show();
+      $("#var5ScaleDiv").hide();
+      $("#var5OrdinalReportDiv").hide();
+      $("#var5UnitsDiv").hide();
+      $("#var5MetricReportDiv").hide();
+      $("#var5Binary1").prop("required", true);
+      $("#var5Binary2").prop("required", true);
+      $("#var5ScaleMin").prop("required", false);
+      $("#var5ScaleMax").prop("required", false);
+      $("#var5Units").prop("required", false);
+    }
+    else {
+      $("#var5UnitsDiv").hide();
+      $("#var5MetricReportDiv").hide();
+      $("#var5BinariesDiv").hide();
+      $("#var5BinaryReportDiv").hide();
+      $("#var5ScaleDiv").hide();
+      $("#var5OrdinalReportDiv").hide();
+    }
+  });
+// Change the text of question based on what the user chooses as their Third Variable(s)
+  $("#var3").keyup(function() {
+    var string = "When does your Third Variable / ";
+    var value = $(this).val();
+    $("#var3OccurrenceText").html(string + "Alternative Cause 1 " + "(" + value + ")" + " occur?");
+  });
+  $("#var4").keyup(function() {
+    var string = "When does your Third Variable / ";
+    var value = $(this).val();
+    $("#var4OccurrenceText").html(string + "Alternative Cause 2 " + "(" + value + ")" + " occur?");
+  });
+  $("#var5").keyup(function() {
+    var string = "When does your Third Variable / ";
+    var value = $(this).val();
+    $("#var5OccurrenceText").html(string + "Alternative Cause 3 " + "(" + value + ")" + " occur?");
+  });
+// TODO: Should I include the dynamically created question in the report wells based on time of day they say a variable occurs (get from select) [this page and IV/DV page]?
+// Change what the user is presented with every keyup (can see the report page being built)
+// TODO: Ask if the user should see the text as it's being typed (.change) or once they click outside the input (.keyup)
+  $("#var3Units").keyup(function() {
+    $("#var3MetricReport").prop("placeholder", $(this).val());
+  });
+  $("#var3ScaleMin").keyup(function() {
+    $("#var3Ordinal1Label").html("(1) " + $(this).val());
+  });
+  $("#var3ScaleMax").keyup(function() {
+    $("#var3Ordinal2Label").html("(5) " + $(this).val());
+  });
+  $("#var3Binary1").keyup(function() {
+    $("#var3Binary1Label").text("(1) " + $(this).val());
+  });
+  $("#var3Binary2").keyup(function() {
+    $("#var3Binary2Label").text("(2) " +$(this).val());
+  });
+  $("#var4Units").keyup(function() {
+    $("#var4MetricReport").prop("placeholder", $(this).val());
+  });
+  $("#var4ScaleMin").keyup(function() {
+    $("#var4Ordinal1Label").html("(1) " + $(this).val());
+  });
+  $("#var4ScaleMax").keyup(function() {
+    $("#var4Ordinal2Label").html("(5) " + $(this).val());
+  });
+  $("#var4Binary1").keyup(function() {
+    $("#var4Binary1Label").text("(1) " + $(this).val());
+  });
+  $("#var4Binary2").keyup(function() {
+    $("#var4Binary2Label").text("(2) " + $(this).val());
+  });
+  $("#var5Units").keyup(function() {
+    $("#var5MetricReport").prop("placeholder", $(this).val());
+  });
+  $("#var5ScaleMin").keyup(function() {
+    $("#var5Ordinal1Label").html("(1) " + $(this).val());
+  });
+  $("#var5ScaleMax").keyup(function() {
+    $("#var5Ordinal2Label").html("(5) " + $(this).val());
+  });
+  $("#var5Binary1").keyup(function() {
+    $("#var5Binary1Label").text("(1) " + $(this).val());
+  });
+  $("#var5Binary2").keyup(function() {
+    $("#var5Binary2Label").text("(2) " + $(this).val());
+  });
+// Show variable divs depending on how many variables the user wants
+  $("#addMoreVariables").on("change", function() {
+    var value = $(this).val();
+    if (value == "1") { // Only want 1 third variable
+      // Third variable div is always shown and required by default
+      // Make all fourth variable forms optional
+      $("#fourthVariableDiv").hide();
+      $("#var4").prop("required", false);
+      $("#var4Type").prop("required", false);
+      $("#var4TimeSelect").prop("required", false);
+      $("#var4Type").val(""); // Reset form
+      $("#var4Type").trigger("change");
+      $("#var4Units").prop("required", false);
+      $("#var4ScaleMin").prop("required", false);
+      $("#var4ScaleMax").prop("required", false);
+      $("#var4Binary1").prop("required", false);
+      $("#var4Binary2").prop("required", false);
+      // Make all fifth variable forms optional
+      $("#fifthVariableDiv").hide();
+      $("#var5").prop("required", false);
+      $("#var5Type").prop("required", false);
+      $("#var5TimeSelect").prop("required", false);
+      $("#var5Type").val(""); // Reset form
+      $("#var5Type").trigger("change");
+      $("#var5Units").prop("required", false);
+      $("#var5ScaleMin").prop("required", false);
+      $("#var5ScaleMax").prop("required", false);
+      $("#var5Binary1").prop("required", false);
+      $("#var5Binary2").prop("required", false);
+    }
+    else if (value == "2") { // Only want 2 third variables (var3 and var4)
+      $("#fourthVariableDiv").show();
+      $("#var4").prop("required", true);
+      $("#var4Type").prop("required", true);
+      $("#var4TimeSelect").prop("required", true);
+      // Make all fifth variable forms optional
+      $("#fifthVariableDiv").hide();
+      $("#var5").prop("required", false);
+      $("#var5Type").prop("required", false);
+      $("#var5Type").val(""); // Reset form
+      $("#var5Type").trigger("change"); // Have to manually trigger event
+      $("#var5TimeSelect").prop("required", false);
+      $("#var5Units").prop("required", false);
+      $("#var5ScaleMin").prop("required", false);
+      $("#var5ScaleMax").prop("required", false);
+      $("#var5Binary1").prop("required", false);
+      $("#var5Binary2").prop("required", false);
+    }
+    else if (value == "3") { // Want all 3 third variables (var3, var4, var5)
+      $("#fourthVariableDiv").show();
+      $("#var4").prop("required", true);
+      $("#var4Type").prop("required", true);
+      $("#var4TimeSelect").prop("required", true);
+      $("#fifthVariableDiv").show();
+      $("#var5").prop("required", true);
+      $("#var5Type").prop("required", true);
+      $("#var5TimeSelect").prop("required", true);
+    }
+    else {
+    }
+  });
+// Clear forms that aren't required on submit
+  $("#Form1").on("submit", function() {
+    // Clear textarea forms if they're not required
+    $("textarea").each(function(i) {
+      if (!($(this).prop("required"))) {
+        $(this).val("");
+      }
+    });
+    // Clear select forms if they're not required
+    $("select").each(function(i) {
+      if (!($(this).prop("required"))) {
+        $(this).val("");
+      }
+    });
+  });
+  // Disallow the user to submit form when they press the enter button
+  // Credit to Jake Wilson https://stackoverflow.com/a/1563238 for code to prevent submission when pressing enter key
+  $("#Form1").find(".input").keypress(function(e) {
+    if (e.which == 13) { // Checks if the enter key was pressed
+      return false;
+    }
+  });
+});
+</script>
+<script>
+// Hide fourth and fifth variable divs by default (not mandatory)
+$("#fourthVariableDiv").hide();
+$("#fifthVariableDiv").hide();
+  // Make the type the user submitted the default selected option for all variable type selects
+
+  var inputTypeArray = ["var3Type", "var4Type", "var5Type"];
+  var variableTypeArray = ["{{var3Type}}", "{{var4Type}}", "{{var5Type}}"];
+  var variableDivArray = ["#thirdVariableDiv", "#fourthVariableDiv", "#fifthVariableDiv"];
+  var varInputArray = ["#var3", "#var4", "#var5"];
+  var unitsDivArray = ["#var3UnitsDiv", "#var4UnitsDiv", "#var5UnitsDiv"];
+  var metricReportDivArray = ["#var3MetricReportDiv", "#var4MetricReportDiv", "#var5MetricReportDiv"];
+  var varUnitsArray = ["#var3Units", "#var4Units", "#var5Units"];
+  var scaleDivArray = ["#var3ScaleDiv", "#var4ScaleDiv", "#var5ScaleDiv"];
+  var scaleMinArray = ["#var3ScaleMin", "#var4ScaleMin", "#var5ScaleMin"];
+  var scaleMaxArray = ["#var3ScaleMax", "#var4ScaleMax", "#var5ScaleMax"];
+  var ordinalReportDivArray = ["#var3OrdinalReportDiv", "#var4OrdinalReportDiv", "#var5OrdinalReportDiv"];
+  var binaryDivArray = ["#var3BinariesDiv", "#var4BinariesDiv", "#var5BinariesDiv"];
+  var binaryArray1 = ["#var3Binary1", "#var4Binary1", "#var5Binary1"];
+  var binaryArray2 = ["#var3Binary2", "#var4Binary2", "#var5Binary2"];
+  var binaryReportDivArray = ["#var3BinaryReportDiv", "#var4BinaryReportDiv", "#var5BinaryReportDiv"];
+
+  // Hide all divs under variable input by default
+  var variableType = ""; // Holds the variable type
+  // Check for which element called this method so correct type is shown
+  for (i = 0; i < 3; i++) {
+    // Initally hide all of the divs the user is supposed to type their answers once they've chosen a variable type
+    $(unitsDivArray[i]).hide();
+    $(scaleDivArray[i]).hide();
+    $(binaryDivArray[i]).hide();
+    // Initially hide all the report divs the user sees to get a sense of what the the report page will look like for a variable
+    $(metricReportDivArray[i]).hide();
+    $(ordinalReportDivArray[i]).hide();
+    $(binaryReportDivArray[i]).hide();
+    // Create the options for the select element
+    var disabledOption = document.createElement("option");
+    var metricOption = document.createElement("option");
+    var ordinalOption = document.createElement("option");
+    var binaryOption = document.createElement("option");
+    // Give the options properties
+    disabledOption.value = "";
+    disabledOption.disabled = true;
+    metricOption.value = "Metric";
+    ordinalOption.value = "Ordinal";
+    binaryOption.value = "Binary";
+    disabledOption.innerHTML = "Choose Variable Type";
+    metricOption.innerHTML = "Metric";
+    ordinalOption.innerHTML = "Ordinal";
+    binaryOption.innerHTML = "Binary";
+    var selectType = document.getElementById(inputTypeArray[i]); // Gets the select element where user chooses variable type
+    var variableType = variableTypeArray[i]; // Set variable type to string retrieved from django
+    if (variableType == "Metric") {
+      metricOption.selected = true;
+      $(variableDivArray[i]).show(); // Show div where user puts variable info (relevant for optional variables 4 and 5)
+      selectType.required = true; // Make putting in the variable type mandatory (relevant for optional variables 4 and 5)
+      $(varInputArray[i]).prop("required", true); // Make entering the variable name mandatory (relevant for optional variables 4 and 5)
+      $(unitsDivArray[i]).show(); // Show the area related to units
+      $(varUnitsArray[i]).prop("required", true); // Make the user put in the units for the variable
+      $(metricReportDivArray[i]).show(); // Show user what report will look like
+    }
+    else if (variableType == "Ordinal") {
+      ordinalOption.selected = true;
+      $(variableDivArray[i]).show(); // Show div where user puts variable info (relevant for optional variables 4 and 5)
+      selectType.required = true; // Make putting in the variable type mandatory (relevant for optional variables 4 and 5)
+      $(varInputArray[i]).prop("required", true); // Make entering the variable name mandatory (relevant for optional variables 4 and 5)
+      $(scaleDivArray[i]).show(); // Show area related to the ordinal scale
+      $(scaleMinArray[i]).prop("required", true); // Make the user choose a minimum
+      $(scaleMaxArray[i]).prop("required", true); // Make the user choose a maximum
+      $(ordinalReportDivArray[i]).show(); // Show user what report will look like
+    }
+    else if (variableType == "Binary") {
+      binaryOption.selected = true;
+      $(variableDivArray[i]).show(); // Show div where user puts variable info (relevant for optional variables 4 and 5)
+      selectType.required = true; // Make putting in the variable type mandatory (relevant for optional variables 4 and 5)
+      $(varInputArray[i]).prop("required", true); // Make entering the variable name mandatory (relevant for optional variables 4 and 5)
+      $(binaryDivArray[i]).show(); // Show the area related to the binary scale
+      $(binaryArray1[i]).prop("required", true); // Make the user choose the first binary
+      $(binaryArray2[i]).prop("required", true); // Make the user choose the second binary
+      $(binaryReportDivArray[i]).show(); // Show user what report will look like
+    }
+    else { // Don't show anything contingent on the variable type
+      disabledOption.selected = true;
+    }
+    // Append options to select list
+    selectType.appendChild(disabledOption);
+    selectType.appendChild(metricOption);
+    selectType.appendChild(ordinalOption);
+    selectType.appendChild(binaryOption);
+  }
+  var DVTimeOfDay = "{{DVTimeOfDay}}";
+  var arrayTimeSelect = ["#var3TimeSelect", "#var4TimeSelect", "#var5TimeSelect"];
+  var timeOfDayText = ["#DVTimeOfDayTextVar3", "#DVTimeOfDayTextVar4", "#DVTimeOfDayTextVar5"];
+  var timeOfDayQuestions = ["#var3OccurrenceText", "#var4OccurrenceText", "#var5OccurrenceText"];
+  var variableNames = ["{{var3}}", "{{var4}}", "{{var5}}"]; // Might not be needed
+// Creates time of day options for Third Variables for user to choose based on when they said the DV occurs
+  for (i = 0; i < 3; i++) {
+    // Ask about Daytime (Monday) vs Daytime (Tuesday) for IV
+    // Should variable names be initially piped in and should the text change based on what the user types in as a third variable?
+    if (DVTimeOfDay == "Later that Day") {
+      $(timeOfDayText[i]).html("Suppose your Dependent Variable ({{DV}}) occurred " +
+      "on Monday.");
+      if (variableNames[i] != "" && variableNames[i] != "None") {
+        $(timeOfDayQuestions[i]).html("When does your Third Variable / Alternative Cause " + (i+1) + " (" +
+        variableNames[i] + ")" + " occur?");
+      }
+      else {
+        $(timeOfDayQuestions[i]).html("When does your Third Variable / Alternative Cause " + (i+1) + " ()" + " occur?");
+      }
+      $(jQuery('<option/>', {
+        value: "Earlier that Day (Earlier Monday)",
+        html: "Earlier that Day (Earlier Monday)"
+      })).appendTo(arrayTimeSelect[i]);
+      $(jQuery('<option/>', {
+        value: "Previous Night (Sunday Night)",
+        html: "Previous Night (Sunday Night)"
+      })).appendTo(arrayTimeSelect[i]);
+    }
+    else if (DVTimeOfDay == "Nighttime") {
+      $(timeOfDayText[i]).html("Suppose your Dependent Variable ({{DV}}) occurred " +
+      "on Monday Night.");
+      if (variableNames[i] != "" && variableNames[i] != "None") {
+        $(timeOfDayQuestions[i]).html("When does your Third Variable / Alternative Cause " + (i+1) + " (" +
+        variableNames[i] + ")" + " occur?");
+      }
+      else {
+        $(timeOfDayQuestions[i]).html("When does your Third Variable / Alternative Cause " + (i+1) + " ()" + " occur?");
+      }
+      $(jQuery('<option/>', {
+        value: "Previous Day (Monday)",
+        html: "Previous Day (Monday)"
+      })).appendTo(arrayTimeSelect[i]);
+      $(jQuery('<option/>', {
+        value: "Earlier that Night/Overnight (Monday Night)",
+        html: "Earlier that Night/Overnight (Monday Night)"
+      })).appendTo(arrayTimeSelect[i]);
+    }
+    else if (DVTimeOfDay == "Following Day") {
+      $(timeOfDayText[i]).html("Suppose your Dependent Variable ({{DV}}) occurred " +
+      "on Tuesday.");
+      if (variableNames[i] != "" && variableNames[i] != "None") {
+        $(timeOfDayQuestions[i]).html("When does your Third Variable / Alternative Cause " + (i+1) + " (" +
+        variableNames[i] + ")" + " occur?");
+      }
+      else {
+        $(timeOfDayQuestions[i]).html("When does your Third Variable / Alternative Cause " + (i+1) + " ()" + " occur?");
+      }
+      $(jQuery('<option/>', {
+        value: "Previous Day (Monday)",
+        html: "Previous Day (Monday)"
+      })).appendTo(arrayTimeSelect[i]);
+      $(jQuery('<option/>', {
+        value: "Last Night (Monday Night)",
+        html: "Last Night (Monday Night)"
+      })).appendTo(arrayTimeSelect[i]);
+      $(jQuery('<option/>', {
+        value: "Earlier that Day (Earlier Tuesday)",
+        html: "Earlier that Day (Earlier Tuesday)"
+      })).appendTo(arrayTimeSelect[i]);
+    }
+    else if (DVTimeOfDay == "Later that Night/Overnight") {
+      $(timeOfDayText[i]).html("Suppose your Dependent Variable ({{DV}}) occurred " +
+      "on Monday Night.");
+      if (variableNames[i] != "" && variableNames[i] != "None") {
+        $(timeOfDayQuestions[i]).html("When does your Third Variable / Alternative Cause " + (i+1) + " (" +
+        variableNames[i] + ")" + " occur?");
+      }
+      else {
+        $(timeOfDayQuestions[i]).html("When does your Third Variable / Alternative Cause " + (i+1) + " ()" + " occur?");
+      }
+      $(jQuery('<option/>', {
+        value: "Previous Day (Monday)",
+        html: "Previous Day (Monday)"
+      })).appendTo(arrayTimeSelect[i]);
+      $(jQuery('<option/>', {
+        value: "Earlier that Night/Overnight (Monday Night)",
+        html: "Earlier that Night/Overnight (Monday Night)"
+      })).appendTo(arrayTimeSelect[i]);
+    }
+    else {
+    }
+  }
+  // Loop through options of each select and display the option if it's been chosen before
+  // Credit to  karim79 for how to iterate through options https://stackoverflow.com/questions/2950152/iterate-through-select-options
+  $("#var3TimeSelect > option").each(function() {
+    if ("{{var3TimeOfDay}}" == this.value)
+      $(this).prop("selected", true);
+  });
+  $("#var4TimeSelect > option").each(function() {
+    if ("{{var4TimeOfDay}}" == this.value)
+      $(this).prop("selected", true);
+  });
+  $("#var5TimeSelect > option").each(function() {
+    if ("{{var5TimeOfDay}}" == this.value)
+      $(this).prop("selected", true);
+  });
+  // Choose the select option based on how many variables they chose previously
+  // Make variable times required based on how many variables were chosen previously (done here because options were just added for time above)
+  // Credit to Sampson for changing attribute of option within select https://stackoverflow.com/questions/1311287/setting-the-selected-attribute-on-a-select-list-using-jquery
+  if ("{{var5}}" != "" && "{{var5}}" != "None") {
+    $("#addMoreVariables option[value='3']").prop("selected", true);
+    $("#var4TimeSelect").prop("required", true); // Var4 needs a time
+    $("#var5TimeSelect").prop("required", true); // Var5 needs a time
+  }
+  else if ("{{var4}}" != "" && "{{var4}}" != "None") {
+    $("#addMoreVariables option[value='2']").prop("selected", true);
+    $("#var4TimeSelect").prop("required", true); // Var4 needs a time
+  }
+  else {
+  }
+</script>
+{% endblock %}

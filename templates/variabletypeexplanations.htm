@@ -1,0 +1,51 @@
+
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<h3><center>Understanding Variable Types and Measurements</center></h3>
+<p>There are a few different types of variables you should be aware of when you are thinking of your research question. I use exercise as an example</p>
+  <div id="variableTypesExplanationDiv">
+    <h4>Variable Type Explanations
+    <a href="https://www.spss-tutorials.com/measurement-levels/" target="_blank">  <!-- https://stackoverflow.com/questions/2906582/how-to-create-an-html-button-that-acts-like-a-link -->
+        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+    </a></h4>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Metric</h3>
+        </div>
+        <div class="panel-body">
+          A metric variable has an infinite number of possible values. For example, if you wanted to know how exercise
+          affects your sleep quality, you could report 30 minutes, 32.5 minutes, 70.666 minutes, etc. of exercise.<br>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Ordinal</h3>
+        </div>
+        <div class="panel-body">
+          An ordinal variable is a range of possible values. For example, you could rate your quality of exercise on a scale of 1-5
+          (worst [1], ok [2], neutral [3], good [4], best [5]).
+          For the purposes of this website, you will report a value from 1 to 5.<br>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Binary</h3>
+        </div>
+        <div class="panel-body">
+          A binary variable is a variable with only two possible options. For example, you could report
+          that you did exercise (1) or did not exercise (0) today. Alternatively, you could report your exercise as "Good" (1)
+          or "Bad" (0).<br>
+        </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Categorical</h3>
+      </div>
+      <div class="panel-body">
+        Variable with categories. Categories could be cardio, weight-lifting, biking, etc. You are not allowed to choose
+        this type when creating your design. <br>
+      </div>
+    </div>
+  </div>
+<br><br>
+{% endblock %}

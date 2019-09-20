@@ -1,0 +1,196 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<h3><center>Choose Daily Questions</center></h3>
+<p>You must give a question that you will answer in order to record your measurements for your chosen variables every day. Be sure the question makes sense according to the variable's units and type.</p>
+<p>Binary Example: Did you exercise today?</p>
+<p>Continuous Example: How many miles did you run today? (1, 2.5, 3.5, etc.)</p>
+<p>Discrete Example: How many full pushups did you do today?</p>
+<p>Ordinal Example: What was the quality of your exercise today?</p>
+<form class="form-inline" id="Form1" method="post" action="/choosedailyquestions">
+<div id="questionsDiv">
+  <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Independent Variable Question</h3>
+      </div>
+      <div class="panel-body">
+        Independent Variable:
+          {% if IV %}
+            <p style="font-weight: bold">{{IV}}</p>
+          {% else %}
+            <p style="font-weight: bold">You don't have an Independent Variable!</p>
+          {% endif %}
+
+          Independent Variable Type:
+          {% if IVType %}
+            <p style="font-weight: bold">{{IVType}}</p>
+          {% else %}
+            <p>You don't have an Independent Variable Type!</p>
+          {% endif %}
+      <div id="IVUnitsDiv">
+          Independent Variable Units:
+          {% if IVUnits %}
+            <p style="font-weight: bold">{{IVUnits}}</p>
+          {% else %}
+            <p>You don't have a unit measurement for the Independent Variable!</p>
+          {% endif %}
+      </div>
+        <div class="form-group">
+          <label for="IV">Daily Question: </label>
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="IVQuestion" name="IVQuestion" required></textarea>
+        </div>
+      </div>
+  </div>
+  <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Dependent Variable Question</h3>
+      </div>
+      <div class="panel-body">
+        Dependent Variable:
+          {% if DV %}
+            <p style="font-weight: bold">{{DV}}</p>
+          {% else %}
+            <p style="font-weight: bold">You don't have a Dependent Variable!</p>
+          {% endif %}
+
+          Dependent Variable Type:
+          {% if DVType %}
+            <p style="font-weight: bold">{{DVType}}</p>
+          {% else %}
+            <p>You don't have a Dependent Variable Type!</p>
+          {% endif %}
+      <div id="DVUnitsDiv">
+          Dependent Variable Units:
+          {% if DVUnits %}
+            <p style="font-weight: bold">{{DVUnits}}</p>
+          {% else %}
+            <p>You don't have a unit measurement for the Dependent Variable!</p>
+          {% endif %}
+      </div>
+        <div class="form-group">
+          <label for="DV">Daily Question: </label>
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="DVQuestion" name="DVQuestion" required></textarea>
+        </div>
+      </div>
+  </div>
+  <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Third Variable Question</h3>
+      </div>
+      <div class="panel-body">
+        Third Variable:
+          {% if var3 %}
+            <p style="font-weight: bold">{{var3}}</p>
+          {% else %}
+            <p style="font-weight: bold">You don't have a Third Variable!</p>
+          {% endif %}
+
+          Third Variable Type:
+          {% if var3Type %}
+            <p style="font-weight: bold">{{var3Type}}</p>
+          {% else %}
+            <p>You don't have a Third Variable Type!</p>
+          {% endif %}
+          <div id="var3UnitsDiv">
+          Third Variable Units:
+          {% if var3Units %}
+            <p style="font-weight: bold">{{var3Units}}</p>
+          {% else %}
+            <p>You don't have a unit measurement for the Third Variable!</p>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="var3">Daily Question: </label>
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var3Question" name="var3Question" required></textarea>
+        </div>
+      </div>
+  </div>
+  {% if var4 %}
+  <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Fourth Variable Question</h3>
+      </div>
+      <div class="panel-body">
+        Fourth Variable:
+          {% if var4 %}
+            <p style="font-weight: bold">{{var4}}</p>
+          {% else %}
+            <p style="font-weight: bold">You don't have a Fourth variable!</p>
+          {% endif %}
+
+          Fourth Variable Type:
+          {% if var4Type %}
+            <p style="font-weight: bold">{{var4Type}}</p>
+          {% else %}
+            <p>You don't have a Fourth Variable Type!</p>
+          {% endif %}
+          <div id="var4UnitsDiv">
+          Fourth Variable Units:
+          {% if var4Units %}
+            <p style="font-weight: bold">{{var4Units}}</p>
+          {% else %}
+            <p>You don't have a unit measurement for the Fourth Variable!</p>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="var4">Daily Question: </label>
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var4Question" name="var4Question" required></textarea>
+        </div>
+      </div>
+  </div>
+  {% endif %}
+
+  {% if var5 %}
+  <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Fifth Variable Question</h3>
+      </div>
+      <div class="panel-body">
+        Fifth Variable:
+          {% if var5 %}
+            <p style="font-weight: bold">{{var5}}</p>
+          {% else %}
+            <p style="font-weight: bold">You don't have a Fourth variable!</p>
+          {% endif %}
+
+          Fifth Variable Type:
+          {% if var5Type %}
+            <p style="font-weight: bold">{{var5Type}}</p>
+          {% else %}
+            <p>You don't have a Fifth Variable Type!</p>
+          {% endif %}
+          <div id="var5UnitsDiv">
+          Fifth Variable Units:
+          {% if var5Units %}
+            <p style="font-weight: bold">{{var5Units}}</p>
+          {% else %}
+            <p>You don't have a unit measurement for the Fifth Variable!</p>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="var5">Daily Question: </label>
+          <textarea cols=25 rows=1 input type="text" class="form-control" id="var5Question" name="var5Question" required></textarea>
+        </div>
+      </div>
+  </div>
+  {% endif %}
+<!-- Don't show units div text for each variable if the user chose "metric" for the variable type -->
+<script>
+var typeArray = ["{{IVType}}", "{{DVType}}", "{{var3Type}}", "{{var4Type}}", "{{var5Type}}"];
+var unitsDivArray = ["IVUnitsDiv", "DVUnitsDiv", "var3UnitsDiv", "var4UnitsDiv", "var5UnitsDiv"];
+for (i = 0; i < unitsDivArray.length; i++) {
+  var type = typeArray[i];
+  var unitsDivString = unitsDivArray[i];
+  var unitsDiv = document.getElementById(unitsDivString);
+  if (type == "Metric")
+    unitsDiv.style.display = "block";
+  else
+    unitsDiv.style.display = "none";
+}
+</script>
+</div>
+<div class="form-group">
+  <input type="submit" class="btn btn-default"></input>
+</div>
+</form>
+
+{% endblock %}

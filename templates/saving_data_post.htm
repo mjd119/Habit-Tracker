@@ -1,0 +1,83 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<script>
+// A function to take a list and turn it into rows in a table
+function easytable(list){
+	for (i = 0 ; i < list.length ; i++){
+		document.write("<td>"+String(list[i])+"</td>");
+	}
+}
+</script>
+
+<h3><center>Means Task Example:</center></h3>
+<p>
+This page is a sample study in which participants are presented with 10 numbers and they are supposed to judge the mean. There are two conditions, between subjects. In one condition, the mean is around 30, and in the other the mean is around 50. Based on your user number, you were assigned to the condition with a mean of {{condition}}. This assignment to conditions occurred at the time that you created your user (/user_create, UserCreateHandler). The condition is stored in the User data model under 'condition', and is also stored in the session under 'condition'.
+<br><br>
+This page shows 4 different ways of generating the data and presenting it to participants. The reason for showing all of these ways is that they highlight different features of different data generation processes. The first method involves determining the numbers offline, storing them in a csv file, and then pulling them from the csv file. The second method involves creating the data in python at the time of creating the user. Both of these two methods mean that the data will be the same even if the page is reloaded. The third method involves generating the data in the python backend right when this page is loaded. The fourth method involves generating the data in the browser in javascript. Because the last two methods involve generating the data at the time that the page is rendered, the numbers will change each time the page is loaded.
+<br><br>
+These stimuli could be conceived as anything from raw numbers presented to a participant in a decision-making experiment, variables that determine visual characteristics in an element on screen, or any variable that determines the stimuli that a subject sees. For example, Method 1 is analogous to generating two images offline, and uploading them as separate files. Methods 2 and 3 are analogous to generating two images in the python backend (python can be used to generate images). Method 4 is analogous to generating two images in the javascript frontend; there are many packages for generating or modifying images in javascript.
+<br><br>
+When sent to the datastore, the judgment and the 10 numbers are stored in the MeanTaskData data model. You can see your prior responses at <a href="/data_for_download">/data_for_download.htm</a>.
+
+<br><br><br>
+
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Method 1</h3>
+  </div>
+  <div class="panel-body">
+One way to generate stimuli is to store data in a csv file and then pull the data as needed. These data are stored in the file RandomNumbersFromCSV.csv. These data are the same on each page load.<br><br>
+On submission, the judgment and the 10 numbers are stored in the datastore. Technically since the 10 numbers were pulled from a csv file, it is not inherently necessary to store them again in the datastore, through it is convenient to store the user's judgment with the stimuli properties.<br><br>
+<script>
+RandomNumbersFromCSV={{RandomNumbersFromCSV}}
+</script>
+
+<table class="table table-bordered">
+<tr align="center">
+<!-- Convert the list into rows in a table using the function above -->
+<script>easytable(RandomNumbersFromCSV)</script>
+</tr>
+</table>
+
+<script>
+function SubmitForm1(){
+	document.getElementById('TenNumbers1').value = RandomNumbersFromCSV
+    document.getElementById("Form1").submit()
+}
+</script>
+
+
+<form class="form-inline" id="Form1"  method="post" action="/saving_data_post">
+  <div class="form-group">
+    <label for="Mean">Mean: </label>
+    <input type="number" class="form-control" id="Mean" name="Mean">
+<!-- Name is the name of the variable that gets sent back to the server. ID is different from name here because there are four forms, and so that the SubmitForm function can find the right hidden input to change -->
+    <input type="hidden" id="TenNumbers1" name="tennumbers" value="">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="SubmitForm1()">Submit</button>
+  </div>
+</form>
+</div>
+
+<!-- <input type="button" id="Submit" onclick="mySubmit()" value="Submit" disabled="True"> -->
+
+
+</div>
+
+
+
+
+
+
+<br><br>
+
+
+
+
+{% endblock %}

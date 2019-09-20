@@ -1,0 +1,150 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<h3><center>Boto Example:</center></h3>
+<h4>Introduction:</h4>
+<p>
+This page provides demonstrations of a couple functions of boto. In theory any MTurk operation can be achieved by calling different functions. The documentation for the MTurk Operations and their implementations in Boto are available from the following sites:
+<a href="http://boto.cloudhackers.com/en/latest/ref/mturk.html#">Boto</a>
+<a href="http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_OperationsArticle.html">MTurk</a>.
+
+
+
+<p>
+Before you can access your MTurk account, you must obtain your Amazon Web Service (AWS)
+access_key aka AWS_ACCESS_KEY_ID and your secret_key aka AWS_SECRET_ACCESS_KEY. This is like your user name and password. These need to be put into the app.yaml file as environment variables. Information for how to find these credentials can be found <a href="http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html">here</a>.
+
+<p>
+Amazon has built a 'sandbox' that allows developers to test code in a test environment. Any code executed in this environment does not actually withdraw fees from the MTurk account and MTurk workers will not accept the hits. Once you are ready to publish the site, all you need to do is change one line of code in /boto/connection.py line 950 to use the production site instead of the sandbox.
+<p>
+
+
+
+<br><br>
+
+
+<h4>Account Balance:</h4>
+<p>
+This code retrieves the account balance from MTurk. If the sandbox is being used, it should always display a balance of $10,000.
+<br>
+<b>Account Balance: </b>{{AccountBalance}}
+<br>
+<br>
+<br>
+
+<!-- <h4>Querying a HIT:</h4>
+This function demonstrates how to query MTurk to find information a Hit that was previously published. Using the hit_id, you can get back lots of information about the hit. The following list is all the properties you can obtain. The Question property is the HTML advertisement for the hit. Right now I can't get it to display the results of the HTML in this page.
+
+<b>Properties of the Hit:</b>
+Even though there is only one hit in this list, This is the easiest way to deal with it that I can figure out. There is also a slice method in django template library -->
+
+<!-- {% for i in Hit %}
+<br>Amount: {{ i.Amount }}
+<br>AssignmentDurationInSeconds: {{ i.AssignmentDurationInSeconds }}
+<br>AutoApprovalDelayInSeconds: {{ i.AutoApprovalDelayInSeconds }}
+<br>Comparator: {{ i.Comparator }}
+<br>Country: {{ i.Country }}
+<br>CreationTime: {{ i.CreationTime }}
+<br>CurrencyCode: {{ i.CurrencyCode }}
+<br>Description: {{ i.Description }}
+<br>Expiration: {{ i.Expiration }}
+<br>FormattedPrice: {{ i.FormattedPrice }}
+<br>HIT: {{ i.HIT }}
+<br>HITGroupId: {{ i.HITGroupId }}
+<br>HITId: {{ i.HITId }}
+<br>HITLayoutId: {{ i.HITLayoutId }}
+<br>HITReviewStatus: {{ i.HITReviewStatus }}
+<br>HITStatus: {{ i.HITStatus }}
+<br>HITTypeId: {{ i.HITTypeId }}
+<br>IntegerValue: {{ i.IntegerValue }}
+<br>IsValid: {{ i.IsValid }}
+<br>Keywords: {{ i.Keywords }}
+<br>LocaleValue: {{ i.LocaleValue }}
+<br>MaxAssignments: {{ i.MaxAssignments }}
+<br>QualificationRequirement: {{ i.QualificationRequirement }}
+<br>QualificationTypeId: {{ i.QualificationTypeId }}
+<br>Question: {{ i.Question }}
+<br>Request: {{ i.Request }}
+<br>RequesterAnnotation: {{ i.RequesterAnnotation }}
+<br>RequiredToPreview: {{ i.RequiredToPreview }}
+<br>Reward: {{ i.Reward }}
+<br>Title: {{ i.Title }}
+<br>expired: {{ i.expired }}
+<br>startElement: {{ i.startElement }}
+{% endfor %}
+
+<br>
+<br>
+<br>
+
+
+<h4>Querying Assignments for a HIT:</h4>
+This function demonstrates how to query MTurk to find all the 'assignments' for a particular HIT. The 'assignments' are the unique MTurk workers who worked on the hit. The example below is for an example mturk HIT made on the sandbox that only one user (me) completed. If there were more users then there would be more rows. You can see that this is the same HIT as in the Second Operation example above because they have the same HITId.
+<br>
+
+
+<table class="table table-condensed table-hover table-striped table-bordered">
+<tr>
+<th>AcceptTime</th>
+<th>ApprovalTime</th>
+<th>Assignment</th>
+<th>AssignmentId</th>
+<th>AssignmentStatus</th>
+<th>AutoApprovalTime</th>
+<th>HITId</th>
+<th>WorkerId</th>
+</tr>
+{% for i in All_Assignments %}
+<tr>
+<td>{{ i.AcceptTime }}</td>
+<td>{{ i.ApprovalTime }}</td>
+<td>{{ i.Assignment }} </td>
+<td>{{ i.AssignmentId }} </td>
+<td>{{ i.AssignmentStatus }} </td>
+<td>{{ i.AutoApprovalTime}}</td>
+<td>{{ i.HITId}}</td>
+<td>{{ i.WorkerId}}</td>
+</tr>
+{% endfor %}
+</table>
+
+<br><br><br>
+<h4>Emailing Workers:</h4>
+<p>
+The three operations above can all be accomplished by using the MTurk website without using any code. However, there are some operations that can only be accomplished through the API (the Mturk Application Program Interface). One of the most important functions is to be able to contact workers. For example, you could email workers to ask them to participate in a follow-up study. You could even make a function that automatically emails them after a certain number of days after the first study.
+</p>
+<p>
+Through the MTurk website, there is no way to contact workers who have already taken your HITs unless they happen to have emailed you. The python function 'BotoEmailHandler' in index.py demonstrates how to email a worker. You could write a loop for this code to bonus email workers, potentially with different emails.
+</p>
+<p>
+In order to test this email function I suggest that you sign in to the sandbox <a href="https://requestersandbox.mturk.com/">MTurk requester sandbox</a> using the same account as for the normal <a href="https://www.mturk.com/">MTurk website</a>. Make a HIT in the sandbox, then go to the <a href="https://workersandbox.mturk.com">MTurk worker sandbox</a> as a worker and submit the HIT. Then go back into the <a href="https://requestersandbox.mturk.com/">MTurk requester sandbox</a> as a requester and accept the HIT. After you have accepted (or rejected) the work, you can use the example code to email yourself just like you would email a worker after completing a real HIT.
+</p>
+<p>
+One current problem for which I do not yet have a solution is that Boto does not return an error if the Worker ID is incorrect, even though an incorrect Worker ID will result in no email being sent. So make sure that the Worker IDs are correct!
+</p>
+
+
+<br><br><br>
+<h4>Bonusing Workers:</h4>
+<p>
+Another common task is bonusing workers, for example, as an incentive in a decision-making experiment. Though it is possible to bonus workers through the website, you must bonus each worker separately, which is laborious.
+</p>
+<p>
+The python function BotoEmailHandler in index.py demonstrates how to bonus a worker.
+You could write a loop for this code to bonus multiple workers, potentially with different bonuses.
+</p>
+
+<b>Need to decide if I will have buttons that call these functions, or just tell readers to go to /botoemail, and if I want to disable these so that I don't get tons of emails?</b>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br> -->
+
+
+
+<!-- console.log($("#myform").serializeArray()) -->
+
+{% endblock %}

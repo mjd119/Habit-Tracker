@@ -1,0 +1,234 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+<div class="alert alert-warning" role="alert"><p>This site is currently under construction, so stay tuned for more features and tutorials.</p></div>
+
+
+
+<center><h3>Overview:</h3></center>
+Welcome to Habit-Tracker, a template for designing, programming, and running Psychology experiments in the cloud! This introduction is designed to be for people who have never programmed for the web before.
+<br><br>
+At the most general level, Habit-Tracker is built with a stack taken (for the most part) from <a href="http://shop.oreilly.com/product/9780596801601.do" target="_blank">Using Google App Engine</a> by <a href="http://www.dr-chuck.com/" target="_blank">Charles Severance</a>. This book is now out of date, but it is an excellent introduction to programming for the web that is accessable to anyone, even people who have never programmed before. If you want to use Habit-Tracker, we highly suggest reading this book a few times (though don't run the code in the book because it is out of date) before diving into our code. Here is some background that you need to understand and links to some useful tutorials:
+<ul>
+  <li><a href="https://www.w3schools.com/html" target="_blank">HTML</a> is the most basic programming language for displaying web pages.</li>
+  <li><a href="https://www.w3schools.com/css" target="_blank">css</a> is used for styling your web pages.</li>
+  <li><a href="https://www.w3schools.com/js" target="_blank">javascript</a> is the programming language that runs in your browser and is involved in anything dynamic in a web page.</li>
+  <li><a href="https://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank">GET vs. POST.</a> A GET request is how your browser loads a new page. For example, if you click on a link, you are sending a get request. A POST request is how your browser sends data to the server, and then the server can send something back that depends on the information you sent. For example, when you login, it is sent via a POST request, and then a new page is loaded.</li>
+  <li><a href="https://www.w3schools.com/js/js_ajax_intro.asp" target="_blank">AJAX</a> is similar to a POST request, except you can send information and retrieve information while staying on the same page without reloading the page or loading a new page. For example, in gmail when you send an email, don't have to reload all of gmail. Or on google when you start typing into the search bar and it gives you suggestions, that is AJAX. Back in the day AJAX did not exist and the web was very slow because pages always had to be reloaded! :( </li>
+  </li>
+</ul>
+
+<br>
+
+Here are details on Habit-Tracker's stack (beyond html, css, javascript, and AJAX):
+<ul>
+  <li><b>Browser</b>
+    <ul>
+    <li><a href="https://jquery.com/" target="_blank">jQuery</a> for making javascript easier to use</li>
+    <li><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a> to make things pretty</li>
+    </ul>
+  </li>
+  <li><b>Back-end</b>
+    <ul>
+      <li>The 'standard environment' <a href="https://www.python.org/" target="_blank">python</a> version of <a href="https://cloud.google.com/appengine/docs/python/" target="_blank">Google App Engine. </a></li>
+
+      <li>We use <a href="https://cloud.google.com/datastore/" target="_blank">Google's Cloud Datastore </a> (abbreviated as ndb) four our database. Google has many <a href="https://cloud.google.com/storage-options/" target="_blank">other options</a>. <a href="https://www.youtube.com/results?search_query=google+app+engine+storage+options" target="_blank">YouTube</a> has many videos on this topic. We like the cloud datastore because it is really cheap and there is no configuration when used in google app engine. We view no configuration as a huge plus for psychologists.</li>
+
+      <li>The <a href="https://cloud.google.com/appengine/docs/standard/python/tools/webapp2" target="_blank">webapp2</a> web application framework (which processes things like 'get' and 'post' requests).</li>
+
+      <li>The <a href="https://docs.djangoproject.com/en/1.11/topics/templates/" target="_blank">Django templating language</a> for passing code from the python back end to the html/javascript front end.</li>
+
+      <li><a href="https://github.com/dound/gae-sessions" target="_blank">gae-sessions</a>, a sessions library to keep cookies for local storage of logged-in users.</li>
+
+    </ul>
+  </li>
+</ul>
+<br>
+Here is a tutorial for getting this template running on your own computer, editing it, and launching it to google's cloud:
+<ul>
+  <li><b>Running the app on your local computer</b>
+    <ul>
+      <li><b>Download the googlecloud template from github.</b> You can download the template from github without using github for your own software development. However, if you plan on developing your own app, we high encourage you to use github to keep versions of your app as you make changes. If you are new, take a look at the <a href='https://guides.github.com/', target="_blank">GitHub Guides</a> especially the <a href='https://guides.github.com/activities/hello-world/', target="_blank">Hello World</a> introduction. Also, check out the all new <a href='https://desktop.github.com/', target="_blank">GitHub Desktop</a> application, so you can use github without using any code, and also check out the <a href='https://help.github.com/desktop/guides/', target="_blank"> GitHub Desktop user guides</a>!
+
+      <li><b>Installing the Google App Engine Launcher GUI application.</b> One of the reasons that we initially chose to use GAE is because there was a handy GUI interface that made it easy to use for beginners. However, as google has launched many other cloud services, it is phasing out the GUI interface. As of the publication of this website, you can still access the "Original App Engine SDK for Python", which includes the GoogleAppEngineLauncher, by clicking <a href='https://cloud.google.com/appengine/docs/standard/python/download', target="_blank">here</a> and scrolling down and clicking on the "Download and install the original App Engine SDK for Python" link. This application makes it easy to run your application on your local computer and to launch the app onto appspot.com. However, we have noticed that some of the features now seem somewhat buggy at times, and we would encourage new users to just use the command line interface to avoid possible bugs and because it appears that the GUI will not be offered for much longer.
+      </li>
+      <li><b>Installing the Command Line GCloud interface.</b> The gcloud command line package provides many features. (For users new to programming, this is the <a href='https://www.macworld.co.uk/feature/mac-software/how-use-terminal-on-mac-3608274/', target="_blank">Terminal application</a>  on Mac, and the <a href='https://www.lifewire.com/command-prompt-2625840', target="_blank">Command Prompt</a> application for Windows.) Follow the <a href='https://cloud.google.com/appengine/docs/standard/python/download', target="_blank">instructions</a> to install the Google Cloud SDK. In particular, you must:
+        <ul>
+          <li>Install Python 2.7</li>
+          <li>Install the Google Cloud SDK</li>
+          <li>run "gcloud components install app-engine-python" in the command line</li>
+          <li>run "gcloud components install app-engine-python-extras" in the command line</li>
+          <li>run "gcloud init" in the command line to set your preferences and select an app to work with</li>
+        </ul>
+
+      <li><b>Running the app.</b> Once you have downloaded the Habit-Tracker template, put it into a folder somewhere you will want to keep it.
+        <ul>
+          <li><b>Using the GoogleAppEngineLauncher GUI.</b> Drag and drop the folder of the app into the Launcher, and click 'Run'. Wait for the circle to turn green, and then click the browser button, which will take you to the app in your browser. The other buttons will bring you to the local console (to browse the datastore) and will show you errors in your python code.</li>
+          <li><b>Using the Command Line Interface.</b>
+            <ul>
+              <li>Get the full pathname of the Habit-Tracker folder, which I am calling [PATH_TO_YOUR_APP]. It should be something like /Users/.../Documents/Habit-Tracker.</li>
+              <li><a href='https://cloud.google.com/appengine/docs/standard/python/tools/using-local-server', target="_blank"> Introduction to using the local development server</a></li>
+              <li>Starting the server: type "dev_appserver.py [PATH_TO_YOUR_APP]" into the command line.</li>
+              <li>If this is succesful, you will get a response like "Starting admin server at: http://localhost:8000". </li>
+              <li>Type <a href="http://localhost:8000", target="_blank">http://localhost:8000</a> into your browser. You will get a console screen that looks like <a href="/static/images/ScreenShotLocalDevServer.png", target="_blank">this</a>. If you click on the "default" link, you will be taken to the web app, which should look just like this page. The main other function of the console is that by clicking on "Datastore Viewer" you can see any data saved in the datastore.</li>
+              <li>To stop the local server: Mac, Control-C; Windows, Control-Break.</li>
+            </ul>
+          </li>
+        </ul>
+
+
+
+      </li>
+    </ul>
+  </li>
+  <li><b>Debugging</b>
+    <ul>
+    <li><b>Errors in Python.</b> If you used the command line interface, then errors in python and django (the interface between python and the front end) will show up in the terminal app (Mac) or the command prompt (Windows). If you are using the GoogleAppEngineLauncher GUI, click the 'Logs' button. You can log errors with "logging.info('This is an info message')", or see <a href="https://cloud.google.com/appengine/docs/standard/python/logs/" target="_blank">more details.</a>
+    </li>
+    <li><b>Errors in Javascript.</b> Front-end errors show up in the browser. For example, in Chrome, go View->Developer->Javascript Console, or in Firefox, go Tools->Web Developer->Console.</li>
+    <li><a href="/logging" target="_blank"><b>Example Logging Page.</b></a> When you load this page, it will send an error message to the python console as well as the javascript console.</li>
+    </ul>
+  </li>
+  <li><b>Steps to launching the site to the internet.</b>
+     The <a href="https://console.cloud.google.com/" target="_blank">Console</a> is google's site where you go to set up your app, monitor usage, check for errors, browse the datastore, and many other functions. The main page of the console looks like <a href="/static/images/ScreenShotConsoleFront.png", target="_blank">this</a>; it has graphs of usage and information about billing. You can also browse the datastore, which looks like <a href="/static/images/ScreenShotConsoleDatastore.png", target="_blank">this</a> (here the rows are users with fake MTurk Ids). The console is like a more sophisticated version of the local development server web app, but for the delopyed app rather than the local app under development.
+    <ul>
+      <li><b>Deploying your app.</b>
+        <ul>
+          <li>If you are using the GUI GoogleAppEngineLauncher, click the 'Deploy' button.</li>
+          <li>If you are using the command line:</li>
+            <ol>
+              <li><b>Adding the project</b>. In the top banner in the console, click 'Select a project' &rarr; '+' to add a project. Note the name of your project as [NAME_OF_PROJECT].</li>
+              <li><b>Uploading the app.</b> In the command line, run "gcloud app deploy [PATH_TO_YOUR_APP] --project [NAME_OF_PROJECT]". Then follow the prompts.</li>
+              <li><b>Uploading the index.yaml.</b> The index.yaml file stores <a href="https://cloud.google.com/datastore/docs/tools/indexconfig#Datastore_Updating_indexes" target="_blank">indexes</a> of your datastore queries. If you are using the command line, it needs to be uploaded separately from the rest of the app. The reason is that indexes take some time (maybe 10 minutes for a simple app) to start working. See the console -> datastore -> indexes to see if they are serving. To deploy the index file, in the command line, run "gcloud datastore create-indexes [PATH_TO_YOUR_INDEX.YAML_FILE]"</li>
+            </ol>
+        </ul>
+      <li><b>Setting up Billing.</b> In the Google Cloud Platform console, click 'Google Cloud Platform', select billing, and set up a credit card, or link to another project you already have set up. You can set a limit of perhaps $10 per day, just as a fall-back. So far in our lab we never go above $10/year (except when enabling other services by mistake, so don't just go around turning on random services).</li>
+      <li><b>Monitoring for Errors.</b></li>
+      <li><b>Using your own domain.</b> By default, when you launch your site, it will have a url like www.Habit-Tracker-190817@appspotcom; appspot is a google site that hosts webapps. If you want to buy your own domain (e.g., www.Habit-Tracker.org) and host your app on that site, you first need to buy the domain. You can do this via multiple sources such as <a href="https://www.domains.google/" target="_blank">Google</a> and <a href="https://www.godaddy.com/domains" target="_blank">GoDaddy</a>, but using google makes some of the following steps easier. Some domains are as cheap as $12/year. After buying the domain, follow <a href="https://cloud.google.com/appengine/docs/standard/python/mapping-custom-domains" target="_blank">these instructions</a>. We believe that your app will always remain available at the appspot url, though are not entirely sure about that.</li>
+    </ul>
+  </li>
+</ul>
+
+
+<br>
+Here is a list of the features provided in this template. The parentheses after each feature identifies the html page, followed by the name of the handler in the python index.py backend.
+<ul>
+  <li><b>Users</b>
+    <ul>
+    <li><a href="/user_create">Creating a User</a> (/user_create, UserCreateHandler)</li>
+    <li><a href="/user_verify_logged_in">Verifying whether a user is logged in.</a> This checks whether a user has an active session ('cookie'). (/user_verify_logged_in, UserVerifyLoggedInHandler)</li>
+    <li><a href="/login">Logging In.</a> The session information needs to be stored in a cookie. The user key can then be used to identify the user. (/login, LoginHandler)</li>
+    <li><a href="/logout">Logging Out.</a> The session / cookie information needs to bedeleted. (/logout, LogoutHandler)</li>
+    </ul>
+  </li>
+  <li><b>Condition Randomization and Stimuli Presentation</b>
+    <ul>
+    <li>Condition Randomization. In this template, subjects are randomized, between-subjects, to one of two conditions when the user is created; see the UserCreateHandler in the index.py file.</li>
+    <li><a href="/stimuli_presentation">Stimuli Presentation.</a> This page shows four ways to generate the stimuli that subjects see.</li>
+  </ul>
+  </li>
+  <li><b>Saving Data to the Datastore</b>
+    <ul>
+    <li><a href="/saving_data_post">with a Post Request - loads a new page</a></li>
+    <li><a href="/saving_data_ajax">with a Ajax</a></li>
+    </ul>
+  </li>
+  <li><b>Seeing and Downloading Data</b>
+    <ul>
+    <li>Browsing the datastore
+      <ul>
+        <li>When you are programming on your computer and using the GoogleAppEngineLauncher application, click on the 'SDK Console' icon, which opens a browser window. Click on 'Datastore Viewer', choose the Entity Kind that you want to view, and click 'List Entities.'</li>
+        <li>Once you have launched the website to the cloud, you can browse the datastore on the <a href="https://console.cloud.google.com" target="_blank"> Google Cloud Platform Console</a>. Select your project, then click on Datastore.</li>
+      </ul>
+    <li><a href="/downloading_data">Downloading Data</a> (/downloading_data, DownloadingDataHandler)</li>
+    </ul>
+  </li>
+  <li><b>Linking with Mturk</b>
+    <ul>
+    <li>Signing In with MTurk</li>
+    <li>Communicating with the MTurk Servers</li>
+    </ul>
+  </li>
+  <li><b>Linking with Qualtrics, SurveyMonkey, etc.</b>
+    <ul>
+    <li>Qualtrics</li>
+    <li>SurveyMonkey</li>
+    </ul>
+  </li>
+
+
+  <li><b>Ensuring that the order of the study is followed</b>
+    <ul>
+      <li>Tracking progress within a page. The fundamental problem is that if a user is doing a task on a page and refreshes the page, you don't want them to start over. There are two ways to solve this, both of which use AJAX.
+        <ol>
+          <li><a href="/tracking_progress_within_a_page_with_HTML5_Web_Storage" target='_blank'>Tracking progress within a page with HTML5 Web Storage</a> The first option is a relatively new technology called <a href="https://www.w3schools.com/html/html5_webstorage.asp" target="_blank">HTML5 Web Storage</a>, which stores data in the user's browser. Each time the user performs a task on the page, the progress can be stored in the browser, and then if the page is reloaded, the browser knows where the uder left off and the page can fast forward to that point. However, the downside is that the progress is not stored in the datastore, so if a user stops the task, you have no record of how far they got.
+          </li>
+          <li><a href="/tracking_progress_within_a_page_with_AJAX_and_sessions" target='_blank'>Tracking progress within a page with AJAX and sessions.</a> The second option is to use AJAX to update the cookie / session each time progress is made on the page. With this method, if the page is reloaded, the session knows where the user left off and the page can fast forward to that point. However, similar to HTML5 Web Storage, the progress is not stored in the datastore, so if a user stops the task, you have no record of how far they got. (Furthermore, if a user logs out, the cookie is lost, though in many situations this is not an issue because in most studies the user would not be given the option to log out until the end of the study.)
+          </li>
+          <li><a href="/tracking_progress_within_a_page_with_AJAX_and_the_datastore" target='_blank'>Tracking progress within a page with AJAX and the datastore.</a> The third option is to use AJAX to write to the datastore. With this method, if the page is reloaded, the datastore knows where the user left off and the page can fast forward to that point. The downside to this method is that it involves repeated writes to the datastore, which do cost money. However, in our experience the cost ends up being very small; we like keeping the datastore up to date.
+          </li>
+        </ol>
+      </li>
+
+
+      <li>
+        Tracking progress across pages. The fundamental problem is that users can always press the back button, and there is no totally reliable way to disable this feature across browsers. We suggest giving clear instructions at the beginning that pressing the back button could invalidate the study, which usually works fairly well. Still, sometimes users press the back button.
+        <ol>
+          <li><a href="/recording_each_page_load_page_1" target='_blank'>Recording each page load.</a> One option is to allow them to go back, but record each time the page is loaded. To do this you need to disable caching (see cache-control in the OrderAcrossPagesRecord1Handler) so that the page will load from the server again even when the back and forward buttons are pressed, rather than loading it from the cache. This may work with different levels of success for different browsers. Similarly, if a subject submits a response on each page, you could also set it up such that you will see each response rather than overwriting old responses. This way you can at least know if two responses are submitted.</li>
+          <li><a href="/using_cookies_to_keep_the_user_from_going_back" target='_blank'>Using cookies to try to keep the user from going back.</a> A second option involves using cookies / sessions to record progress. Cookies get sent to the server on each get and post request allowing for them to be updated (see self.session['Page'] in the OrderAcrossPagesHandler). We have made a system so that the server loads only the correct page even if the user tries to press back and refresh. This option also requires caching to be disabled; see the OrderAcrossPagesHandler. This works with different degrees of success across different browsers. At least it sometimes alerts the user that they cannot go back without reloading the page, which will likely discourage them from pressing the back button in the future. (Note, this system and the one before it could also be merged to record page loads into the datastore and to also use the datastore instead of cookies to keep track of which pages have been loaded.)</li>
+          <li>Single Page App. If you really care about preventing a user from going back to prior pages, the only true option is to make a  <a href='https://en.wikipedia.org/wiki/Single-page_application' target='_blank'>single page app</a>. In effect, this is like the 'Tracking progress within a page' examples, but it also involves more javascript to make more dramatic changes in the page as the user progresses through the study, which can be accomplished by hiding and showing divs.
+        </ol>
+      </li>
+    </ul>
+  </li>
+  <li><b>Piping Text</b>
+    <ul>
+    <li>With Django</li>
+    <li>With the condition and Javascript</li>
+    <li>Kevin or Cory's method with CSS?</li>
+    </ul>
+  </li>
+</li><b>Communicating with Mturk Servers</b>
+  <ul>
+    <li><a href="/boto_get_account_balance" target='_blank'>Boto Get Account Balance</a></li>
+    <li><a href="/boto_querying_a_hit" target='_blank'>Boto Querying a HIT</a></li>
+  </ul>
+</li>
+<li><b>SSL.</b> By default the Habit-Tracker template is set up to use SSL for security. You will know it is working because the url should appear as 'https' instead of 'http'. Note that this only shows up once the app is deployed, not when it is running on the local development server. This feature is implemented with the 'secure' tag and importing SSL in app.yaml
+</li>
+
+<li><b><a href="/nonresponsive" target='_blank'>Fixed Width.</a></b> Many modern websites are designed so that they scale well to various screen sizes including mobile phones, which is called 'responsiveness'. For example, on this page, see how the page changes as you change the width of the page. However, for psychology experiments, we often want the page to look exactly the same and we would want participants to use a browser width that is at least as large as the page we build. We often set the width of the main div to 800 or 1000 pixels, which should fit on almost all screens participants are likely to use at home.
+</li>
+  <li><b>Validating forms before submission (e.g., see ajax track progress example - gives error if no number)</b></li>
+  <li><b>Displaying a header on all pages.</b></li>
+  <li><b>Explain Cookies / sessions</b></li>
+
+
+</ul>
+<br>
+<br>
+<br>
+<br>
+
+
+<b>Future Features:</b>
+<ul>
+  <li>give introduction to index.py and how the response cycle works</li>
+  <li>mturk completion code</li>
+  <li>publishing to the web directly from github.</li>
+  <li>Migrate from Boto2 to Boto3.</li>
+</ul>
+
+
+<b>Useful Resources:</b>
+<ul>
+  <li><b><a href="/demographics" target='_blank'>Demographics Survey</a></b></li>
+</ul>
+
+
+<br><br>
+<b>Funding:</b>
+This material is based upon work supported by the National Science Foundation under Grant Number 1651330. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+<br>
+
+{% endblock %}

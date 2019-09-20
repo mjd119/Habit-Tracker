@@ -1,0 +1,192 @@
+{% extends "_base.htm" %}
+
+{% block bodycontent %}
+
+<script>
+
+// No longer need all this crud because I am using html5 required... actually not true because required does not work for checkboxes
+
+$(document).ready(function() {
+    $('#s1').change(function() {readytosubmit()});
+    $('#s2').change(function() {readytosubmit()});
+    $('#s3').change(function() {readytosubmit()});
+    $('#e1').change(function() {readytosubmit()});
+    $('#e2').change(function() {readytosubmit()});
+    $('#e3').change(function() {readytosubmit()});
+    $('#r1').change(function() {readytosubmit()});
+    $('#r2').change(function() {readytosubmit()});
+    $('#r3').change(function() {readytosubmit()});
+    $('#r4').change(function() {readytosubmit()});
+    $('#r5').change(function() {readytosubmit()});
+    $('#r6').change(function() {readytosubmit()});
+    $('#r7').change(function() {readytosubmit()});
+});
+
+
+
+function readytosubmit(){
+	console.log("stuff checked");
+// 	sex 1 checked?
+	s1 = document.getElementById('s1').checked 
+	s2 = document.getElementById('s2').checked 
+	s3 = document.getElementById('s3').checked 
+	e1 = document.getElementById('e1').checked 
+	e2 = document.getElementById('e2').checked 
+	e3 = document.getElementById('e3').checked 
+	r1 = document.getElementById('r1').checked 
+	r2 = document.getElementById('r2').checked 
+	r3 = document.getElementById('r3').checked 
+	r4 = document.getElementById('r4').checked 
+	r5 = document.getElementById('r5').checked 
+	r6 = document.getElementById('r6').checked 
+	r7 = document.getElementById('r7').checked 
+	
+	schecked = s1 || s2 || s3
+	echecked = e1 || e2 || e3
+	rchecked = r1 || r2 || r3 || r4 || r5 || r6 || r7
+	
+	if (schecked && echecked && rchecked)
+	{
+	console.log("stuff checked");
+	document.getElementById('submit').disabled=false;
+	}
+	else
+	{
+	console.log("something not checked");
+	document.getElementById('submit').disabled=true;
+	}
+}
+</script>
+
+
+
+
+
+
+<body>
+<div class="pg">
+<center><b>Demographics</b></center>
+<left>
+Please report the following demographics, requested by the National Institute of Health.<br><br>
+
+<form id="demographicsform" method="post" action="/demographics">
+<b>Age:</b>
+<div>
+<input type="text" class="form-control" id="age" name="age" type="number" min="10" max="99" required>
+</div>
+<br>
+
+<b>Sex/Gender:</b><br>
+<div class="radio">
+  <label>
+    <input type="radio" name="sex" id="s1" value="1" required>
+    Male
+  </label>
+</div>
+<div class="radio">
+  <label>
+    <input type="radio" name="sex" id="s2" value="2">
+    Female
+  </label>
+</div>
+<div class="radio">
+  <label>
+    <input type="radio" name="sex" id="s3" value="3">
+    Prefer not to report.
+  </label>
+</div>
+
+
+<br>
+<b>Ethnicity:</b><br>
+<div class="radio">
+  <label>
+    <input type="radio" name="ethnicity" id="e1" value="1" required>
+    Hispanic or Latino
+  </label>
+</div>
+<div class="radio">
+  <label>
+    <input type="radio" name="ethnicity" id="e2" value="2">
+    Not Hispanic or Latino
+  </label>
+</div>
+<div class="radio">
+  <label>
+    <input type="radio" name="ethnicity" id="e3" value="3">
+    Prefer not to report.
+  </label>
+</div>
+
+
+<b>Race:</b><br>
+<div class="checkbox" >
+  <label>
+    <input type="checkbox" name="race" id="r1" value="1">
+    American Indian/Alaska Native
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    <input type="checkbox" name="race" id="r2" value="2">
+    Asian
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    <input type="checkbox" name="race" id="r3" value="3">
+    Native Hawaiian or Other Pacific Islander
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    <input type="checkbox" name="race" id="r4" value="4">
+    Black or African American
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    <input type="checkbox" name="race" id="r5" value="5">
+    White
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    <input type="checkbox" name="race" id="r6" value="6">
+    More than One Race
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    <input type="checkbox" name="race" id="r7" value="7">
+    Prefer Not to Report
+  </label>
+</div>
+
+<br>
+
+<input class ="btn btn-default" type="submit" value="Submit" id="submit" disabled="disabled">
+<!-- no longer need this because I am using html5 required... well unfortunately required does not work well for checkboxes -->
+<!-- <input class ="btn btn-default" type="submit" value="Submit" id="submit"> -->
+
+</form>
+
+
+</left>
+</div>
+
+
+
+
+</body>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,551 @@
+
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<h2><center>Select the Variable Types</center></h2>
+  <div id="variablesInputDiv">
+    <form class="form-inline" id="Form1" method="post" action="/selectvariabletype">
+      <div class="panel panel-default" id="IVDiv">
+        <div class="panel-heading">
+          <h3 class="panel-title">Variable Type for "{{IV}}"
+            <a href="/variabletypeexplanations" target="_blank">
+              <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+            </a>
+          </h3>
+        </div>
+      <div class="panel-body">
+
+          <p>It's easier to analyze certain types of data at the end. For example, choosing a metric variable
+          that has a very low range in practice and can be less useful for interpretation.</p>
+          <p>Choosing a binary variable might be easier to report (ex. exercise or not), but the results
+          might be difficult to interpret if the dependent variable is discrete or ordinal</p>
+          <p>Choose a variable that you expect to have a decent range of values based on its type and real world reports</p>
+      <div class="well well-sm">
+          <label for="IVType">
+            <b>Variable Type:</b>
+          </label>
+            <select class="form-control" name="IVType" id="IVType" required></select><br>
+        <div class="form-group">
+          <!-- Show when user selects metric -->
+          <div class="row" id="IVUnitsDiv">
+            <br>
+            <div class="col-sm-3">
+              <div id="IVUnitText" style="font-weight:bold">Unit of Measurement:</div>
+            </div>
+            <div class="col-sm-3">
+              {% if IVUnits %}
+                <textarea rows="1" cols="25" input type="text" class="form-control" id="IVUnits" name="IVUnits">{{IVUnits}}</textarea>
+              {% else %}
+                <textarea rows="1" cols="25" input type="text" class="form-control" id="IVUnits" name="IVUnits"></textarea>
+              {% endif %}
+            </div>
+          </div>
+          <!-- Show when user selects ordinal -->
+          <div id="IVScaleDiv">
+            <p>The scale is from 1 to 5, but you must choose words/phrases that define each end of the scale.</p>
+            <p>Example: I will rate my sleep quality on scale from "bad" (minimum rating) to "very good" (maximum rating).</p>
+            <p><b>Minimum Rating: </b>
+            {% if IVScaleMin %}
+              <textarea rows="1" cols="25" input type="text" class="form-control" name="IVScaleMin" id="IVScaleMin">{{IVScaleMin}}</textarea></p>
+            {% else %}
+              <textarea rows="1" cols="25" input type="text" class="form-control" name="IVScaleMin" id="IVScaleMin"></textarea></p>
+            {% endif %}
+            <p><b>Maximum Rating:</b>
+            {% if IVScaleMax %}
+              <textarea rows="1" cols="25" input type="text" class="form-control" name="IVScaleMax" id="IVScaleMax">{{IVScaleMax}}</textarea></p>
+            {% else %}
+              <textarea rows="1" cols="25" input type="text" class="form-control" name="IVScaleMax" id="IVScaleMax"></textarea></p>
+            {% endif %}
+          </div>
+          <!-- Show when user selects binary -->
+          <div id="IVBinariesDiv">
+            <p>You must choose exactly 2 options</p>
+            <p>Example: I will answer whether or not I exercised (Exercise or No Exercise)</p>
+            <p><b>Binary Option 1:</b>
+            {% if IVBinary1 %}
+              <textarea rows="1" cols="25" input type = "text" class="form-control" name="IVBinary1" id="IVBinary1">{{IVBinary1}}</textarea></p>
+            {% else %}
+              <textarea rows="1" cols="25" input type = "text" class="form-control" name="IVBinary1" id="IVBinary1"></textarea></p>
+            {% endif %}
+            <p><b>Binary Option 2:</b>
+            {% if IVBinary2 %}
+              <textarea rows="1" cols="25" input type = "text" class="form-control" name="IVBinary2" id="IVBinary2">{{IVBinary2}}</textarea></p>
+            {% else %}
+              <textarea rows="1" cols="25" input type = "text" class="form-control" name="IVBinary2" id="IVBinary2"></textarea></p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <!-- User sees what the report section for the variable will look like -->
+      <div class="well well-sm" id="IVMetricReportDiv">
+        <p>This is what the form will look like each day when you submit your data for this variable</p>
+        <h4><b>Independent Variable Report</b></h4>
+        {% if IVUnits %}
+          <input type="number" min="0" rows="1" cols="25" placeholder="{{IVUnits}}" class="form-control" name="IVMetricReport" id="IVMetricReport">
+        {% else %}
+          <input type="number" min="0" rows="1" cols="25" placeholder="" class="form-control" name="IVMetricReport" id="IVMetricReport">
+        {% endif %}
+      </div>
+      <div class="well well-sm" id="IVOrdinalReportDiv">
+        <p>This is what the form will look like each day when you submit your data for this variable</p>
+        <h4><b>Independent Variable Report</b></h4>
+        <div class="form-check">
+          {% if IVScaleMin %}
+            <input type="radio" class="form-check-input" id="IVOrdinal1Report" name="IVOrdinalReport">
+            <label for="IVOrdinal1Report" id="IVOrdinal1Label" class="form-check-label">
+              (1) {{IVScaleMin}}
+            </label>
+          {% else %}
+          <input type="radio" class="form-check-input" id="IVOrdinal1Report" name="IVOrdinalReport">
+            <label for="IVOrdinal1Report" id="IVOrdinal1Label" class="form-check-label">
+            (1)
+            </label>
+          {% endif %}
+        </div>
+          <!-- Only first and last buttons have labels (min and max) -->
+          <div class="form-check"><input type="radio" class="form-check-input" id="IVOrdinalMid2Report" name="IVOrdinalReport">
+            <label for="IVOrdinalMid2Report" class="form-check-label">(2)</div>
+          <div class="form-check"><input type="radio" class="form-check-input" id="IVOrdinalMid3Report" name="IVOrdinalReport">
+            <label for="IVOrdinalMid3Report" class="form-check-label">(3)</div>
+          <div class="form-check"><input type="radio" class="form-check-input" id="IVOrdinalMid4Report" name="IVOrdinalReport">
+            <label for="IVOrdinalMid4Report" class="form-check-label">(4)</div>
+          <div class="form-check">
+          {% if IVScaleMax %}
+          <input type="radio" class="form-check-input" name="IVOrdinalReport" id="IVOrdinal2Report">
+            <label for="IVOrdinal2Report" id="IVOrdinal2Label" class="form-check-label">
+              (5) {{IVScaleMax}}
+            </label>
+          {% else %}
+          <input type="radio" class="form-check-input" name="IVOrdinalReport" id="IVOrdinal2Report">
+            <label for="IVOrdinal2Report" id="IVOrdinal2Label" class="form-check-label">
+              (5)
+            </label>
+          {% endif %}
+          </div>
+      </div>
+      <div class="well well-sm" id="IVBinaryReportDiv">
+        <p>This is what the form will look like each day when you submit your data for this variable</p>
+        <h4><b>Independent Variable Report</b></h4>
+        <div class="form-check">
+        {% if IVBinary1 %}
+          <input type="radio" class="form-check-input" name="IVBinaryReport"  id="IVBinary1Report">
+          <label for="IVBinary1Report" class="form-check-label" id="IVBinary1Label">
+            (1) {{IVBinary1}}
+          </label>
+        {% else %}
+          <input type="radio" class="form-check-input" name="IVBinaryReport">
+          <label for="IVBinary1Report" class="form-check-label" id="IVBinary1Label">
+            (1)
+          </label>
+        {% endif %}
+        </div>
+        <div class="form-check">
+        {% if IVBinary2 %}
+          <input type="radio" class="form-check-input" name="IVBinaryReport" id="IVBinary2Report">
+          <label for="IVBinary2Report" class="form-check-label" id="IVBinary2Label">
+            (2) {{IVBinary2}}
+          </label>
+        {% else %}
+          <input type="radio" class="form-check-input" name="IVBinaryReport">
+          <label for="IVBinary2Report" class="form-check-label" id="IVBinary2Label">
+            (2)
+          </label>
+        {% endif %}
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default" id="DVDiv">
+      <div class="panel-heading">
+        <h3 class="panel-title">Variable Type for "{{DV}}"
+          <a href="/variabletypeexplanations" target="_blank">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> <!-- http://glyphicons.com/ -->
+          </a>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <p>Identify your dependent variable, or the outcome or effect that you think will be influenced by changes in your
+          independent variable.</p>
+          <p><b>Example:</b> Sleep Quality (e.g. good or bad; type: binary)</p>
+      <div class="well well-sm">
+        <label for="DVType">
+          <b>Variable Type:</b>
+        </label>
+          <select class="form-control" name="DVType" id="DVType" required></select><br>
+      <div class="form-group">
+        <!-- Show when user selects metric -->
+        <div class="row" id="DVUnitsDiv">
+          <br>
+          <div class="col-sm-3">
+            <div id="DVUnitText" style="font-weight:bold">Unit of Measurement:</div>
+          </div>
+          <div class="col-sm-3">
+            {% if DVUnits %}
+              <textarea rows="1" cols="25" input type="text" class="form-control" id="DVUnits" name="DVUnits">{{DVUnits}}</textarea>
+            {% else %}
+              <textarea rows="1" cols="25" input type="text" class="form-control" id="DVUnits" name="DVUnits"></textarea>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Show when user selects ordinal -->
+        <div id="DVScaleDiv">
+          <p>The scale is from 1 to 5, but you must choose words/phrases that define each end of the scale.</p>
+          <p>Example: I will rate my sleep quality on scale from "bad" (minimum rating) to "very good" (maximum rating).</p>
+          <p><b>Minimum Rating: </b>
+          {% if DVScaleMin %}
+            <textarea rows="1" cols="25" input type="text" class="form-control" name="DVScaleMin" id="DVScaleMin">{{DVScaleMin}}</textarea></p>
+          {% else %}
+            <textarea rows="1" cols="25" input type="text" class="form-control" name="DVScaleMin" id="DVScaleMin"></textarea></p>
+          {% endif %}
+          <p><b>Maximum Rating:</b>
+          {% if DVScaleMax %}
+            <textarea rows="1" cols="25" input type="text" class="form-control" name="DVScaleMax" id="DVScaleMax">{{DVScaleMax}}</textarea></p>
+          {% else %}
+            <textarea rows="1" cols="25" input type="text" class="form-control" name="DVScaleMax" id="DVScaleMax"></textarea></p>
+          {% endif %}
+        </div>
+        <!-- show when user selects binary -->
+        <div id="DVBinariesDiv">
+          <p>You must choose exactly 2 options</p>
+          <p>Example: I will answer whether or not I exercised (Exercise or No Exercise)</p>
+          <p><b>Binary Option 1:</b>
+          {% if DVBinary1 %}
+            <textarea rows="1" cols="25" input type = "text" class="form-control" name="DVBinary1" id="DVBinary1">{{DVBinary1}}</textarea></p>
+          {% else %}
+            <textarea rows="1" cols="25" input type = "text" class="form-control" name="DVBinary1" id="DVBinary1"></textarea></p>
+          {% endif %}
+          <p><b>Binary Option 2:</b>
+          {% if DVBinary2 %}
+            <textarea rows="1" cols="25" input type = "text" class="form-control" name="DVBinary2" id="DVBinary2">{{DVBinary2}}</textarea></p>
+          {% else %}
+            <textarea rows="1" cols="25" input type = "text" class="form-control" name="DVBinary2" id="DVBinary2"></textarea></p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <!-- User sees what the report section for the variable will look like -->
+      <div class="well well-sm" id="DVMetricReportDiv">
+        <p>This is what the form will look like each day when you submit your data for this variable</p>
+        <h4><b>Dependent Variable Report</b></h4>
+        {% if DVUnits %}
+          <input type="number" min="0" rows="1" cols="25" placeholder="{{DVUnits}}" class="form-control" name="DVMetricReport" id="DVMetricReport">
+        {% else %}
+          <input type="number" min="0" rows="1" cols="25" placeholder="" class="form-control" name="DVMetricReport" id="DVMetricReport">
+        {% endif %}
+      </div>
+      <div class="well well-sm" id="DVOrdinalReportDiv">
+        <p>This is what the form will look like each day when you submit your data for this variable</p>
+        <h4><b>Dependent Variable Report</b></h4>
+        <div class="form-check">
+          {% if DVScaleMin %}
+            <input type="radio" class="form-check-input" id="DVOrdinal1Report" name="DVOrdinalReport">
+            <label for="DVOrdinal1Report" id="DVOrdinal1Label" class="form-check-label">
+              (1) {{DVScaleMin}}
+            </label>
+          {% else %}
+          <input type="radio" class="form-check-input" id="DVOrdinal1Report" name="DVOrdinalReport">
+            <label for="DVOrdinal1Report" id="DVOrdinal1Label" class="form-check-label">
+              (1)
+            </label>
+          {% endif %}
+        </div>
+          <!-- Only first and last buttons have labels (min and max) -->
+          <div class="form-check"><input type="radio" class="form-check-input" id="DVOrdinalMid1Report" name="DVOrdinalReport">
+            <label for="DVOrdinalMid1Report" class="form-check-label">(2)</div>
+          <div class="form-check"><input type="radio" class="form-check-input" id="DVOrdinalMid2Report" name="DVOrdinalReport">
+            <label for="DVOrdinalMid2Report" class="form-check-label">(3)</div>
+          <div class="form-check"><input type="radio" class="form-check-input" id="DVOrdinalMid3Report" name="DVOrdinalReport">
+            <label for="DVOrdinalMid3Report" class="form-check-label">(4)</div>
+          <div class="form-check">
+          {% if DVScaleMax %}
+          <input type="radio" class="form-check-input" name="DVOrdinalReport" id="DVOrdinal2Report">
+            <label id="DVOrdinal2Label" for="DVOrdinal2Report" class="form-check-label">
+              (5) {{DVScaleMax}}
+            </label>
+          {% else %}
+          <input type="radio" class="form-check-input" name="DVOrdinalReport" id="DVOrdinal2Report">
+            <label id="DVOrdinal2Label" for="DVOrdinal2Report" class="form-check-label">
+              (5)
+            </label>
+          {% endif %}
+          </div>
+      </div>
+      <div class="well well-sm" id="DVBinaryReportDiv">
+        <p>This is what the form will look like each day when you submit your data for this variable</p>
+        <h4><b>Dependent Variable Report</b></h4>
+        <div class="form-check">
+        {% if DVBinary1 %}
+          <input type="radio" class="form-check-input" name="DVBinaryReport" id="DVBinary1Report">
+          <label class="form-check-label" id="DVBinary1Label" for="DVBinary1Report">
+            (1) {{DVBinary1}}
+          </label>
+        {% else %}
+          <input type="radio" class="form-check-input" name="DVBinaryReport" id="DVBinary1Report">
+          <label class="form-check-label" id="DVBinary1Label" for="DVBinary1Report">
+            (1)
+          </label>
+        {% endif %}
+        </div>
+        <div class="form-check">
+        {% if DVBinary2 %}
+          <input type="radio" class="form-check-input" name="DVBinaryReport" id="DVBinary2Report">
+          <label class="form-check-label" id="DVBinary2Label" for="DVBinary2Report">
+            (2) {{DVBinary2}}
+          </label>
+        {% else %}
+          <input type="radio" class="form-check-input" name="DVBinaryReport" id="DVBinary2Report">
+          <label class="form-check-label" id="DVBinary2Label" for="DVBinary2Report">
+            (2)
+          </label>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- Submit user answers -->
+    <div class="form-group">
+      <input type="submit" class="btn btn-default"></input>
+    </div>
+  </form>
+  </div><br>
+
+  <!-- Shows and hides the variable inputs based on type (units for metric, )-->
+<script>
+  $(document).ready(function() {
+  // Hide all irrelevant input elements, don't make them required any more, and hide the report sections under construction
+    $("#IVType").on("change", function() {
+      var value = $(this).val();
+      if (value == "Metric") {
+        $("#IVUnitsDiv").show();
+        $("#IVMetricReportDiv").show();
+        $("#IVBinariesDiv").hide();
+        $("#IVBinaryReportDiv").hide();
+        $("#IVScaleDiv").hide();
+        $("#IVOrdinalReportDiv").hide();
+        $("#IVUnits").prop("required", true);
+        $("#IVScaleMin").prop("required", false);
+        $("#IVScaleMax").prop("required", false);
+        $("#IVBinary1").prop("required", false);
+        $("#IVBinary2").prop("required", false);
+      }
+      else if (value == "Ordinal") {
+        $("#IVScaleDiv").show();
+        $("#IVOrdinalReportDiv").show();
+        $("#IVBinariesDiv").hide();
+        $("#IVBinaryReportDiv").hide();
+        $("#IVUnitsDiv").hide();
+        $("#IVMetricReportDiv").hide();
+        $("#IVScaleMin").prop("required", true);
+        $("#IVScaleMax").prop("required", true);
+        $("#IVBinary1").prop("required", false);
+        $("#IVBinary2").prop("required", false);
+        $("#IVUnits").prop("required", false);
+      }
+      else if (value == "Binary") {
+        $("#IVBinariesDiv").show();
+        $("#IVBinaryReportDiv").show();
+        $("#IVScaleDiv").hide();
+        $("#IVOrdinalReportDiv").hide();
+        $("#IVUnitsDiv").hide();
+        $("#IVMetricReportDiv").hide();
+        $("#IVBinary1").prop("required", true);
+        $("#IVBinary2").prop("required", true);
+        $("#IVScaleMin").prop("required", false);
+        $("#IVScaleMax").prop("required", false);
+        $("#IVUnits").prop("required", false);
+      }
+      else {
+        $("#IVBinariesDiv").hide();
+        $("#IVBinaryReportDiv").hide();
+        $("#IVScaleDiv").hide();
+        $("#IVOrdinalReportDiv").hide();
+        $("#IVUnitsDiv").hide();
+        $("#IVMetricReportDiv").hide();
+      }
+    });
+    $("#DVType").on("change", function() {
+      var value = $(this).val();
+      if (value == "Metric") {
+        $("#DVUnitsDiv").show();
+        $("#DVMetricReportDiv").show();
+        $("#DVBinariesDiv").hide();
+        $("#DVBinaryReportDiv").hide();
+        $("#DVScaleDiv").hide();
+        $("#DVOrdinalReportDiv").hide();
+        $("#DVUnits").prop("required", true);
+        $("#DVScaleMin").prop("required", false);
+        $("#DVScaleMax").prop("required", false);
+        $("#DVBinary1").prop("required", false);
+        $("#DVBinary2").prop("required", false);
+      }
+      else if (value == "Ordinal") {
+        $("#DVScaleDiv").show();
+        $("#DVOrdinalReportDiv").show();
+        $("#DVBinariesDiv").hide();
+        $("#DVBinaryReportDiv").hide();
+        $("#DVUnitsDiv").hide();
+        $("#DVMetricReportDiv").hide();
+        $("#DVScaleMin").prop("required", true);
+        $("#DVScaleMax").prop("required", true);
+        $("#DVBinary1").prop("required", false);
+        $("#DVBinary2").prop("required", false);
+        $("#DVUnits").prop("required", false);
+      }
+      else if (value == "Binary") {
+        $("#DVBinariesDiv").show();
+        $("#DVBinarReportDiv").show();
+        $("#DVScaleDiv").hide();
+        $("#DVOrdinalReportDiv").hide();
+        $("#DVUnitsDiv").hide();
+        $("#DVMetricReportDiv").hide();
+        $("#DVBinary1").prop("required", true);
+        $("#DVBinary2").prop("required", true);
+        $("#DVScaleMin").prop("required", false);
+        $("#DVScaleMax").prop("required", false);
+        $("#DVUnits").prop("required", false);
+      }
+      else {
+        $("#DVBinariesDiv").hide();
+        $("#DVBinaryReportDiv").hide();
+        $("#DVScaleDiv").hide();
+        $("#DVOrdinalReportDiv").hide();
+        $("#DVUnitsDiv").hide();
+        $("#DVMetricReportDiv").hide();
+      }
+    });
+  // Change what the user is presented with every keyup (can see the report page being built)
+  // TODO: Ask if the user should see the text as it's being typed (.change) or once they click outside the input (.keyup)
+    $("#IVUnits").keyup(function() {
+      $("#IVMetricReport").prop("placeholder", $(this).val());
+    });
+    $("#IVScaleMin").keyup(function() {
+      $("#IVOrdinal1Label").html("(1) " + $(this).val());
+    });
+    $("#IVScaleMax").keyup(function() {
+      $("#IVOrdinal2Label").html("(5) " + $(this).val());
+    });
+    $("#IVBinary1").keyup(function() {
+      $("#IVBinary1Label").text("(1) " + $(this).val());
+    });
+    $("#IVBinary2").keyup(function() {
+      $("#IVBinary2Label").text("(2) " + $(this).val());
+    });
+    $("#DVUnits").keyup(function() {
+      $("#DVMetricReport").prop("placeholder", $(this).val());
+    });
+    $("#DVScaleMin").keyup(function() {
+      $("#DVOrdinal1Label").html("(1) " + $(this).val());
+    });
+    $("#DVScaleMax").keyup(function() {
+      $("#DVOrdinal2Label").html("(5) " + $(this).val());
+    });
+    $("#DVBinary1").keyup(function() {
+      $("#DVBinary1Label").text("(1) " + $(this).val());
+    });
+    $("#DVBinary2").keyup(function() {
+      $("#DVBinary2Label").text("(2) " + $(this).val());
+    });
+
+  // Clear forms that aren't required on submit
+    $("#Form1").on("submit", function() {
+      // Clear textarea forms if they're not required
+      $("textarea").each(function(i) {
+        if (!($(this).prop("required"))) {
+          $(this).val("");
+        }
+      });
+      // Clear select forms if they're not required
+      $("select").each(function(i) {
+        if (!($(this).prop("required"))) {
+          $(this).val("");
+        }
+      });
+    });
+    // Disallow the user to submit form when they press the enter button
+    // Credit to Jake Wilson https://stackoverflow.com/a/1563238 for code to prevent submission when pressing enter key
+    $("#Form1").find(".input").keypress(function(e) {
+      if (e.which == 13) { // Checks if the enter key was pressed
+        return false;
+      }
+    });
+  });
+</script>
+<script>
+    // Make the type the user submitted the default selected option for all variable type selects
+    $(document).ready(function() {
+    var inputTypeArray = ["IVType", "DVType"];
+    var variableTypeArray = ["{{IVType}}", "{{DVType}}"];
+    var unitsDivArray = ["#IVUnitsDiv", "#DVUnitsDiv"];
+    var varUnitsArray = ["#IVUnits", "#DVUnits"];
+    var metricReportDivArray = ["#IVMetricReportDiv", "#DVMetricReportDiv"];
+    var scaleDivArray = ["#IVScaleDiv", "#DVScaleDiv"];
+    var scaleMinArray = ["#IVScaleMin", "#DVScaleMin"];
+    var scaleMaxArray = ["#IVScaleMax", "#DVScaleMax"];
+    var ordinalReportDivArray = ["#IVOrdinalReportDiv", "#DVOrdinalReportDiv"];
+    var binaryDivArray = ["#IVBinariesDiv", "#DVBinariesDiv"];
+    var binaryArray1 = ["#IVBinary1", "#DVBinary1"];
+    var binaryArray2 = ["#IVBinary2", "#DVBinary2"];
+    var binaryReportDivArray = ["#IVBinaryReportDiv", "#DVBinaryReportDiv"];
+    // Hide all divs under variable input by default
+    var variableType = ""; // Holds the variable type
+    // Check for which element called this method so correct type is shown
+    for (i = 0; i < inputTypeArray.length; i++) {
+      // Initally hide all the divs the user is supposed to type their answers once they've chosen a variable type
+      $(unitsDivArray[i]).hide();
+      $(scaleDivArray[i]).hide();
+      $(binaryDivArray[i]).hide();
+      // Initially hide all the report divs the user sees to get a sense of what the the report page will look like for a variable
+      $(metricReportDivArray[i]).hide();
+      $(ordinalReportDivArray[i]).hide();
+      $(binaryReportDivArray[i]).hide();
+      // Create the options for the select element
+      var disabledOption = document.createElement("option");
+      var metricOption = document.createElement("option");
+      var ordinalOption = document.createElement("option");
+      var binaryOption = document.createElement("option");
+      // Give the options properties
+      disabledOption.value = "";
+      disabledOption.disabled = true;
+      metricOption.value = "Metric";
+      ordinalOption.value = "Ordinal";
+      binaryOption.value = "Binary";
+      disabledOption.innerHTML = "Choose Variable Type";
+      metricOption.innerHTML = "Metric";
+      ordinalOption.innerHTML = "Ordinal";
+      binaryOption.innerHTML = "Binary";
+
+      var variableType = variableTypeArray[i]; // Set variable type to string retrieved from django
+      if (variableType == "Metric") {
+        metricOption.selected = true;
+        $(unitsDivArray[i]).show(); // Show the area related to units
+        $(varUnitsArray[i]).prop("required", true); // Make the user put in the units for the variable
+        $(metricReportDivArray[i]).show(); // Show user what report will look like
+      }
+      else if (variableType == "Ordinal") {
+        ordinalOption.selected = true;
+        $(scaleDivArray[i]).show(); // Show area related to the ordinal scale
+        $(scaleMinArray[i]).prop("required", true); // Make the user choose a minimum
+        $(scaleMaxArray[i]).prop("required", true); // Make the user choose a maximum
+        $(ordinalReportDivArray[i]).show(); // Show user what report will look like
+      }
+      else if (variableType == "Binary") {
+        binaryOption.selected = true;
+        $(binaryDivArray[i]).show(); // Show the area related to the binary scale
+        $(binaryArray1[i]).prop("required", true); // Make the user choose the first binary
+        $(binaryArray2[i]).prop("required", true); // Make the user choose the second binary
+        $(binaryReportDivArray[i]).show(); // Show user what report will look like
+      }
+      else { // Don't show anything contingent on the variable type
+        disabledOption.selected = true;
+      }
+      var selectType = document.getElementById(inputTypeArray[i]); // Gets the select element where user chooses variable type
+      // Append options to select list
+      selectType.appendChild(disabledOption);
+      selectType.appendChild(metricOption);
+      selectType.appendChild(ordinalOption);
+      selectType.appendChild(binaryOption);
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+cron:
+- description: nightly
+  url: /nightly
+  schedule: every day 3:00
+  timezone: America/New_York
+- description: morning reminder
+  url: /morning_reminder
+  schedule: every day 10:00
+  timezone: America/New_York
+- description: afternoon reminder
+  url: /afternoon_reminder
+  schedule: every day 15:00
+  timezone: America/New_York
+- description: evening reminder
+  url: /evening_reminder
+  schedule: every day 20:00
+  timezone: America/New_York

@@ -1,0 +1,187 @@
+{% extends "_base.htm" %}
+
+
+
+{% block bodycontent %}
+
+
+<head>
+<script type="text/javascript" src="../static/excellentexport.js"></script>
+
+
+</head>
+
+
+
+
+<body>
+
+This page shows how you can format the data you have stored in a way that is useful for looking at it when programming to make sure that it is working as expected, and also in a way that is useful for downloading to do data analysis.
+<br><br>
+This page relies on the <a href ="https://docs.djangoproject.com/en/2.0/ref/templates/language/" target="_blank">django template language</a> that create tables by looping through the data from the datastore. (Please note that the django template language is a small component of the entire <a href ="https://www.djangoproject.com/" target="_blank">django web framework</a>; we are only using the template language.) If you would prefer not to use django, there are multiple other template systems for python: django and Jinja2 are built-in third-party packages in Google App Engine.
+<br><br>
+There is lots of flexibility in the tables that you create. The examples below give tables in both 'wide' and 'long' formats. They also show how to group all subjects into one table vs. make each subject their own table.
+<br><br>
+Essentially what is going on is that the datastore is queried, and each item in the datastore (e.g., each user object) is returned as a python dictionary; the keys are the names of the variables in the data model. Querying the datastore returns a list of dictionaries. You can use Django, the double curly braces to run for loops over this list of dictionaries.
+<br><br>
+The User Table below is made with a for loop over each user. The terms 'usernum', 'created', etc. are the keys in the dictionary, and they are the same names in the User model in index.py. This is how you can see inside this list of dictionaries:
+<ul>
+  <li>
+{% templatetag openvariable %}User{% templatetag closevariable %} returns a list of dictionaries. You can't see inside them:
+{{User}}
+  </li>
+  <li>
+{% templatetag openvariable %}User.0{% templatetag closevariable %} returns the first user dictionary. You still can't see inside it:
+{{User.0}}
+  </li>
+  <li>
+{% templatetag openvariable %}User.0.username{% templatetag closevariable %} returns the username of the first user:
+{{User.0.username}}
+  </li>
+</ul>
+These tables are made in a fairly similar way as the above code, but incorporating a for loop. To see how, look at the data_for_download.htm file in the templates folder.
+<br><br>
+To download the data, you can just copy the data in the table and paste into a spreadsheet program. Alternatively, we have used <a href ="https://github.com/jmaister/excellentexport" target="_blank">excellentexport.js</a> to take all the data in a single table and export it as a .csv file.
+
+
+<center><h3>User Table</h3></center>
+Note. Right now this table only shows 10 users, not all the people who have accounts on this site. It may include you, but it might not.<br>
+<a download="UserTable.csv" href="#" onclick="return ExcellentExport.csv(this, 'UserTable');">Export User Table to CSV</a>
+
+
+<table id='UserTable' class="table table-condensed table-hover table-striped table-bordered">
+<tr>
+<th>usernum</th>
+<th>username</th>
+<th>created</th>
+<th>condition</th>
+<th>TrialNumberStoredInDatastore</th>
+</tr>
+{% for i in User %}
+
+<tr>
+<td>{{ i.usernum }}</td>
+<td>{{ i.username }}</td>
+<td>{{ i.created }}</td>
+<td>{{ i.condition }}</td>
+<td>{{ i.TrialNumberStoredInDatastore }}</td>
+</tr>
+{% endfor %}
+</table>
+
+
+
+
+<center><h3>Separate Tables for Each User</h3></center>
+Sometimes depending on the amount of data and the type of experiment it might be useful to have another view in which each user has their own table. This is easy to accomplish by just rearranging the code from the table above such that the table call is inside the for loop over users. Note. Right now this table only shows 10 users, not all the people who have accounts on this site. It may include you, but it might not.<br>
+{% for i in User %}
+<table class="table table-condensed table-hover table-striped table-bordered">
+<tr><th>usernum</th><td>{{ i.usernum }}</td></tr>
+<tr><th>username</th><td>{{ i.username }}</td></tr>
+<tr><th>created</th><td>{{ i.created }}</td></tr>
+<tr><th>condition</th><td>{{ i.condition }}</td></tr>
+<tr><th>TrialNumberStoredInDatastore</th><td>{{ i.TrialNumberStoredInDatastore }}</td></tr>
+</table>
+{% endfor %}
+
+
+
+<center><h3>Wide Data Table Showing Results of the Means Task</h3></center>
+Note. This table only includes your data, not the data from all users. This can easily be changed in the code for the DataForDownloadHandler.
+<a download="WideTable.csv" href="#" onclick="return ExcellentExport.csv(this, 'WideTable');">Export Wide Table to CSV</a>
+<table id='WideTable' class="table table-condensed table-hover table-striped table-bordered">
+<tr>
+<th>usernum</th>
+<th>username</th>
+<th>mean</th>
+<th colspan=10>RandomNumbersChosenAtUserCreate</th>
+</tr>
+<tr>
+<th>usernum</th>
+<th>username</th>
+<th>mean</th>
+<th>TN1</th>
+<th>TN2</th>
+<th>TN3</th>
+<th>TN4</th>
+<th>TN5</th>
+<th>TN6</th>
+<th>TN7</th>
+<th>TN8</th>
+<th>TN9</th>
+<th>TN10</th>
+</tr>
+
+{% for i in MTD %}
+<tr>
+<td>{{ i.usernum }}</td>
+<td>{{ i.username }}</td>
+<td>{{ i.mean }}</td>
+{% for j in i.tennumbers %}
+<td>{{j}}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+
+
+
+<center><h3>Long Data Table Showing Results of the Means Task</h3></center>
+Often it is more useful to have long data than wide data. This can be accomplished in multiple ways, but see the DataForDownloadHandler in index.py for one way do accomplish it. Essentially, the usernum and mean columns for the wide data are repeated 10 times for each of the 10 stimuli numbers. Then the zip function is used to turn the four variables into a list of lists, each of which is one row in this table. Note. This table only includes your data, not the data from all users. This can easily be changed in the code for the DataForDownloadHandler.
+<a download="LongTable.csv" href="#" onclick="return ExcellentExport.csv(this, 'LongTable');">Export Long Table to CSV</a>
+<!-- This has a different format of for j in i because the columns are not named -->
+<table id='LongTable' class="table table-condensed table-hover table-striped table-bordered">
+<tr>
+<th>usernum</th>
+<th>username</th>
+<th>mean</th>
+<th>Order</th>
+<th>RandomNumbersChosenAtUserCreate</th>
+</tr>
+{% for i in MTDLong %}
+<tr>
+{% for j in i %}
+<td>
+{{j}}
+</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+
+
+
+<center><h3>Page Load Data</h3></center>
+This data shows each time that one of the pages is loaded in the Ensure that the order of the study / Tracking progress within a page / record each page load tutorial. Note. This table only includes your data, not the data from all users. This can easily be changed in the code for the DataForDownloadHandler.
+<a download="PageLoadTable.csv" href="#" onclick="return ExcellentExport.csv(this, 'UserTable');">Export User Table to CSV</a>
+<table id='PageLoadTable' class="table table-condensed table-hover table-striped table-bordered">
+<tr>
+<th>usernum</th>
+<th>username</th>
+<th>created</th>
+<th>page</th>
+</tr>
+{% for i in PageData %}
+<tr>
+<td>{{ i.usernum }}</td>
+<td>{{ i.username }}</td>
+<td>{{ i.created }}</td>
+<td>{{ i.page }}</td>
+</tr>
+{% endfor %}
+</table>
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+
+</body>
+
+{% endblock %}

@@ -1,0 +1,233 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+<h3><center>Day {{Day}} Report</h3></center>
+<p>Research Question: <b>{{RQ}}</b></p>
+<form class="form-inline" id="Form1" method="post" action="/var4dailyreport">
+  <!-- User sees what the report section for the variable will look like -->
+<!-- See webpage https://www.w3schools.com/bootstrap/bootstrap_collapse.asp for accordion code compatible with this bootstrap version -->
+<h4><b>Third Variable / Alternative Cause 2 Variable Report</b></h4>
+<div class="panel-group" id="var4ReportAccordion">
+  <div class="panel panel-default" id="var4Panel1">
+    <div class="panel-heading">
+      <h4 class="panel-title" id="panelTitle1">
+        <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse1" class="var4CollapseButton" id="var4CollapseButton1"></a>
+      </h4>
+    </div>
+    <div id="var4Collapse1" class="panel-collapse collapse" aria-expanded="false">
+      <div class="panel-body" id="var4PanelBody1">
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default" id="var4Panel2">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse2" class="var4CollapseButton" id="var4CollapseButton2"></a>
+      </h4>
+    </div>
+    <div id="var4Collapse2" class="panel-collapse collapse" aria-expanded="false">
+      <div class="panel-body" id="var4PanelBody2">
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default" id="var4Panel3">
+    <div class="panel-heading">
+      <h4 class="panel-title" id="panelTitle3">
+        <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse3" class="var4CollapseButton" id="var4CollapseButton3"></a>
+      </h4>
+    </div>
+    <div id="var4Collapse3" class="panel-collapse collapse" aria-expanded="false">
+      <div class="panel-body" id="var4PanelBody3">
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default" id="var4Panel4">
+    <div class="panel-heading">
+      <h4 class="panel-title" id="panelTitle4">
+        <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse4" class="var4CollapseButton" id="var4CollapseButton4"></a>
+      </h4>
+    </div>
+    <div id="var4Collapse4" class="panel-collapse collapse" aria-expanded="false">
+      <div class="panel-body" id="var4PanelBody4">
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default" id="var4Panel5">
+    <div class="panel-heading">
+      <h4 class="panel-title" id="panelTitle5">
+        <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse5" class="var4CollapseButton" id="var4CollapseButton5"></a>
+      </h4>
+    </div>
+    <div id="var4Collapse5" class="panel-collapse collapse" aria-expanded="false">
+      <div class="panel-body" id="var4PanelBody5">
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default" id="var4Panel6">
+    <div class="panel-heading">
+      <h4 class="panel-title" id="panelTitle6">
+        <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse6" class="var4CollapseButton" id="var4CollapseButton6"></a>
+      </h4>
+    </div>
+    <div id="var4Collapse6" class="panel-collapse collapse" aria-expanded="false">
+      <div class="panel-body" id="var4PanelBody6">
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default" id="var4Panel7">
+    <div class="panel-heading">
+      <h4 class="panel-title" id="panelTitle7">
+        <a data-toggle="collapse" data-parent="#var4ReportAccordion" href="#var4Collapse7" class="var4CollapseButton" id="var4CollapseButton7"></a>
+      </h4>
+    </div>
+    <div id="var4Collapse7" class="panel-collapse collapse" aria-expanded="false">
+      <div class="panel-body" id="var4PanelBody7">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Not shown to the user until they expand a panel -->
+{% if var4Units %}
+  <div id="var4MetricReportDiv" class="report-div">
+    <div id= "var4Question" style="padding-bottom:5px"></div>
+      <input type="number" rows="1" cols="25" placeholder="{{var4Units}}" class="form-control" name="var4MetricReport" id="var4MetricReport">
+  </div>
+{% endif %}
+{% if var4ScaleMin and var4ScaleMax %}
+  <div id="var4OrdinalReportDiv" class="report-div">
+    <div id= "var4Question" style="padding-bottom:5px"></div>
+    <div class="form-check">
+        <input type="radio" value="1" class="form-check-input" id="var4Ordinal1Report" name="var4OrdinalReport">
+        <label for="var4Ordinal1Report" id="var4Ordinal1Label" class="form-check-label">
+          (1) {{var4ScaleMin}}
+        </label>
+    </div>
+      <!-- Only first and last buttons have labels (min and max) -->
+      <div class="form-check"><input type="radio"  value="2" class="form-check-input" id="var4OrdinalMid1Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid2Report" class="form-check-label">(2)</div>
+      <div class="form-check"><input type="radio"  value="3" class="form-check-input" id="var4OrdinalMid2Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid3Report" class="form-check-label">(3)</div>
+      <div class="form-check"><input type="radio"  value="4" class="form-check-input" id="var4OrdinalMid3Report" name="var4OrdinalReport">
+        <label for="var4OrdinalMid4Report" class="form-check-label">(4)</div>
+      <div class="form-check">
+      <input type="radio"  value="5" class="form-check-input" name="var4OrdinalReport" id="var4Ordinal2Report">
+        <label id="var4Ordinal2Label" class="form-check-label">
+          (5) {{var4ScaleMax}}
+        </label>
+      </div>
+  </div>
+{% endif %}
+{% if var4Binary1 and var4Binary2 %}
+  <div id="var4BinaryReportDiv" class="report-div">
+    <div id= "var4Question" style="padding-bottom:5px"></div>
+    <div class="form-check">
+      <input type="radio" value="1" class="form-check-input" name="var4BinaryReport"  id="var4Binary1Report">
+      <label class="form-check-label" id="var4Binary1Label">(1) {{var4Binary1}}</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" value="2" class="form-check-input" name="var4BinaryReport" id="var4Binary2Report">
+      <label class="form-check-label" id="var4Binary2Label">(2) {{var4Binary2}}</label>
+    </div>
+  </div>
+{% endif %}
+<div class="form-group">
+  <input type="submit" class="btn btn-default">
+</div><br>
+</form>
+<script>
+// https://www.digitalocean.com/community/tutorials/understanding-date-and-time-in-javascript
+// Get time and hour so we know what the approximate time of day
+const now = new Date();
+console.log(now);
+var hours = now.getHours()
+console.log("It's hour " + hours);
+if (hours >= 12 && hours <= 17) { // Afternoon
+  console.log("It's Afternoon");
+  $("a").eq(2).text("This Afternoon");
+  console.log("This Afternoon");
+  $("a").eq(3).text("This Morning");
+  console.log("This Morning");
+  $("a").eq(4).text("Last Night");
+  console.log("Last Night");
+  $("a").eq(5).text("Yesterday Evening");
+  console.log("Yesterday Evening");
+  $("a").eq(6).text("Yesterday Afternoon");
+  console.log("Yesterday Afternoon");
+  $("a").eq(7).text("Yesterday Morning");
+  console.log("Yesterday Morning");
+  $(".panel-default").last().remove(); // Remove uneeded panel
+}
+else if (hours >= 18 && hours <= 23) { // Evening
+  console.log("It's Evening");
+  $("a").eq(2).text("This Evening");
+  console.log("This Evening");
+  $("a").eq(3).text("This Afternoon");
+  console.log("This Afternoon");
+  $("a").eq(4).text("This Morning");
+  console.log("This Morning");
+  $("a").eq(5).text("Last Night");
+  console.log("Last Night");
+  $("a").eq(6).text("Yesterday Evening");
+  console.log("Yesterday Evening");
+  $("a").eq(7).text("Yesterday Afternoon");
+  console.log("Yesterday Afternoon");
+  $("a").eq(8).text("Yesterday Morning");
+  console.log("Yesterday Morning");
+}
+else if (hours >= 0 && hours <= 5) { // Night
+  console.log("It's Night");
+  $("a").eq(2).text("Tonight");
+  console.log("Tonight");
+  $("a").eq(3).text("This Evening");
+  console.log("This Evening");
+  $("a").eq(4).text("This Afternoon");
+  console.log("This Afternoon");
+  $("a").eq(5).text("This Morning");
+  console.log("This Morning");
+  $("a").eq(6).text("Last Night");
+  console.log("Last Night");
+  $(".panel-default").last().remove(); // Remove uneeded panel
+  $(".panel-default").last().remove(); // Remove uneeded panel
+}
+else if (hours >= 6 && hours <= 11) { // Morning
+  console.log("It's Morning");
+  $("a").eq(2).text("This Morning");
+  console.log("This Morning");
+  $("a").eq(3).text("Last Night");
+  console.log("Last Night");
+  $("a").eq(4).text("Yesterday Evening");
+  console.log("Yesterday Evening");
+  $("a").eq(5).text("Yesterday Afternoon");
+  console.log("Yesterday Afternoon");
+  $("a").eq(6).text("Yesterday Morning");
+  console.log("Yesterday Morning");
+  $(".panel-default").last().remove(); // Remove uneeded panel
+  $(".panel-default").last().remove(); // Remove uneeded panel
+}
+else {
+  console("Time check failed");
+}
+
+
+</script>
+<script>
+$(document).ready(function() {
+    $(".report-div").hide(); // Initally hide the report page from the user
+    // See Arun P Johny's reply on https://stackoverflow.com/questions/31590073/bootstrap-collapse-callback-after-expand-is-complete for checking if collapse animation is complete
+    $("#var4ReportAccordion").on("shown.bs.collapse", function(){
+      console.log("panel expanded");
+      var reportDiv = $(".report-div").detach(); // Cut report box
+      $(".panel-default").each(function() {
+        var grandparent = $(this).find(".panel-collapse"); // Get overall panel
+        if (grandparent.attr("aria-expanded") == "true") { // Check if panel is collapsed (user can't see it)
+          reportDiv.show(); // Show the report box (only relevant when the user clicks a panel for the first time on the page)
+          reportDiv.appendTo(grandparent.find(".panel-body")); // Attach to whichever panel has a body that's shown (only one at a time)
+          return false;
+        }
+        else {
+        }
+      });
+      var parent;
+  });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<h3><center>Tracking Progress with a Page with AJAX and Sessions</center></h3>
+<p>
+Often it is important to keep track of exactly what a subject has already seen. This is important because if this is not done and the user reloads the page, it the page will show subjects all the stimuli again. To prevent this from happening, after each new stimulus is displayed, you can use Ajax to update the progress of the subject.
+<br><br>
+In the example below, the subject sees 10 numbers before making a judgment about the 10 numbers. After each number is seen, Ajax upsates the 'trial_number' variable in the user data model. When the page gets reloaded, the page queries the trial_number from the user rather than starting over from trial 1. You can go to the data pages to verify that indeed the trial_number variable has been updated.
+<br><br>
+When the update has succesfully occurred, a popup screen comes up to say that it was succesful. Normally in an experiment you would not have this popup screen (e.g., you could have a spinning wheel, or not have any visible effect of the Ajax). Here we implemented the popup to make it obvious when the Ajax function has run.
+<br><br>
+
+<script>
+RandomNumbersFromCSV={{RandomNumbersFromCSV}}
+</script>
+
+
+<div class="well"><center>
+
+	<div id = "10NumberDisplay" style="display:none">
+		<form id="Form1" >
+			<div class="form-group">
+				Trial Number: <span id = "trial">{{trial_number}}</span> of 10
+			</div>
+			<div class="form-group">
+				<h3><span id = "number"></span></h3>
+			</div>
+			<div class="form-group">
+				<button type="button" class="btn btn-default" onclick="NextTrial()">Next Number</button>
+			</div>
+		</form>
+	</div>
+
+
+	<!-- <div id = "EstimateMeanOf10Numbers" style="visibility:hidden"> -->
+	<div id = "EstimateMeanOf10Numbers" style="display:none">
+		You just saw 10 numbers. At this point subjects could be prompted to make a judgment on this page or on another page.<br><br>
+	</div>
+
+	<div>
+		<form id="Reset">
+			<div class="form-group">
+				<button type="button" class="btn btn-default" onclick="ResetTrials()">Reset</button>
+			</div>
+		</form>
+	</div>
+
+</center></div>
+
+<script>
+
+trial_number = {{trial_number}}
+
+function NextTrial(){
+	if (trial_number == 10){
+		document.getElementById('TrialNumberAjaxForm').value = trial_number+1
+		AjaxFn()
+		trial_number += 1
+		document.getElementById('10NumberDisplay').style.display = "none"
+		document.getElementById('EstimateMeanOf10Numbers').style.display = "inline"
+	}
+	else {
+		document.getElementById('TrialNumberAjaxForm').value = trial_number+1
+		AjaxFn()
+		trial_number += 1
+		document.getElementById('number').innerHTML = RandomNumbersFromCSV[trial_number-1]
+		document.getElementById('trial').innerHTML = trial_number
+	}
+}
+
+function ResetTrials(){
+		document.getElementById('TrialNumberAjaxForm').value = 1
+		AjaxFn()
+		trial_number = 1
+		document.getElementById('number').innerHTML = RandomNumbersFromCSV[trial_number-1]
+		document.getElementById('trial').innerHTML = trial_number
+		document.getElementById('10NumberDisplay').style.display = "inline"
+		document.getElementById('EstimateMeanOf10Numbers').style.display = "none"
+}
+
+function LoadTrial(){
+	if (trial_number == 11){
+		document.getElementById('10NumberDisplay').style.display = "none"
+		document.getElementById('EstimateMeanOf10Numbers').style.display = "inline"
+	}
+	else if (trial_number < 11){
+		document.getElementById('number').innerHTML = RandomNumbersFromCSV[trial_number-1]
+		document.getElementById('10NumberDisplay').style.display = "inline"
+		document.getElementById('EstimateMeanOf10Numbers').style.display = "none"
+	}
+}
+
+</script>
+
+
+
+<!-- This form is for the trial number - it gets submitted on the ajax call, but it is not visible -->
+<form class="form-inline" id="TrialUpdateForm" style="display:none">
+  <div class="form-group">
+    <label for="number">Number</label>
+    <input type="text" class="form-control" id="TrialNumberAjaxForm" name="TrialNumberAjaxForm">
+  </div>
+  <div class="form-group">
+	<button type="button" class="btn btn-default" onclick="AjaxFn()">Submit</button>
+  </div>
+</form>
+
+<script>
+function AjaxFn()
+{
+	$.ajax({
+		url:"/tracking_progress_within_a_page_with_AJAX_and_sessions",
+		data: $("#TrialUpdateForm").serialize(),
+		dataType: 'json',
+		type: "POST",
+		cache: false,
+		error: function() {alert("Error")},
+		success: function() {alert("Success")}
+	})
+}
+</script>
+<body onload="LoadTrial()">
+<br><br>
+{% endblock %}

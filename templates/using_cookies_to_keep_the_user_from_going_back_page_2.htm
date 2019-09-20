@@ -1,0 +1,13 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<h3><center>Page 2 of 3</center></h3>
+<form class="form-inline" method="post" action="/using_cookies_to_keep_the_user_from_going_back">
+	<div class="form-group">
+		<input type="text" class="form-control" id="ToPage" name="ToPage" value="3" readonly style="display: none">
+	</div>
+	<button type="submit" class="btn btn-default">Go to Page 3</button>
+</form>
+
+{% endblock %}

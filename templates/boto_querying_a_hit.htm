@@ -1,0 +1,106 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+
+
+<h3><center>Boto Example:</center></h3>
+<h4>Introduction:</h4>
+<p>
+This page provides demonstrations of a couple functions of boto. In theory any MTurk operation can be achieved by calling different functions. The documentation for the MTurk Operations and their implementations in Boto are available from the following sites:
+<a href="http://boto.cloudhackers.com/en/latest/ref/mturk.html#">Boto</a>
+<a href="http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_OperationsArticle.html">MTurk</a>.
+
+
+
+<p>
+Before you can access your MTurk account, you must obtain your Amazon Web Service (AWS)
+access_key aka AWS_ACCESS_KEY_ID and your secret_key aka AWS_SECRET_ACCESS_KEY. This is like your user name and password. These need to be put into the app.yaml file as environment variables. Information for how to find these credentials can be found <a href="http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html">here</a>.
+
+<p>
+Amazon has built a 'sandbox' that allows developers to test code in a test environment. Any code executed in this environment does not actually withdraw fees from the MTurk account and MTurk workers will not accept the hits. Once you are ready to publish the site, all you need to do is change one line of code in /boto/connection.py line 950 to use the production site instead of the sandbox.
+<p>
+
+
+
+<br><br>
+
+<h4>Querying a HIT:</h4>
+This function demonstrates how to query MTurk to find information a Hit that was previously published. Using the hit_id, you can get back lots of information about the hit. The following list is all the properties you can obtain. The Question property is the HTML advertisement for the hit. Right now I can't get it to display the results of the HTML in this page.
+
+<b>Properties of the Hit:</b>
+<!-- Even though there is only one hit in this list, This is the easiest way to deal with it that I can figure out. There is also a slice method in django template library -->
+{% for i in Hit %}
+<table class="table table-condensed table-hover table-striped table-bordered">
+<tr><th>Amount</th><td>{{ i.Amount }}</td></tr>
+<tr><th>AssignmentDurationInSeconds</th><td>{{ i.AssignmentDurationInSeconds }}</td></tr>
+<tr><th>AutoApprovalDelayInSeconds</th><td>{{ i.AutoApprovalDelayInSeconds }}</td></tr>
+<tr><th>Comparator</th><td>{{ i.Comparator }}</td></tr>
+<tr><th>Country</th><td>{{ i.Country }}</td></tr>
+<tr><th>CreationTime</th><td>{{ i.CreationTime }}</td></tr>
+<tr><th>CurrencyCode</th><td>{{ i.CurrencyCode }}</td></tr>
+<tr><th>Description</th><td>{{ i.Description }}</td></tr>
+<tr><th>Expiration</th><td>{{ i.Expiration }}</td></tr>
+<tr><th>FormattedPrice</th><td>{{ i.FormattedPrice }}</td></tr>
+<tr><th>HIT</th><td>{{ i.HIT }}</td></tr>
+<tr><th>HITGroupId</th><td>{{ i.HITGroupId }}</td></tr>
+<tr><th>HITId</th><td>{{ i.HITId }}</td></tr>
+<tr><th>HITLayoutId</th><td>{{ i.HITLayoutId }}</td></tr>
+<tr><th>HITReviewStatus</th><td>{{ i.HITReviewStatus }}</td></tr>
+<tr><th>HITStatus</th><td>{{ i.HITStatus }}</td></tr>
+<tr><th>HITTypeId</th><td>{{ i.HITTypeId }}</td></tr>
+<tr><th>IntegerValue</th><td>{{ i.IntegerValue }}</td></tr>
+<tr><th>IsValid</th><td>{{ i.IsValid }}</td></tr>
+<tr><th>Keywords</th><td>{{ i.Keywords }}</td></tr>
+<tr><th>LocaleValue</th><td>{{ i.LocaleValue }}</td></tr>
+<tr><th>MaxAssignments</th><td>{{ i.MaxAssignments }}</td></tr>
+<tr><th>QualificationRequirement</th><td>{{ i.QualificationRequirement }}</td></tr>
+<tr><th>QualificationTypeId</th><td>{{ i.QualificationTypeId }}</td></tr>
+<tr><th>Question</th><td>{{ i.Question }}</td></tr>
+<tr><th>Request</th><td>{{ i.Request }}</td></tr>
+<tr><th>RequesterAnnotation</th><td>{{ i.RequesterAnnotation }}</td></tr>
+<tr><th>RequiredToPreview</th><td>{{ i.RequiredToPreview }}</td></tr>
+<tr><th>Reward</th><td>{{ i.Reward }}</td></tr>
+<tr><th>Title</th><td>{{ i.Title }}</td></tr>
+<tr><th>expired</th><td>{{ i.expired }}</td></tr>
+<tr><th>startElement</th><td>{{ i.startElement }}</td></tr>
+</table>
+{% endfor %}
+
+<br>
+<br>
+<br>
+
+
+<h4>Querying Assignments for a HIT:</h4>
+This function demonstrates how to query MTurk to find all the 'assignments' for a particular HIT. The 'assignments' are the unique MTurk workers who worked on the hit. The example below is for an example mturk HIT made on the sandbox that only one user (me) completed. If there were more users then there would be more rows. You can see that this is the same HIT as in the Second Operation example above because they have the same HITId.
+<br>
+
+
+<table class="table table-condensed table-hover table-striped table-bordered">
+<tr>
+<th>AcceptTime</th>
+<th>ApprovalTime</th>
+<th>Assignment</th>
+<th>AssignmentId</th>
+<th>AssignmentStatus</th>
+<th>AutoApprovalTime</th>
+<th>HITId</th>
+<th>WorkerId</th>
+</tr>
+{% for i in All_Assignments %}
+<tr>
+<td>{{ i.AcceptTime }}</td>
+<td>{{ i.ApprovalTime }}</td>
+<td>{{ i.Assignment }} </td>
+<td>{{ i.AssignmentId }} </td>
+<td>{{ i.AssignmentStatus }} </td>
+<td>{{ i.AutoApprovalTime}}</td>
+<td>{{ i.HITId}}</td>
+<td>{{ i.WorkerId}}</td>
+</tr>
+{% endfor %}
+</table>
+
+
+<!-- console.log($("#myform").serializeArray()) -->
+
+{% endblock %}

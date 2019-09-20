@@ -1,0 +1,123 @@
+
+Boto has difficulty working on Google App Engine and required the following modifications.
+
+
+
+#############################################
+Installation
+#############################################
+The way I installed boto was using pip install boto from the terminal, then find where it is installed (it says where when running pip uninstall boto), and copy that folder into root folder of the app.
+
+
+#############################################
+Boto would not work without making the following change:
+http://stackoverflow.com/questions/21556587/connecting-to-route53-api-from-google-app-engine-using-boto
+#############################################
+
+
+Connection.py line 943
+connection.request(request.method, request.path,
+Changed to:
+connection.request(request.method, "https://mechanicalturk.amazonaws.com" + request.path,
+
+
+
+
+#############################################
+GAE does not allow the Content-Length header in HTTP requests.
+https://cloud.google.com/appengine/docs/python/outbound-requests
+I commented out the following lines, which eliminated the warning
+#############################################
+
+
+Connection.py line 381
+#         if 'Content-Length' not in self.headers:
+#             if 'Transfer-Encoding' not in self.headers or \
+#                     self.headers['Transfer-Encoding'] != 'chunked':
+#                 self.headers['Content-Length'] = str(len(self.body))
+
+
+auth.py line 534
+#             req.headers['Content-Length'] = str(len(req.body))
+
+auth.py line 840
+#             http_request.headers['Content-Length'] = str(len(http_request.body))
+auth.py line 947
+#             req.headers['Content-Length'] = str(len(req.body))
+
+
+
+#############################################
+Current Warnings
+#############################################
+Using Boto still produces a warning:
+"Stripped prohibited headers from URLFetch request: ['Host']"
+
+The reason is the same as for Content-Length; the Host header is also not allowed
+https://cloud.google.com/appengine/docs/python/outbound-requests
+
+However, Host appears in many places in the code in connection.py and auth.py, and it was not immediately clear to me how to go about deleting it from the HTTP request.
+
+
+#############################################
+Future Thoughts
+#############################################
+
+## One option
+In the future it might make sense to switch from boto to boto3. However, right now the MTurk module is not available for boto3. Actually, now I think it is available.
+https://github.com/boto/boto3/issues/174
+
+## Another option
+Another thought is to not use boto at all and rewrite the code to interact with MTurk as a web service. Here are a list of sites for future reference.
+
+Explanation for HTTP(S) requests on GAE:
+https://cloud.google.com/appengine/docs/python/issue-requests
+
+https://aws.amazon.com/documentation/mturk/
+http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMechanicalTurkRequester/MakingRequestsArticle.html
+http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMechanicalTurkRequester/MakingRequests_RequestAuthenticationArticle.html
+http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_WsdlLocationArticle.html#the-wsdl-and-message-schema-locations
+
+
+This is the page that is most helpful so far
+http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMechanicalTurkRequester/Concepts_RequestersAndWorkersArticle.html
+and see this for interfaces
+http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMechanicalTurkGettingStartedGuide/NextSteps.html
+Eventually, I found that Boto is the SDK package for API use for AWS for python
+https://requester.mturk.com/developer
+
+
+The problem that I ran into is that the examples I found for MTurk (see 'sample request' from the following two sites:
+http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_GetAccountBalanceOperation.html
+http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMechanicalTurkRequester/MakingRequests_MakingRESTRequestsArticle.html
+
+do not look exactly like the examples I see for AWS more generally. Actually, I think that it looks similar to 'Signature Version 2 Signing:
+http://docs.aws.amazon.com/general/latest/gr/signature-version-2.html
+However, there is only a Java example for how to actually compute the signature.
+There are python examples for how to compute Version 4 Signatures
+http://docs.aws.amazon.com/general/latest/gr/sigv4-signed-request-examples.html
+Also see
+http://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html
+
+However, I can't figure out if MTurk requests Version 4 signatures or not. Furthermore, I found this hard to read
+
+
+
+
+
+
+########### New notes for boto3
+https://blog.mturk.com/tutorial-a-beginners-guide-to-crowdsourcing-ml-training-data-with-python-and-mturk-d8df4bdf2977
+
+https://blog.mturk.com/developers-can-now-use-aws-sdks-to-access-the-mturk-api-13eb557af2cc#.bki4pgv5g
+
+managing Credentials
+http://boto3.readthedocs.io/en/latest/guide/configuration.html
+
+virtualenvironments
+http://docs.python-guide.org/en/latest/dev/virtualenvs/
+
+change directory
+cd then drag and drop folder if copy and paste does not work
+I did all this to set up the virtualenv here
+https://blog.mturk.com/tutorial-a-beginners-guide-to-crowdsourcing-ml-training-data-with-python-and-mturk-d8df4bdf2977

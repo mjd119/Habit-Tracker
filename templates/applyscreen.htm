@@ -1,0 +1,34 @@
+{% extends "_base.htm" %}
+{% block bodycontent %}
+      <h1>You Qualify!</h1>
+      <p>
+To start:
+<form method="post" action="/apply">
+<ol>
+<li>
+Paste your MTurk ID here again: 
+<input type="text" name="account"/> <br>
+(sorry for the redundancy).
+</li>
+<br>
+<li>
+Go back into MTurk and accept the hit now!
+<br>
+(If you do not accept the hit now it might fill up and you will not get paid.)
+</li
+<br>
+<br>
+<li>
+
+      <input type="submit" value="Start the Study">
+      </form>
+</li>
+      </p>
+      {% if error %}
+       <p>
+       {{ error }}
+       </p>
+      {% endif %}
+{% endblock %}
+
+
